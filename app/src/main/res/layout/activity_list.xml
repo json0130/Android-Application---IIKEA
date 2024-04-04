@@ -15,6 +15,13 @@
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display3" />
 
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/list_search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/colorBackground"
+        />
+
     <LinearLayout
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
@@ -56,7 +63,7 @@
         android:id="@+id/furniture_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.8"
+        android:layout_weight="1"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/furniture_listview_layout" />
 
