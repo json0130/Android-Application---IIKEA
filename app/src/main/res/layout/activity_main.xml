@@ -5,7 +5,7 @@
     android:id="@+id/main_recyclerView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".activities.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,7 +27,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Best Selling"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:onClick="bestSellingClicked"
+            />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/main_top_picks_recyclerView"
