@@ -13,7 +13,11 @@
         android:theme="@style/Theme.IikeaApp"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.ListActivity"
+            android:exported="false"
+            android:theme="@style/Theme.IikeaApp" />
+        <activity
+            android:name=".activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
