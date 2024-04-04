@@ -80,5 +80,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
-
+    <!-- FrameLayout Container for Filter Fragment -->
+    <FrameLayout
+        android:id="@+id/filter_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible" />
 </LinearLayout>

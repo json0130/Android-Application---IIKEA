@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/standard_bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_marginLeft="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="COLOUR"
+        />
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/filter_color_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/filter_chip_red"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:textAlignment="center"
+                app:chipIconEnabled="false"
+                app:checkedIconEnabled="true"
+                android:checkable="true"
+                app:chipBackgroundColor="#CE0000"
+                />
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/filter_chip_orange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:textAlignment="center"
+                app:chipIconEnabled="false"
+                app:checkedIconEnabled="true"
+                android:checkable="true"
+                app:chipBackgroundColor="#FF3300"
+                />
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/filter_chip_blue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:textAlignment="center"
+                app:chipIconEnabled="false"
+                app:checkedIconEnabled="true"
+                android:checkable="true"
+                app:chipBackgroundColor="#0213B0"
+                />
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/filter_chip_green"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:textAlignment="center"
+                app:chipIconEnabled="false"
+                app:checkedIconEnabled="true"
+                android:checkable="true"
+                app:chipBackgroundColor="#007623"
+                />
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/filter_chip_brown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                app:chipIconEnabled="false"
+                app:checkedIconEnabled="true"
+                android:checkable="true"
+                app:chipBackgroundColor="#8D3400" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                />
+        </LinearLayout>
+    </com.google.android.material.chip.ChipGroup>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:layout_marginHorizontal="16dp"
+        />
+
+    <TextView
+        android:layout_marginLeft="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CATEGORY/TAG"
+        />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/filter_tag_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/filter_chip_gaming"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:text="GAMING"
+                android:textAlignment="center"
+                app:chipIconEnabled="false"
+                app:checkedIconEnabled="true"
+                android:checkable="true"
+                android:checked="true"/>
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/filter_chip_outdoor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:text="OUTDOOR"
+                android:textAlignment="center"
+                app:chipIconEnabled="false"
+                app:checkedIconEnabled="true"
+                android:checkable="true"
+                android:checked="true"
+                />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/filter_chip_office"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:text="OFFICE"
+                android:textAlignment="center"
+                app:chipIconEnabled="false"
+                app:checkedIconEnabled="true"
+                android:checkable="true"
+                android:checked="true"/>
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/filter_chip_living"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:text="LIVING"
+                android:textAlignment="center"
+                app:chipIconEnabled="false"
+                app:checkedIconEnabled="true"
+                android:checkable="true"
+                android:checked="true"
+                />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                />
+        </LinearLayout>
+    </com.google.android.material.chip.ChipGroup>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:layout_marginHorizontal="16dp"
+        />
+
+    <TextView
+        android:layout_marginLeft="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PRICE"
+        />
+
+    <com.google.android.material.slider.RangeSlider
+        android:id="@+id/filter_price_slider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        />
+</LinearLayout>
