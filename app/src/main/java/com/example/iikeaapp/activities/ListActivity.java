@@ -1,6 +1,7 @@
 package com.example.iikeaapp.activities;
 
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,14 +16,22 @@ import com.example.iikeaapp.adapter.FurnitureAdapter;
 import com.example.iikeaapp.data.DataProvider;
 import com.example.iikeaapp.R;
 import com.example.iikeaapp.data.Furniture;
+import com.example.iikeaapp.databinding.ActivityListBinding;
 import com.example.iikeaapp.fragment.FilterPage;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import android.widget.Filter;
 import android.widget.Filterable;
 
 public class ListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
-
+    ActivityListBinding binding;
+    private RecyclerView.Adapter adapterListFurniture;
+    private int categoryID;
+    private String categoryName;
+    private String searchText;
+    private boolean isSearch;
     private static class ViewHolder {
         public final RecyclerView items;
         public final Button filterButton;
@@ -45,7 +54,8 @@ public class ListActivity extends AppCompatActivity implements SearchView.OnQuer
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list);
+        //binding = ActivityListBinding.inflate(getLayoutInflater());
+        //setContentView(binding.getRoot());
 
         furnitureMap = DataProvider.getFurnitureItems();
 
@@ -53,8 +63,10 @@ public class ListActivity extends AppCompatActivity implements SearchView.OnQuer
 
         recyclerView = findViewById(R.id.furniture_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new FurnitureAdapter(furnitureMap);
-        recyclerView.setAdapter(adapter);
+
+        // Need to check if we are using the hash map or arraylist for data?
+        //adapter = new FurnitureAdapter(furnitureMap);
+        //recyclerView.setAdapter(adapter);
 
         // Searching
         vh.searchView.setOnQueryTextListener(this);
@@ -65,43 +77,28 @@ public class ListActivity extends AppCompatActivity implements SearchView.OnQuer
         }
 
         // filtering
-        // Set up click listener for the filter button
         vh.filterButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Show the filter fragment
-                    onFilterButtonClicked(v);
-                }
-        });
-    }
-
-    private void onFilterButtonClicked(View v) {
-        // Create an instance of the filter fragment
-        FilterPage filterPage = new FilterPage();
-
-        // Set up the callback for receiving filter options
-        filterPage.setOnOptionChangedCallback(new FilterPage.OptionsChangedCallback() {
             @Override
-            public void onOptionsChanged(FilterPage.FilterOptions options) {
-                // Handle the filter options here
-                // For example, you can apply filtering to your RecyclerView adapter
+            public void onClick(View v) {
+                // Show the filter bottom sheet dialog
+                showFilterBottomSheet();
             }
         });
-
-        // Get the fragment manager and start a transaction
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-        // Add the filter fragment to the container
-        transaction.add(R.id.filter_container, filterPage);
-
-        // Show the container
-        findViewById(R.id.filter_container).setVisibility(View.VISIBLE);
-
-        // Commit the transaction
-        transaction.commit();
     }
 
+    private void showFilterBottomSheet() {
+        // Inflate the bottom sheet layout
+        View bottomSheetView = getLayoutInflater().inflate(R.layout.filter_listview_layout, null);
+
+        // Create a BottomSheetDialog instance
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+
+        // Set the content view of the BottomSheetDialog
+        bottomSheetDialog.setContentView(bottomSheetView);
+
+        // Show the BottomSheetDialog
+        bottomSheetDialog.show();
+    }
 
     @Override
     public boolean onQueryTextSubmit(String query) {
