@@ -1,12 +1,21 @@
 package com.example.iikeaapp.activities;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,18 +29,19 @@ import com.example.iikeaapp.fragment.FilterPage;
 import java.util.HashMap;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.Toast;
 
 public class ListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     private static class ViewHolder {
         public final RecyclerView items;
-        public final Button filterButton;
+        //public final Button filterButton;
         public final Button sortButton;
         public final SearchView searchView;
 
         public ViewHolder(Activity activity) {
             items = activity.findViewById(R.id.furniture_recycler_view);
-            filterButton = activity.findViewById(R.id.list_filter_button);
+            //filterButton = activity.findViewById(R.id.list_filter_button);
             sortButton = activity.findViewById(R.id.list_sort_button);
             searchView = activity.findViewById(R.id.list_search_view);
         }
@@ -40,21 +50,22 @@ public class ListActivity extends AppCompatActivity implements SearchView.OnQuer
     private RecyclerView recyclerView;
     private FurnitureAdapter adapter;
     private HashMap<String, Furniture> furnitureMap;
-    private Button filterButton;
+    Button filterButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list);
+        //setContentView(R.layout.activity_list);
 
+        filterButton = findViewById(R.id.list_filter_button);
         furnitureMap = DataProvider.getFurnitureItems();
 
         vh = new ViewHolder(this);
 
-        recyclerView = findViewById(R.id.furniture_recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new FurnitureAdapter(furnitureMap);
-        recyclerView.setAdapter(adapter);
+//        recyclerView = findViewById(R.id.furniture_recycler_view);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        adapter = new FurnitureAdapter(furnitureMap);
+//        recyclerView.setAdapter(adapter);
 
         // Searching
         vh.searchView.setOnQueryTextListener(this);
@@ -64,15 +75,76 @@ public class ListActivity extends AppCompatActivity implements SearchView.OnQuer
             vh.searchView.setQueryHint(search);
         }
 
-        // filtering
-        // Set up click listener for the filter button
-        vh.filterButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Show the filter fragment
-                    onFilterButtonClicked(v);
-                }
+        filterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showBottomDialog();
+            }
         });
+
+    }
+
+//    private  void replaceFragment(Fragment fragment) {
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.replace(R.id.frame_layout, fragment);
+//        fragmentTransaction.commit();
+//    }
+
+    private void showBottomDialog() {
+
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.bottomsheetlayout);
+
+        LinearLayout videoLayout = dialog.findViewById(R.id.layoutVideo);
+        LinearLayout shortsLayout = dialog.findViewById(R.id.layoutShorts);
+        LinearLayout liveLayout = dialog.findViewById(R.id.layoutLive);
+        ImageView cancelButton = dialog.findViewById(R.id.cancelButton);
+
+        videoLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+                Toast.makeText(ListActivity.this,"Upload a Video is clicked",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        shortsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+                Toast.makeText(ListActivity.this,"Create a short is Clicked",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        liveLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+                Toast.makeText(ListActivity.this,"Go live is Clicked",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        //dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+
     }
 
     private void onFilterButtonClicked(View v) {
@@ -93,15 +165,14 @@ public class ListActivity extends AppCompatActivity implements SearchView.OnQuer
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
         // Add the filter fragment to the container
-        transaction.add(R.id.filter_container, filterPage);
+        //transaction.add(R.id.filter_container, filterPage);
 
         // Show the container
-        findViewById(R.id.filter_container).setVisibility(View.VISIBLE);
+        //findViewById(R.id.filter_container).setVisibility(View.VISIBLE);
 
         // Commit the transaction
         transaction.commit();
     }
-
 
     @Override
     public boolean onQueryTextSubmit(String query) {

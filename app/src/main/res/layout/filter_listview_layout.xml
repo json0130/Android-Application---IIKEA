@@ -2,12 +2,11 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/standard_bottom_sheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="20dp"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/dialogbkg">
 
     <TextView
         android:layout_marginLeft="16dp"
@@ -145,7 +144,7 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/filter_chip_gaming"
-                android:layout_width="wrap_content"
+                android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
                 android:text="GAMING"
@@ -163,7 +162,7 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/filter_chip_outdoor"
-                android:layout_width="wrap_content"
+                android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
                 android:text="OUTDOOR"
@@ -193,7 +192,7 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/filter_chip_office"
-                android:layout_width="wrap_content"
+                android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
                 android:text="OFFICE"
@@ -211,7 +210,7 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/filter_chip_living"
-                android:layout_width="wrap_content"
+                android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
                 android:text="LIVING"
