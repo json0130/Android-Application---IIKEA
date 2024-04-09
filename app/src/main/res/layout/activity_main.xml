@@ -22,18 +22,26 @@
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Display3" />
 
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/list_search_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/colorBackground"
+            />
+
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Best Selling"
+            android:text="Top Picks"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:onClick="bestSellingClicked"
             />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/main_top_picks_recyclerView"
-            android:layout_width="match_parent"
+            android:scrollbars="horizontal"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
