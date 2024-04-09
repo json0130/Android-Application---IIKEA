@@ -1,5 +1,6 @@
 package com.example.iikeaapp.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,17 +20,17 @@ import android.widget.Filter;
 import android.widget.Filterable;
 
 public class FurnitureAdapter extends RecyclerView.Adapter<FurnitureAdapter.FurnitureViewHolder> implements Filterable{
-    private final List<Furniture> furnitureList;
-    private List<Furniture> furnitureListFiltered;
-    public FurnitureAdapter(HashMap<String, Furniture> furnitureMap) {
-        furnitureList = new ArrayList<>(furnitureMap.values());
-        furnitureListFiltered = furnitureList;
+    ArrayList<Furniture> furnitureList;
+    Context context;
+    private ArrayList<Furniture> furnitureListFiltered;
+    public FurnitureAdapter(ArrayList<Furniture> items) {
+        furnitureList = items;
     }
 
-    public static class FurnitureViewHolder extends RecyclerView.ViewHolder {
-        public ImageView furnitureImage;
-        public TextView furnitureName;
-        public TextView furniturePrice;
+    public class FurnitureViewHolder extends RecyclerView.ViewHolder {
+        ImageView furnitureImage;
+        TextView furnitureName;
+        TextView furniturePrice;
 
         public FurnitureViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -41,10 +42,23 @@ public class FurnitureAdapter extends RecyclerView.Adapter<FurnitureAdapter.Furn
 
     @NonNull
     @Override
-    public FurnitureViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.furniture_listview_layout, parent, false);
-        return new FurnitureViewHolder(view);
+    public FurnitureAdapter.FurnitureViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        context=parent.getContext();
+        View inflate = LayoutInflater.from(context).inflate(R.layout.furniture_listview_layout,parent,false);
+        return new FurnitureViewHolder(inflate);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull FurnitureViewHolder holder, int position) {
+        Furniture furnitureItem = furnitureListFiltered.get(position);
+        holder.furnitureImage.setImageResource(furnitureItem.getImageResource());
+        holder.furnitureName.setText(furnitureItem.getName());
+        holder.furniturePrice.setText("Price: $" + furnitureItem.getPrice());
+    }
+
+    @Override
+    public int getItemCount() {
+        return furnitureList.size();
     }
 
     @Override
@@ -62,7 +76,7 @@ public class FurnitureAdapter extends RecyclerView.Adapter<FurnitureAdapter.Furn
                             filteredList.add(row);
                         }
                     }
-                    furnitureListFiltered = filteredList;
+                    //furnitureListFiltered = filteredList;
                 }
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = furnitureListFiltered;
@@ -75,19 +89,5 @@ public class FurnitureAdapter extends RecyclerView.Adapter<FurnitureAdapter.Furn
                 notifyDataSetChanged();
             }
         };
-    }
-
-
-    @Override
-    public void onBindViewHolder(@NonNull FurnitureViewHolder holder, int position) {
-        Furniture furnitureItem = furnitureListFiltered.get(position);
-        holder.furnitureImage.setImageResource(furnitureItem.getImageResource());
-        holder.furnitureName.setText(furnitureItem.getName());
-        holder.furniturePrice.setText("Price: $" + furnitureItem.getPrice());
-    }
-
-    @Override
-    public int getItemCount() {
-        return furnitureListFiltered.size();
     }
 }
