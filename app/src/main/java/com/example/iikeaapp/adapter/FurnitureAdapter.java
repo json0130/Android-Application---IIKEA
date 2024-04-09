@@ -31,6 +31,19 @@ public class FurnitureAdapter extends RecyclerView.Adapter<FurnitureAdapter.Furn
         ImageView furnitureImage;
         TextView furnitureName;
         TextView furniturePrice;
+    }
+    private final List<Furniture> furnitureList;
+    private List<Furniture> furnitureListFiltered;
+  
+    public FurnitureAdapter(HashMap<String, Furniture> furnitureMap) {
+        furnitureList = new ArrayList<>(furnitureMap.values());
+        furnitureListFiltered = furnitureList;
+    }
+
+    public static class FurnitureViewHolder extends RecyclerView.ViewHolder {
+        public ImageView furnitureImage;
+        public TextView furnitureName;
+        public TextView furniturePrice;
 
         public FurnitureViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -60,6 +73,13 @@ public class FurnitureAdapter extends RecyclerView.Adapter<FurnitureAdapter.Furn
     public int getItemCount() {
         return furnitureList.size();
     }
+  
+    public FurnitureViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.furniture_listview_layout, parent, false);
+        return new FurnitureViewHolder(view);
+
+    }
 
     @Override
     public Filter getFilter() {
@@ -76,7 +96,8 @@ public class FurnitureAdapter extends RecyclerView.Adapter<FurnitureAdapter.Furn
                             filteredList.add(row);
                         }
                     }
-                    //furnitureListFiltered = filteredList;
+
+                    furnitureListFiltered = filteredList;
                 }
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = furnitureListFiltered;
@@ -89,5 +110,19 @@ public class FurnitureAdapter extends RecyclerView.Adapter<FurnitureAdapter.Furn
                 notifyDataSetChanged();
             }
         };
+    }
+
+
+    @Override
+    public void onBindViewHolder(@NonNull FurnitureViewHolder holder, int position) {
+        Furniture furnitureItem = furnitureListFiltered.get(position);
+        holder.furnitureImage.setImageResource(furnitureItem.getImageResource());
+        holder.furnitureName.setText(furnitureItem.getName());
+        holder.furniturePrice.setText("Price: $" + furnitureItem.getPrice());
+    }
+
+    @Override
+    public int getItemCount() {
+        return furnitureListFiltered.size();
     }
 }

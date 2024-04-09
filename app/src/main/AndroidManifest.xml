@@ -13,9 +13,6 @@
         android:theme="@style/Theme.IikeaApp"
         tools:targetApi="31">
         <activity
-            android:name=".activities.testActivity"
-            android:exported="false" />
-        <activity
             android:name=".activities.ListActivity"
             android:exported="false"
             android:theme="@style/Theme.IikeaApp" />
