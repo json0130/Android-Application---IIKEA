@@ -46,9 +46,9 @@ public class FilterPage extends Fragment {
         public final RangeSlider priceSlider;
 
         ViewHolder(View view) {
-            colorSelection = view.findViewById(R.id.filter_color_group);
+            colorSelection = view.findViewById(R.id.filter_color);
             tagSelection = view.findViewById(R.id.filter_tag_group);
-            priceSlider = view.findViewById(R.id.filter_price_slider);
+            priceSlider = view.findViewById(R.id.price_slider);
             priceSlider.setValues(0.1f, 0.9f);
         }
     }
