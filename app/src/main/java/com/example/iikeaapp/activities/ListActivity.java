@@ -15,14 +15,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.SearchView;
-import androidx.appcompat.app.AppCompatActivity;
-
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,7 +23,6 @@ import com.example.iikeaapp.adapter.FurnitureAdapter;
 import com.example.iikeaapp.data.DataProvider;
 import com.example.iikeaapp.R;
 import com.example.iikeaapp.data.Furniture;
-import com.example.iikeaapp.databinding.ActivityListBinding;
 import com.example.iikeaapp.fragment.FilterPage;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
@@ -42,12 +33,7 @@ import android.widget.Filterable;
 import android.widget.Toast;
 
 public class ListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
-    ActivityListBinding binding;
-    private RecyclerView.Adapter adapterListFurniture;
-    private int categoryID;
-    private String categoryName;
-    private String searchText;
-    private boolean isSearch;
+
     private static class ViewHolder {
         public final RecyclerView items;
         public final Button filterButton;
@@ -56,8 +42,8 @@ public class ListActivity extends AppCompatActivity implements SearchView.OnQuer
 
         public ViewHolder(Activity activity) {
             items = activity.findViewById(R.id.furniture_recycler_view);
-            filterButton = activity.findViewById(R.id.list_filter_button);
-            sortButton = activity.findViewById(R.id.list_sort_button);
+            filterButton = activity.findViewById(R.id.listview_filter_button);
+            sortButton = activity.findViewById(R.id.listview_sort_button);
             searchView = activity.findViewById(R.id.list_search_view);
         }
     }
@@ -71,7 +57,7 @@ public class ListActivity extends AppCompatActivity implements SearchView.OnQuer
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        filterButton = findViewById(R.id.list_filter_button);
+        filterButton = findViewById(R.id.listview_filter_button);
         setContentView(R.layout.activity_list);
         furnitureMap = DataProvider.getFurnitureItems();
 

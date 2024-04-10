@@ -60,6 +60,7 @@
                 android:checkable="true"
                 app:chipBackgroundColor="#CE0000"
                 />
+
             <Space
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -74,6 +75,7 @@
                 android:checkable="true"
                 app:chipBackgroundColor="#FF3300"
                 />
+
             <Space
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -102,11 +104,13 @@
                 android:checkable="true"
                 app:chipBackgroundColor="#007623"
                 />
+
             <Space
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
                 />
+
             <com.google.android.material.chip.Chip
                 android:id="@+id/filter_chip_brown"
                 android:layout_width="wrap_content"
@@ -140,6 +144,11 @@
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/filter_tag"
+        android:text="CATEGORY/TAG"
+        />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/filter_tag_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

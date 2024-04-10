@@ -137,6 +137,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void bestSellingClicked(View v){
-        setContentView(R.layout.furniture_detail_view_layout);
+        setContentView(R.layout.activity_list);
     }
 }
