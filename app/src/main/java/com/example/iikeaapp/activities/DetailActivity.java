@@ -17,7 +17,7 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.furniture_detail_view_layout);
+        setContentView(R.layout.activity_detail);
         viewPager = (ViewPager)findViewById(R.id.furniture_item_image);
         imageViewerAdapter = new ImageViewerAdapter(DetailActivity.this, imageFolder);
         viewPager.setAdapter(imageViewerAdapter);
