@@ -26,14 +26,6 @@ public class FurnitureAdapter extends RecyclerView.Adapter<FurnitureAdapter.Furn
     public FurnitureAdapter(ArrayList<Furniture> items) {
         furnitureList = items;
     }
-
-    public class FurnitureViewHolder extends RecyclerView.ViewHolder {
-        ImageView furnitureImage;
-        TextView furnitureName;
-        TextView furniturePrice;
-    }
-    private final List<Furniture> furnitureList;
-    private List<Furniture> furnitureListFiltered;
   
     public FurnitureAdapter(HashMap<String, Furniture> furnitureMap) {
         furnitureList = new ArrayList<>(furnitureMap.values());
@@ -55,25 +47,6 @@ public class FurnitureAdapter extends RecyclerView.Adapter<FurnitureAdapter.Furn
 
     @NonNull
     @Override
-    public FurnitureAdapter.FurnitureViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        context=parent.getContext();
-        View inflate = LayoutInflater.from(context).inflate(R.layout.furniture_listview_layout,parent,false);
-        return new FurnitureViewHolder(inflate);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull FurnitureViewHolder holder, int position) {
-        Furniture furnitureItem = furnitureListFiltered.get(position);
-        holder.furnitureImage.setImageResource(furnitureItem.getImageResource());
-        holder.furnitureName.setText(furnitureItem.getName());
-        holder.furniturePrice.setText("Price: $" + furnitureItem.getPrice());
-    }
-
-    @Override
-    public int getItemCount() {
-        return furnitureList.size();
-    }
-  
     public FurnitureViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.furniture_listview_layout, parent, false);
@@ -90,7 +63,7 @@ public class FurnitureAdapter extends RecyclerView.Adapter<FurnitureAdapter.Furn
                 if (charString.isEmpty()) {
                     furnitureListFiltered = furnitureList;
                 } else {
-                    List<Furniture> filteredList = new ArrayList<>();
+                    ArrayList<Furniture> filteredList = new ArrayList<>();
                     for (Furniture row : furnitureList) {
                         if (row.getName().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);

@@ -7,12 +7,27 @@
     android:padding="20dp"
     android:orientation="vertical"
     android:background="@drawable/dialogbkg">
-    android:id="@+id/standard_bottom_sheet"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="20dp"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-    android:orientation="vertical">
+
+    <TextView
+        android:layout_marginLeft="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PRICE"
+        />
+
+    <com.google.android.material.slider.RangeSlider
+        android:id="@+id/price_slider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:layout_marginHorizontal="16dp"
+        />
 
     <TextView
         android:layout_marginLeft="16dp"
@@ -21,7 +36,7 @@
         android:text="COLOUR"
         />
     <com.google.android.material.chip.ChipGroup
-        android:id="@+id/filter_color_group"
+        android:id="@+id/filter_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -40,8 +55,6 @@
                 android:id="@+id/filter_chip_red"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:textAlignment="center"
                 app:chipIconEnabled="false"
                 app:checkedIconEnabled="true"
                 android:checkable="true"
@@ -56,8 +69,6 @@
                 android:id="@+id/filter_chip_orange"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:textAlignment="center"
                 app:chipIconEnabled="false"
                 app:checkedIconEnabled="true"
                 android:checkable="true"
@@ -72,8 +83,6 @@
                 android:id="@+id/filter_chip_blue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:textAlignment="center"
                 app:chipIconEnabled="false"
                 app:checkedIconEnabled="true"
                 android:checkable="true"
@@ -88,8 +97,6 @@
                 android:id="@+id/filter_chip_green"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:textAlignment="center"
                 app:chipIconEnabled="false"
                 app:checkedIconEnabled="true"
                 android:checkable="true"
@@ -104,7 +111,6 @@
                 android:id="@+id/filter_chip_brown"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
                 app:chipIconEnabled="false"
                 app:checkedIconEnabled="true"
                 android:checkable="true"
@@ -129,11 +135,11 @@
         android:layout_marginLeft="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CATEGORY/TAG"
+        android:text="CATEGORY / TAG"
         />
 
     <com.google.android.material.chip.ChipGroup
-        android:id="@+id/filter_tag_group"
+        android:id="@+id/filter_tag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -152,13 +158,12 @@
                 android:id="@+id/filter_chip_gaming"
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="5"
+                android:layout_weight="3"
                 android:text="GAMING"
-                android:textAlignment="center"
                 app:chipIconEnabled="false"
                 app:checkedIconEnabled="true"
                 android:checkable="true"
-                android:checked="true"/>
+                android:checked="true" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -170,9 +175,8 @@
                 android:id="@+id/filter_chip_outdoor"
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="5"
+                android:layout_weight="3"
                 android:text="OUTDOOR"
-                android:textAlignment="center"
                 app:chipIconEnabled="false"
                 app:checkedIconEnabled="true"
                 android:checkable="true"
@@ -200,9 +204,8 @@
                 android:id="@+id/filter_chip_office"
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="5"
+                android:layout_weight="3"
                 android:text="OFFICE"
-                android:textAlignment="center"
                 app:chipIconEnabled="false"
                 app:checkedIconEnabled="true"
                 android:checkable="true"
@@ -218,9 +221,8 @@
                 android:id="@+id/filter_chip_living"
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="5"
+                android:layout_weight="3"
                 android:text="LIVING"
-                android:textAlignment="center"
                 app:chipIconEnabled="false"
                 app:checkedIconEnabled="true"
                 android:checkable="true"
@@ -234,25 +236,4 @@
                 />
         </LinearLayout>
     </com.google.android.material.chip.ChipGroup>
-
-    <com.google.android.material.divider.MaterialDivider
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="5dp"
-        android:layout_marginHorizontal="16dp"
-        />
-
-    <TextView
-        android:layout_marginLeft="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="PRICE"
-        />
-
-    <com.google.android.material.slider.RangeSlider
-        android:id="@+id/filter_price_slider"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        />
 </LinearLayout>

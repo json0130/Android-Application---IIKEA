@@ -50,18 +50,6 @@ public class ListActivity extends AppCompatActivity implements SearchView.OnQuer
     private boolean isSearch;
     private static class ViewHolder {
         public final RecyclerView items;
-        //public final Button filterButton;
-      
-import com.example.iikeaapp.fragment.FilterPage;
-
-import java.util.HashMap;
-import android.widget.Filter;
-import android.widget.Filterable;
-
-public class ListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
-
-    private static class ViewHolder {
-        public final RecyclerView items;
         public final Button filterButton;
         public final Button sortButton;
         public final SearchView searchView;
@@ -79,7 +67,6 @@ public class ListActivity extends AppCompatActivity implements SearchView.OnQuer
     private HashMap<String, Furniture> furnitureMap;
   
     Button filterButton;
-    private Button filterButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,11 +76,6 @@ public class ListActivity extends AppCompatActivity implements SearchView.OnQuer
         furnitureMap = DataProvider.getFurnitureItems();
 
         vh = new ViewHolder(this);
-
-//        recyclerView = findViewById(R.id.furniture_recycler_view);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        adapter = new FurnitureAdapter(furnitureMap);
-//        recyclerView.setAdapter(adapter);
 
         recyclerView = findViewById(R.id.furniture_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -123,13 +105,6 @@ public class ListActivity extends AppCompatActivity implements SearchView.OnQuer
         });
 
     }
-
-//    private  void replaceFragment(Fragment fragment) {
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.replace(R.id.frame_layout, fragment);
-//        fragmentTransaction.commit();
-//    }
 
     private void showBottomDialog() {
 
@@ -199,17 +174,6 @@ public class ListActivity extends AppCompatActivity implements SearchView.OnQuer
 
         // Show the BottomSheetDialog
         bottomSheetDialog.show();
-    }
-
-        // filtering
-        // Set up click listener for the filter button
-        vh.filterButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Show the filter fragment
-                    onFilterButtonClicked(v);
-                }
-        });
     }
 
     private void onFilterButtonClicked(View v) {

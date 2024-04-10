@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/app_name"
@@ -16,14 +16,13 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Display3" />
 
     <androidx.appcompat.widget.SearchView
-        android:id="@+id/list_search_view"
+        android:id="@+id/listview_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/colorBackground"
+        android:background="@color/black"
         />
 
     <LinearLayout
-        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -34,23 +33,24 @@
             android:layout_weight="1"
             />
         <Button
-            android:id="@+id/list_sort_button"
+            android:id="@+id/listview_sort_button"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_weight="1"
-            android:text="SORT"
+            android:text="SORTING"
             />
         <Space
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             />
+
         <Button
-            android:id="@+id/list_filter_button"
+            android:id="@+id/listview_filter_button"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_weight="1"
-            android:text="FILTER"
+            android:text="FILTERING"
             />
         <Space
             android:layout_width="wrap_content"
@@ -68,7 +68,7 @@
         tools:listitem="@layout/furniture_listview_layout" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/related_items_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="RELATED ITEMS"
@@ -79,8 +79,9 @@
         android:id="@+id/related_items"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         />
-    <!-- FrameLayout Container for Filter Fragment -->
+
     <FrameLayout
         android:id="@+id/filter_container"
         android:layout_width="match_parent"
