@@ -23,3 +23,4 @@ public class DetailActivity extends AppCompatActivity {
         viewPager.setAdapter(imageViewerAdapter);
     }
 }
+
