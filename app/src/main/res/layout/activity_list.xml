@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/furniture_listview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".activities.ListActivity">
 
     <TextView
         android:id="@+id/title"
@@ -18,26 +20,30 @@
         android:id="@+id/listview_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/black"
+        android:background="@color/white"
+        android:layout_below="@+id/title"
         />
 
     <LinearLayout
+        android:id="@+id/button_layout"
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_below="@+id/listview_search">
 
         <Space
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             />
-        <Button
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/listview_sort_button"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_weight="1"
-            android:text="SORTING"
+            android:text="SORT"/>
             />
         <Space
             android:layout_width="wrap_content"
@@ -45,7 +51,7 @@
             android:layout_weight="1"
             />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/listview_filter_button"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
@@ -62,30 +68,22 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/furniture_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_layout"
         />
 
-    <TextView
-        android:id="@+id/related_items_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="RELATED ITEMS"
-        android:layout_centerHorizontal ="true"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/related_items"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        />
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/dialogbkg"
+        android:elevation="2dp"
+        app:itemIconSize="30dp"
+        app:itemIconTint="@drawable/item_selector"
+        app:itemRippleColor="@android:color/transparent"
+        app:labelVisibilityMode="unlabeled"
+        app:menu="@menu/bottom_menu" />
 
-    <FrameLayout
-        android:id="@+id/filter_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
-
-</LinearLayout>
+</RelativeLayout>
