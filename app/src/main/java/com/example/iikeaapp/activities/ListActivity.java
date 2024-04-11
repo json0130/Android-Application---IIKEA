@@ -162,32 +162,32 @@ public class ListActivity extends AppCompatActivity implements SearchView.OnQuer
         bottomSheetDialog.show();
     }
 
-    private void onFilterButtonClicked(View v) {
-        // Create an instance of the filter fragment
-        FilterPage filterPage = new FilterPage();
-
-        // Set up the callback for receiving filter options
-        filterPage.setOnOptionChangedCallback(new FilterPage.OptionsChangedCallback() {
-            @Override
-            public void onOptionsChanged(FilterPage.FilterOptions options) {
-                // Handle the filter options here
-                // For example, you can apply filtering to your RecyclerView adapter
-            }
-        });
-
-        // Get the fragment manager and start a transaction
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-        // Add the filter fragment to the container
-        transaction.add(R.id.filter_container, filterPage);
-
-        // Show the container
-        findViewById(R.id.filter_container).setVisibility(View.VISIBLE);
-
-        // Commit the transaction
-        transaction.commit();
-    }
+//    private void onFilterButtonClicked(View v) {
+//        // Create an instance of the filter fragment
+//        FilterPage filterPage = new FilterPage();
+//
+//        // Set up the callback for receiving filter options
+//        filterPage.setOnOptionChangedCallback(new FilterPage.OptionsChangedCallback() {
+//            @Override
+//            public void onOptionsChanged(FilterPage.FilterOptions options) {
+//                // Handle the filter options here
+//                // For example, you can apply filtering to your RecyclerView adapter
+//            }
+//        });
+//
+//        // Get the fragment manager and start a transaction
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        FragmentTransaction transaction = fragmentManager.beginTransaction();
+//
+//        // Add the filter fragment to the container
+//        transaction.add(R.id.fil, filterPage);
+//
+//        // Show the container
+//        findViewById(R.id.filter_container).setVisibility(View.VISIBLE);
+//
+//        // Commit the transaction
+//        transaction.commit();
+//    }
 
     @Override
     public boolean onQueryTextSubmit(String query) {

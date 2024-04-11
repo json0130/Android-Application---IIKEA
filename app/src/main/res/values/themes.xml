@@ -6,4 +6,10 @@
     </style>
 
     <style name="Theme.IikeaApp" parent="Base.Theme.IikeaApp" />
+
+    <style name="SlideActivityAnimation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_out</item>
+    </style>
+
 </resources>

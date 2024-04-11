@@ -1,5 +1,6 @@
 package com.example.iikeaapp.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,14 +10,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 
 import com.example.iikeaapp.R;
 import com.example.iikeaapp.adapter.Furniture_RecyclerViewAdapter;
 import com.example.iikeaapp.adapter.Category_RecyclerViewAdapter;
 import com.example.iikeaapp.data.CategoryModel;
 import com.example.iikeaapp.data.FurnitureModel;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-
         // init recycler views
         RecyclerView recyclerViewTopPicks = findViewById(R.id.main_top_picks_recyclerView);
         RecyclerView recyclerViewCategories = findViewById(R.id.main_categories_recyclerView);
@@ -63,6 +67,27 @@ public class MainActivity extends AppCompatActivity {
         Category_RecyclerViewAdapter adapter = new Category_RecyclerViewAdapter(this, categoryModels);
         recyclerViewCategories.setAdapter(adapter);
         recyclerViewCategories.setLayoutManager(new LinearLayoutManager(this));
+
+        // nav bar
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
+        bottomNavigationView.setSelectedItemId(R.id.bottom_home);
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.bottom_home) {
+                return true;
+            } else if (item.getItemId() == R.id.bottom_save) {
+                startActivity(new Intent(getApplicationContext(), SaveActivity.class));
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                finish();
+                return true;
+            } else if (item.getItemId() == R.id.bottom_cart) {
+                startActivity(new Intent(getApplicationContext(), CartActivity.class));
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                finish();
+                return true;
+            }
+            return false;
+        });
     }
 
     private void setUpFurnitureModels() {
