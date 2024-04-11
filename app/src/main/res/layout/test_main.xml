@@ -33,7 +33,7 @@
             android:id="@+id/best_selling"
             android:text="BEST SELLING"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:onClick="bestSellingClicked"
+            android:onClick="topPicksClicked"
             android:textSize="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginStart="18dp"

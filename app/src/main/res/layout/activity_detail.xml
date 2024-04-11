@@ -37,7 +37,7 @@
             </LinearLayout>
 
             <androidx.viewpager.widget.ViewPager
-                android:id="@+id/furniture_item_image"
+                android:id="@+id/viewPager"
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
                 android:layout_marginBottom="16dp"

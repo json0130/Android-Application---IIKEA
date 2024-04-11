@@ -8,43 +8,43 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
+import com.bumptech.glide.Glide;
 
 import com.example.iikeaapp.R;
 
-import java.util.Objects;
 
-public class ImageViewerAdapter extends PagerAdapter {
+public class ViewPagerAdapter extends PagerAdapter {
     Context context;
-    int[] images;
+    String[] imageUrls;
     LayoutInflater mLayoutInflater;
 
-
-    // Viewpager Constructor
-    public ImageViewerAdapter(Context context, int[] images) {
+    public ViewPagerAdapter(Context context, String[] imageUrls) {
         this.context = context;
-        this.images = images;
+        this.imageUrls = imageUrls;
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        // return the number of images
-        return images.length;
+        return imageUrls.length;
     }
 
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-        return view == ((LinearLayout) object);
+        return view == object;
     }
 
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, final int position) {
-        // inflating the item.xml
         View itemView = mLayoutInflater.inflate(R.layout.furniture_item, container, false);
-        ImageView imageView = (ImageView) itemView.findViewById(R.id.imageView);
-        imageView.setImageResource(images[position]);
-        Objects.requireNonNull(container).addView(itemView);
+        ImageView imageView = itemView.findViewById(R.id.pagerImageView);
+
+        Glide.with(context)
+                .load(imageUrls[position])
+                .into(imageView);
+
+        container.addView(itemView);
 
         return itemView;
     }
@@ -54,3 +54,4 @@ public class ImageViewerAdapter extends PagerAdapter {
         container.removeView((LinearLayout) object);
     }
 }
+

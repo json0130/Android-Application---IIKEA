@@ -4,8 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- image viwer to view the images -->
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/pagerImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
