@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.CartActivity">
+    tools:context=".activities.CheckoutActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -28,35 +28,68 @@
             android:layout_marginLeft="16dp"
             android:layout_below="@+id/title"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/furniture_recycler_view"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/cart_text"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginVertical="10dp"/>
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:hint="EMAIL ADDRESS..."
+            android:id="@+id/email_text"
+            android:layout_margin="10dp"
+            android:layout_below="@+id/cart_text">
 
-        <com.google.android.material.divider.MaterialDivider
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:id="@+id/divider"
-            android:layout_below="@+id/furniture_recycler_view"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/divider">
-
-            <TextView
-                android:id="@+id/total_price"
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TOTAL"
-                android:textSize="20dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginLeft="16dp"/>
-        </LinearLayout>
+                android:id="@+id/editText1"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:hint="PHONE NUMBER..."
+            android:id="@+id/phone_text"
+            android:layout_margin="10dp"
+            android:layout_below="@+id/email_text">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editText2"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:hint="CARD NUMBER..."
+            android:id="@+id/card_text"
+            android:layout_margin="10dp"
+            android:layout_below="@+id/phone_text">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editText3"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:hint="PHONE NUMBER..."
+            android:id="@+id/address_text"
+            android:layout_margin="10dp"
+            android:layout_below="@+id/card_text">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editText4"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/checkout_button"
             android:layout_height="wrap_content"
