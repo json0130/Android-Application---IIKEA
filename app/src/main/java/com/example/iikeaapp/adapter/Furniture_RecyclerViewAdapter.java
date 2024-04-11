@@ -1,6 +1,7 @@
 package com.example.iikeaapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.iikeaapp.R;
+import com.example.iikeaapp.activities.DetailActivity;
 import com.example.iikeaapp.data.FurnitureModel;
 
 import java.util.ArrayList;
@@ -43,6 +45,16 @@ public class Furniture_RecyclerViewAdapter extends RecyclerView.Adapter<Furnitur
         Glide.with(context)
                 .load(model.getImageResources()[0])
                 .into(holder.imageView);
+
+        // Set click listener
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, DetailActivity.class);
+                intent.putExtra("FurnitureModel", model);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

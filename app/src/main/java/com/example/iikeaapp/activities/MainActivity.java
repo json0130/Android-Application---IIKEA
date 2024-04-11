@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         // String[] furnitureNames = getResources().getStringArray(R.array.furnitures);
         ArrayList<String> furnitureNames = new ArrayList<>();
         ArrayList<String> categories = new ArrayList<>();
-        ArrayList<Integer> prices = new ArrayList<>();
+        ArrayList<Double> prices = new ArrayList<>();
         ArrayList<String> descriptions = new ArrayList<>();
         ArrayList<String> image1URLs = new ArrayList<>();
         ArrayList<String> image2URLs = new ArrayList<>();
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
                 furnitureNames.add(productDetail.getString("name"));
                 categories.add(productDetail.getString("category"));
-                prices.add(productDetail.getInt("price"));
+                prices.add(productDetail.getDouble("price"));
                 descriptions.add(productDetail.getString("description"));
 
                 // nested values
