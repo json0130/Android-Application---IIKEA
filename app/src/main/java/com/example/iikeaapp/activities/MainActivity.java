@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
             if (item.getItemId() == R.id.bottom_home) {
                 return true;
             } else if (item.getItemId() == R.id.bottom_save) {
-                startActivity(new Intent(getApplicationContext(), SaveActivity.class));
+                startActivity(new Intent(getApplicationContext(), ListActivity.class));
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 finish();
                 return true;
@@ -162,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void bestSellingClicked(View v){
-        setContentView(R.layout.activity_list);
+        Intent intent = new Intent(MainActivity.this,ListActivity.class);
+        startActivity(intent);
     }
 }

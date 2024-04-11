@@ -2,11 +2,17 @@ package com.example.iikeaapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Toast;
 
 import com.example.iikeaapp.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.button.MaterialButton;
 
 public class CartActivity extends AppCompatActivity {
 
@@ -28,7 +34,7 @@ public class CartActivity extends AppCompatActivity {
                 finish();
                 return true;
             } else if (item.getItemId() == R.id.bottom_save) {
-                startActivity(new Intent(getApplicationContext(), SaveActivity.class));
+                startActivity(new Intent(getApplicationContext(), ListActivity.class));
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 finish();
                 return true;

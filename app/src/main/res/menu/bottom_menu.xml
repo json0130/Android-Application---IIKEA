@@ -7,7 +7,7 @@
 
     <item
         android:id="@+id/bottom_save"
-        android:icon="@drawable/baseline_add_24"
+        android:icon="@drawable/outline_favorite_24"
         android:title="SAVED" />
 
 <!--    <item-->
