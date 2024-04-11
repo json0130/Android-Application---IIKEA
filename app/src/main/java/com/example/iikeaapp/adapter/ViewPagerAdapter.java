@@ -13,14 +13,12 @@ import com.example.iikeaapp.R;
 
 import java.util.Objects;
 
-public class ImageViewerAdapter extends PagerAdapter {
+public class ViewPagerAdapter extends PagerAdapter {
     Context context;
     int[] images;
     LayoutInflater mLayoutInflater;
 
-
-    // Viewpager Constructor
-    public ImageViewerAdapter(Context context, int[] images) {
+    public ViewPagerAdapter(Context context, int[] images) {
         this.context = context;
         this.images = images;
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -28,7 +26,6 @@ public class ImageViewerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        // return the number of images
         return images.length;
     }
 
@@ -40,9 +37,8 @@ public class ImageViewerAdapter extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, final int position) {
-        // inflating the item.xml
         View itemView = mLayoutInflater.inflate(R.layout.furniture_item, container, false);
-        ImageView imageView = (ImageView) itemView.findViewById(R.id.imageView);
+        ImageView imageView = (ImageView) itemView.findViewById(R.id.pagerImageView);
         imageView.setImageResource(images[position]);
         Objects.requireNonNull(container).addView(itemView);
 
@@ -54,3 +50,4 @@ public class ImageViewerAdapter extends PagerAdapter {
         container.removeView((LinearLayout) object);
     }
 }
+

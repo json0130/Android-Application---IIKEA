@@ -6,21 +6,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.iikeaapp.R;
-import com.example.iikeaapp.adapter.ImageViewerAdapter;
+import com.example.iikeaapp.adapter.ViewPagerAdapter;
 
 public class DetailActivity extends AppCompatActivity {
-    ViewPager viewPager;
-    int[] imageFolder = {R.drawable.a1,R.drawable.a2};
+    ViewPager mViewPager;
+    int[] images = {R.drawable.a1, R.drawable.a2, R.drawable.a3};
 
-    ImageViewerAdapter imageViewerAdapter;
+    ViewPagerAdapter mViewPagerAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        viewPager = (ViewPager)findViewById(R.id.furniture_item_image);
-        imageViewerAdapter = new ImageViewerAdapter(DetailActivity.this, imageFolder);
-        viewPager.setAdapter(imageViewerAdapter);
+        mViewPager = (ViewPager)findViewById(R.id.viewPager);
+        mViewPagerAdapter = new ViewPagerAdapter(DetailActivity.this, images);
+        mViewPager.setAdapter(mViewPagerAdapter);
     }
 }
 

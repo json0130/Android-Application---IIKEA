@@ -1,9 +1,8 @@
 package com.example.iikeaapp.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -34,8 +33,6 @@ public class MainActivity extends AppCompatActivity {
     // categories recycler view init
     ArrayList<CategoryModel> categoryModels = new ArrayList<>();
 
-    // private LinearLayout mainLayout;
-    // private Button changeLayoutButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,7 +133,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void bestSellingClicked(View v){
-        setContentView(R.layout.activity_list);
+    public void topPicksClicked(View v){
+        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+        startActivity(intent);
     }
 }
