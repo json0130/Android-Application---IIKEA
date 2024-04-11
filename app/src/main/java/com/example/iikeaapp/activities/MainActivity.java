@@ -34,9 +34,6 @@ public class MainActivity extends AppCompatActivity {
     // top picks recycler view init
     ArrayList<FurnitureModel> furnitureModels = new ArrayList<>();
 
-    // categories recycler view init
-    ArrayList<CategoryModel> categoryModels = new ArrayList<>();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,20 +46,13 @@ public class MainActivity extends AppCompatActivity {
 
         // init recycler views
         RecyclerView recyclerViewTopPicks = findViewById(R.id.main_top_picks_recyclerView);
-        RecyclerView recyclerViewCategories = findViewById(R.id.main_categories_recyclerView);
 
         setUpFurnitureModels();
-        setUpCategoryModels();
 
         // top picks
         Furniture_RecyclerViewAdapter fAdapter = new Furniture_RecyclerViewAdapter(this, furnitureModels);
         recyclerViewTopPicks.setAdapter(fAdapter);
         recyclerViewTopPicks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-
-        // categories
-        Category_RecyclerViewAdapter adapter = new Category_RecyclerViewAdapter(this, categoryModels);
-        recyclerViewCategories.setAdapter(adapter);
-        recyclerViewCategories.setLayoutManager(new LinearLayoutManager(this));
 
         // nav bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
@@ -146,15 +136,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return json;
-    }
-
-    private void setUpCategoryModels() {
-        String[] categoryNames = getResources().getStringArray(R.array.categories);
-
-        for (int i = 0; i<categoryNames.length; i++) {
-            categoryModels.add(new CategoryModel(categoryNames[i],
-                    R.drawable.baseline_arrow_forward_ios_24));
-        }
     }
 
     public void topPicksClicked(View v){

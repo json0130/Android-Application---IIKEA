@@ -2,6 +2,7 @@ package com.example.iikeaapp.data;
 
 import java.io.Serializable;
 
+// this one uses json
 public class FurnitureModel implements Serializable{
     String furnitureName;
     String category;
