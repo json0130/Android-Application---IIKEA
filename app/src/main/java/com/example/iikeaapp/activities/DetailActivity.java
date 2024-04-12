@@ -15,6 +15,8 @@ import com.example.iikeaapp.R;
 import com.example.iikeaapp.adapter.ViewPagerAdapter;
 import com.example.iikeaapp.data.FurnitureModel;
 import com.example.iikeaapp.data.ShoppingCart;
+import com.example.iikeaapp.manager.CartManager;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class DetailActivity extends AppCompatActivity {
@@ -27,6 +29,9 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        // Get the ShoppingCart instance from the CartManager
+        shoppingCart = CartManager.getInstance().getShoppingCart();
 
         mViewPager = findViewById(R.id.viewPager);
         furnitureItemTitle = findViewById(R.id.furniture_item_title);
@@ -52,9 +57,6 @@ public class DetailActivity extends AppCompatActivity {
 
         // Add to shopping cart
         FloatingActionButton addToCartButton = findViewById(R.id.add_to_shopping_cart_btn);
-
-        // Create an instance of the ShoppingCart
-        shoppingCart = new ShoppingCart();
         addToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,15 +66,27 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
-        // Set up the click listener for the "View Cart" button
-        Button viewCartButton = findViewById(R.id.view_cart_button);
-        viewCartButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DetailActivity.this, CartActivity.class);
-                intent.putExtra("shoppingCart", shoppingCart);
-                startActivity(intent);
+        // nav bar
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.bottom_save) {
+                startActivity(new Intent(getApplicationContext(), SaveActivity.class));
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                finish();
+                return true;
+            } else if (item.getItemId() == R.id.bottom_home) {
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                finish();
+                return true;
+            } else if (item.getItemId() == R.id.bottom_cart) {
+                startActivity(new Intent(getApplicationContext(), CartActivity.class));
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                finish();
+                return true;
             }
+            return false;
         });
     }
 

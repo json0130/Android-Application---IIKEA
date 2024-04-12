@@ -1,11 +1,5 @@
 package com.example.iikeaapp.data;
 
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
-import com.example.iikeaapp.data.FurnitureModel;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +8,12 @@ public class ShoppingCart implements Serializable {
     private Map<FurnitureModel, Integer> items = new HashMap<>();
 
     public void addItem(FurnitureModel item, int quantity) {
-        items.put(item, items.containsKey(item) ? items.get(item) : 0 + quantity);
+        if (items.containsKey(item)) {
+            int currentQuantity = items.get(item);
+            items.put(item, currentQuantity + quantity);
+        } else {
+            items.put(item, quantity);
+        }
     }
 
     public void removeItem(FurnitureModel item) {

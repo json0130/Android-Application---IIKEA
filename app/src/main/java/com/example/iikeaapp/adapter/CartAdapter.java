@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.iikeaapp.R;
 import com.example.iikeaapp.data.FurnitureModel;
 import com.example.iikeaapp.data.ShoppingCart;
+import com.example.iikeaapp.manager.CartManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +24,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     private Context context;
     private ShoppingCart shoppingCart;
 
-    public CartAdapter(ShoppingCart shoppingCart, Context context) {
-        this.shoppingCart = shoppingCart;
+    public CartAdapter(Context context) {
+        this.shoppingCart = CartManager.getInstance().getShoppingCart();
         this.cartItems = new ArrayList<>(shoppingCart.getItems().entrySet());
         this.context = context;
     }

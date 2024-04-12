@@ -15,11 +15,11 @@ import com.example.iikeaapp.R;
 import com.example.iikeaapp.adapter.CartAdapter;
 import com.example.iikeaapp.data.FurnitureModel;
 import com.example.iikeaapp.data.ShoppingCart;
+import com.example.iikeaapp.manager.CartManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 
 public class CartActivity extends AppCompatActivity {
-
     private RecyclerView recyclerViewCart;
     private CartAdapter cartAdapter;
     private ShoppingCart shoppingCart;
@@ -29,16 +29,15 @@ public class CartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-        // Get the shopping cart instance from the intent extras
-        shoppingCart = (ShoppingCart) getIntent().getSerializableExtra("shoppingCart");
+        shoppingCart = CartManager.getInstance().getShoppingCart();
 
         // Initialize the RecyclerView
         recyclerViewCart = findViewById(R.id.furniture_recycler_view);
         recyclerViewCart.setLayoutManager(new LinearLayoutManager(this));
 
-//        // Create and set the CartAdapter
-//        cartAdapter = new CartAdapter(shoppingCart, this);
-//        recyclerViewCart.setAdapter(cartAdapter);
+        // Create and set the CartAdapter
+        cartAdapter = new CartAdapter(this);
+        recyclerViewCart.setAdapter(cartAdapter);
 
         // Set up the checkout button click listener
         MaterialButton checkoutButton = findViewById(R.id.checkout_button);
@@ -63,7 +62,7 @@ public class CartActivity extends AppCompatActivity {
                 finish();
                 return true;
             } else if (item.getItemId() == R.id.bottom_save) {
-                startActivity(new Intent(getApplicationContext(), ListActivity.class));
+                startActivity(new Intent(getApplicationContext(), SaveActivity.class));
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 finish();
                 return true;
