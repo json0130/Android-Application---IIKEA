@@ -34,7 +34,7 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SavedViewHol
     @NonNull
     @Override
     public SavedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.furniture_shopping_view_row, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.furniture_saved_layout, parent, false);
         return new SavedViewHolder(view);
     }
 
