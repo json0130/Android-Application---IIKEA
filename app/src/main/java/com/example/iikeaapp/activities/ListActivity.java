@@ -9,20 +9,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.SearchView;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.iikeaapp.adapter.Card_RecyclerViewAdapter;
 import com.example.iikeaapp.adapter.FurnitureAdapter;
-import com.example.iikeaapp.data.DataProvider;
 import com.example.iikeaapp.R;
-import com.example.iikeaapp.data.Funiture;
 import com.example.iikeaapp.data.FurnitureModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 
-import java.util.HashMap;
 import android.widget.Toast;
 
 public class ListActivity extends AppCompatActivity implements FurnitureAdapter.OnItemClickListener{
