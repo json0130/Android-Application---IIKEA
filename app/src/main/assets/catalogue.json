@@ -2,8 +2,8 @@
   "products": [
     {
       "name": "Skin Chair",
-      "category": "chair",
-      "tags": "maple, indoor",
+      "category": "Living",
+      "tags": "Chair, Maple, Modern",
       "colour": "brown",
       "price": "190.99",
       "description": "Lorem ipsum description ting like that and this and that lol",
@@ -15,8 +15,8 @@
     },
     {
       "name": "Parisienne",
-      "category": "chair",
-      "tags": "oak, outdoor",
+      "category": "Office",
+      "tags": "Chair, Oak, Classic",
       "colour": "transparent",
       "price": "123.13",
       "description": "Lorem ipsum description ting like that and this and that lol",
@@ -28,8 +28,8 @@
     },
     {
       "name": "New York",
-      "category": "chair",
-      "tags": "wool, indoor",
+      "category": "Living",
+      "tags": "Chair, Steel, Classic",
       "colour": "yellow",
       "price": "190.99",
       "description": "Lorem ipsum description ting like that and this and that lol",
@@ -37,6 +37,487 @@
         "image1": "https://www.dawsonandco.nz/cdn/shop/products/NewYorkhoriz_900x.jpg?v=1712267361",
         "image2": "https://www.dawsonandco.nz/cdn/shop/products/NewYork5_900x.jpg?v=1712267361",
         "image3": "https://www.dawsonandco.nz/cdn/shop/products/NewYork4_900x.jpg?v=1712267361"
+      }
+    },
+    {
+      "name": "Skin Chair",
+      "category": "Living",
+      "tags": "Maple, Modern",
+      "colour": "brown",
+      "price": "190.99",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/products/Skin63_900x.jpg?v=1702589485",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/Skin_Chair_Calligaris_1600x.jpg?v=1702589485",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/Skin_Chair_DawsonAndCo_Calligaris7_1600x.jpg?v=1702589485"
+      }
+    },
+    {
+      "name": "Parisienne",
+      "category": "Office",
+      "tags": "Oak, Classic",
+      "colour": "transparent",
+      "price": "123.13",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/files/Parisiennesmoke_900x.jpg?v=1701914963",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/Parisienne_Chair_Calligaris_900x.jpg?v=1701914963",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/Parisienne_Chair_Calligaris_DawsonAndCo2_900x.jpg?v=1701914963"
+      }
+    },
+    {
+      "name": "New York",
+      "category": "Living",
+      "tags": "Steel, Classic",
+      "colour": "yellow",
+      "price": "190.99",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/products/NewYorkhoriz_900x.jpg?v=1712267361",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/NewYork5_900x.jpg?v=1712267361",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/NewYork4_900x.jpg?v=1712267361"
+      }
+    },
+    {
+      "name": "Skin Chair",
+      "category": "Living",
+      "tags": "Maple, Modern",
+      "colour": "brown",
+      "price": "190.99",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/products/Skin63_900x.jpg?v=1702589485",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/Skin_Chair_Calligaris_1600x.jpg?v=1702589485",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/Skin_Chair_DawsonAndCo_Calligaris7_1600x.jpg?v=1702589485"
+      }
+    },
+    {
+      "name": "Parisienne",
+      "category": "Office",
+      "tags": "Oak, Classic",
+      "colour": "transparent",
+      "price": "123.13",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/files/Parisiennesmoke_900x.jpg?v=1701914963",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/Parisienne_Chair_Calligaris_900x.jpg?v=1701914963",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/Parisienne_Chair_Calligaris_DawsonAndCo2_900x.jpg?v=1701914963"
+      }
+    },
+    {
+      "name": "New York",
+      "category": "Living",
+      "tags": "Steel, Classic",
+      "colour": "yellow",
+      "price": "190.99",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/products/NewYorkhoriz_900x.jpg?v=1712267361",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/NewYork5_900x.jpg?v=1712267361",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/NewYork4_900x.jpg?v=1712267361"
+      }
+    },
+    {
+      "name": "Skin Chair",
+      "category": "Living",
+      "tags": "Maple, Modern",
+      "colour": "brown",
+      "price": "190.99",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/products/Skin63_900x.jpg?v=1702589485",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/Skin_Chair_Calligaris_1600x.jpg?v=1702589485",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/Skin_Chair_DawsonAndCo_Calligaris7_1600x.jpg?v=1702589485"
+      }
+    },
+    {
+      "name": "Parisienne",
+      "category": "Office",
+      "tags": "Oak, Classic",
+      "colour": "transparent",
+      "price": "123.13",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/files/Parisiennesmoke_900x.jpg?v=1701914963",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/Parisienne_Chair_Calligaris_900x.jpg?v=1701914963",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/Parisienne_Chair_Calligaris_DawsonAndCo2_900x.jpg?v=1701914963"
+      }
+    },
+    {
+      "name": "New York",
+      "category": "Living",
+      "tags": "Steel, Classic",
+      "colour": "yellow",
+      "price": "190.99",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/products/NewYorkhoriz_900x.jpg?v=1712267361",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/NewYork5_900x.jpg?v=1712267361",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/NewYork4_900x.jpg?v=1712267361"
+      }
+    },
+    {
+      "name": "Skin Chair",
+      "category": "Living",
+      "tags": "Maple, Modern",
+      "colour": "brown",
+      "price": "190.99",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/products/Skin63_900x.jpg?v=1702589485",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/Skin_Chair_Calligaris_1600x.jpg?v=1702589485",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/Skin_Chair_DawsonAndCo_Calligaris7_1600x.jpg?v=1702589485"
+      }
+    },
+    {
+      "name": "Parisienne",
+      "category": "Office",
+      "tags": "Oak, Classic",
+      "colour": "transparent",
+      "price": "123.13",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/files/Parisiennesmoke_900x.jpg?v=1701914963",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/Parisienne_Chair_Calligaris_900x.jpg?v=1701914963",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/Parisienne_Chair_Calligaris_DawsonAndCo2_900x.jpg?v=1701914963"
+      }
+    },
+    {
+      "name": "New York",
+      "category": "Living",
+      "tags": "Steel, Classic",
+      "colour": "yellow",
+      "price": "190.99",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/products/NewYorkhoriz_900x.jpg?v=1712267361",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/NewYork5_900x.jpg?v=1712267361",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/NewYork4_900x.jpg?v=1712267361"
+      }
+    },
+    {
+      "name": "Skin Chair",
+      "category": "Living",
+      "tags": "Maple, Modern",
+      "colour": "brown",
+      "price": "190.99",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/products/Skin63_900x.jpg?v=1702589485",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/Skin_Chair_Calligaris_1600x.jpg?v=1702589485",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/Skin_Chair_DawsonAndCo_Calligaris7_1600x.jpg?v=1702589485"
+      }
+    },
+    {
+      "name": "Parisienne",
+      "category": "Office",
+      "tags": "Oak, Classic",
+      "colour": "transparent",
+      "price": "123.13",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/files/Parisiennesmoke_900x.jpg?v=1701914963",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/Parisienne_Chair_Calligaris_900x.jpg?v=1701914963",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/Parisienne_Chair_Calligaris_DawsonAndCo2_900x.jpg?v=1701914963"
+      }
+    },
+    {
+      "name": "New York",
+      "category": "Living",
+      "tags": "Steel, Classic",
+      "colour": "yellow",
+      "price": "190.99",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/products/NewYorkhoriz_900x.jpg?v=1712267361",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/NewYork5_900x.jpg?v=1712267361",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/NewYork4_900x.jpg?v=1712267361"
+      }
+    },
+    {
+      "name": "Skin Chair",
+      "category": "Living",
+      "tags": "Maple, Modern",
+      "colour": "brown",
+      "price": "190.99",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/products/Skin63_900x.jpg?v=1702589485",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/Skin_Chair_Calligaris_1600x.jpg?v=1702589485",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/Skin_Chair_DawsonAndCo_Calligaris7_1600x.jpg?v=1702589485"
+      }
+    },
+    {
+      "name": "Parisienne",
+      "category": "Office",
+      "tags": "Oak, Classic",
+      "colour": "transparent",
+      "price": "123.13",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/files/Parisiennesmoke_900x.jpg?v=1701914963",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/Parisienne_Chair_Calligaris_900x.jpg?v=1701914963",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/Parisienne_Chair_Calligaris_DawsonAndCo2_900x.jpg?v=1701914963"
+      }
+    },
+    {
+      "name": "New York",
+      "category": "Living",
+      "tags": "Steel, Classic",
+      "colour": "yellow",
+      "price": "190.99",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/products/NewYorkhoriz_900x.jpg?v=1712267361",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/NewYork5_900x.jpg?v=1712267361",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/NewYork4_900x.jpg?v=1712267361"
+      }
+    },
+    {
+      "name": "Skin Chair",
+      "category": "Living",
+      "tags": "Maple, Modern",
+      "colour": "brown",
+      "price": "190.99",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/products/Skin63_900x.jpg?v=1702589485",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/Skin_Chair_Calligaris_1600x.jpg?v=1702589485",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/Skin_Chair_DawsonAndCo_Calligaris7_1600x.jpg?v=1702589485"
+      }
+    },
+    {
+      "name": "Parisienne",
+      "category": "Office",
+      "tags": "Oak, Classic",
+      "colour": "transparent",
+      "price": "123.13",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/files/Parisiennesmoke_900x.jpg?v=1701914963",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/Parisienne_Chair_Calligaris_900x.jpg?v=1701914963",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/Parisienne_Chair_Calligaris_DawsonAndCo2_900x.jpg?v=1701914963"
+      }
+    },
+    {
+      "name": "New York",
+      "category": "Living",
+      "tags": "Steel, Classic",
+      "colour": "yellow",
+      "price": "190.99",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/products/NewYorkhoriz_900x.jpg?v=1712267361",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/NewYork5_900x.jpg?v=1712267361",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/NewYork4_900x.jpg?v=1712267361"
+      }
+    },
+    {
+      "name": "Skin Chair",
+      "category": "Living",
+      "tags": "Maple, Modern",
+      "colour": "brown",
+      "price": "190.99",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/products/Skin63_900x.jpg?v=1702589485",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/Skin_Chair_Calligaris_1600x.jpg?v=1702589485",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/Skin_Chair_DawsonAndCo_Calligaris7_1600x.jpg?v=1702589485"
+      }
+    },
+    {
+      "name": "Parisienne",
+      "category": "Office",
+      "tags": "Oak, Classic",
+      "colour": "transparent",
+      "price": "123.13",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/files/Parisiennesmoke_900x.jpg?v=1701914963",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/Parisienne_Chair_Calligaris_900x.jpg?v=1701914963",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/Parisienne_Chair_Calligaris_DawsonAndCo2_900x.jpg?v=1701914963"
+      }
+    },
+    {
+      "name": "New York",
+      "category": "Living",
+      "tags": "Steel, Classic",
+      "colour": "yellow",
+      "price": "190.99",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/products/NewYorkhoriz_900x.jpg?v=1712267361",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/NewYork5_900x.jpg?v=1712267361",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/NewYork4_900x.jpg?v=1712267361"
+      }
+    },
+    {
+      "name": "Skin Chair",
+      "category": "Living",
+      "tags": "Maple, Modern",
+      "colour": "brown",
+      "price": "190.99",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/products/Skin63_900x.jpg?v=1702589485",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/Skin_Chair_Calligaris_1600x.jpg?v=1702589485",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/Skin_Chair_DawsonAndCo_Calligaris7_1600x.jpg?v=1702589485"
+      }
+    },
+    {
+      "name": "Parisienne",
+      "category": "Office",
+      "tags": "Oak, Classic",
+      "colour": "transparent",
+      "price": "123.13",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/files/Parisiennesmoke_900x.jpg?v=1701914963",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/Parisienne_Chair_Calligaris_900x.jpg?v=1701914963",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/Parisienne_Chair_Calligaris_DawsonAndCo2_900x.jpg?v=1701914963"
+      }
+    },
+    {
+      "name": "New York",
+      "category": "Living",
+      "tags": "Steel, Classic",
+      "colour": "yellow",
+      "price": "190.99",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/products/NewYorkhoriz_900x.jpg?v=1712267361",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/NewYork5_900x.jpg?v=1712267361",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/NewYork4_900x.jpg?v=1712267361"
+      }
+    },
+    {
+      "name": "Skin Chair",
+      "category": "Living",
+      "tags": "Maple, Modern",
+      "colour": "brown",
+      "price": "190.99",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/products/Skin63_900x.jpg?v=1702589485",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/Skin_Chair_Calligaris_1600x.jpg?v=1702589485",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/Skin_Chair_DawsonAndCo_Calligaris7_1600x.jpg?v=1702589485"
+      }
+    },
+    {
+      "name": "Parisienne",
+      "category": "Office",
+      "tags": "Oak, Classic",
+      "colour": "transparent",
+      "price": "123.13",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/files/Parisiennesmoke_900x.jpg?v=1701914963",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/Parisienne_Chair_Calligaris_900x.jpg?v=1701914963",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/Parisienne_Chair_Calligaris_DawsonAndCo2_900x.jpg?v=1701914963"
+      }
+    },
+    {
+      "name": "New York",
+      "category": "Living",
+      "tags": "Steel, Classic",
+      "colour": "yellow",
+      "price": "190.99",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/products/NewYorkhoriz_900x.jpg?v=1712267361",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/NewYork5_900x.jpg?v=1712267361",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/NewYork4_900x.jpg?v=1712267361"
+      }
+    },
+    {
+      "name": "Skin Chair",
+      "category": "Living",
+      "tags": "Maple, Modern",
+      "colour": "brown",
+      "price": "190.99",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/products/Skin63_900x.jpg?v=1702589485",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/Skin_Chair_Calligaris_1600x.jpg?v=1702589485",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/Skin_Chair_DawsonAndCo_Calligaris7_1600x.jpg?v=1702589485"
+      }
+    },
+    {
+      "name": "Parisienne",
+      "category": "Office",
+      "tags": "Oak, Classic",
+      "colour": "transparent",
+      "price": "123.13",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/files/Parisiennesmoke_900x.jpg?v=1701914963",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/Parisienne_Chair_Calligaris_900x.jpg?v=1701914963",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/Parisienne_Chair_Calligaris_DawsonAndCo2_900x.jpg?v=1701914963"
+      }
+    },
+    {
+      "name": "New York",
+      "category": "Living",
+      "tags": "Steel, Classic",
+      "colour": "yellow",
+      "price": "190.99",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/products/NewYorkhoriz_900x.jpg?v=1712267361",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/NewYork5_900x.jpg?v=1712267361",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/NewYork4_900x.jpg?v=1712267361"
+      }
+    },
+    {
+      "name": "Skin Chair",
+      "category": "Living",
+      "tags": "Maple, Modern",
+      "colour": "brown",
+      "price": "190.99",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/products/Skin63_900x.jpg?v=1702589485",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/Skin_Chair_Calligaris_1600x.jpg?v=1702589485",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/Skin_Chair_DawsonAndCo_Calligaris7_1600x.jpg?v=1702589485"
+      }
+    },
+    {
+      "name": "Parisienne",
+      "category": "Office",
+      "tags": "Oak, Classic",
+      "colour": "transparent",
+      "price": "123.13",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/files/Parisiennesmoke_900x.jpg?v=1701914963",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/Parisienne_Chair_Calligaris_900x.jpg?v=1701914963",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/Parisienne_Chair_Calligaris_DawsonAndCo2_900x.jpg?v=1701914963"
+      }
+    },
+    {
+      "name": "New York",
+      "category": "Living",
+      "tags": "Steel, Classic",
+      "colour": "yellow",
+      "price": "190.99",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/products/NewYorkhoriz_900x.jpg?v=1712267361",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/NewYork5_900x.jpg?v=1712267361",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/NewYork4_900x.jpg?v=1712267361"
+      }
+    },
+    {
+      "name": "Skin Chair",
+      "category": "Living",
+      "tags": "Maple, Modern",
+      "colour": "brown",
+      "price": "190.99",
+      "description": "Lorem ipsum description ting like that and this and that lol",
+      "imageResources": {
+        "image1": "https://www.dawsonandco.nz/cdn/shop/products/Skin63_900x.jpg?v=1702589485",
+        "image2": "https://www.dawsonandco.nz/cdn/shop/products/Skin_Chair_Calligaris_1600x.jpg?v=1702589485",
+        "image3": "https://www.dawsonandco.nz/cdn/shop/products/Skin_Chair_DawsonAndCo_Calligaris7_1600x.jpg?v=1702589485"
       }
     }
   ]
