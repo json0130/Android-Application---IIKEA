@@ -13,6 +13,7 @@ import com.example.iikeaapp.R;
 import com.example.iikeaapp.data.FurnitureModel;
 import com.example.iikeaapp.data.SavedFurniture;
 import com.example.iikeaapp.data.ShoppingCart;
+import com.example.iikeaapp.manager.SavedManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +25,8 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SavedViewHol
     private Context context;
     private SavedFurniture savedFurniture;
 
-    public SavedAdapter(SavedFurniture savedFurniture, Context context) {
-        this.savedFurniture = savedFurniture;
+    public SavedAdapter(Context context) {
+        this.savedFurniture = SavedManager.getInstance().getSavedFurniture();
         this.cartItems = new ArrayList<>(savedFurniture.getItems().entrySet());
         this.context = context;
     }
