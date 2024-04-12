@@ -18,29 +18,29 @@ import com.example.iikeaapp.data.FurnitureModel;
 
 import java.util.ArrayList;
 
-public class Furniture_RecyclerViewAdapter extends RecyclerView.Adapter<Furniture_RecyclerViewAdapter.MyViewHolder> {
-
+public class Furniture_VerticalRecyclerViewAdapter extends RecyclerView.Adapter<Furniture_VerticalRecyclerViewAdapter.MyViewHolder> {
     Context context;
     ArrayList<FurnitureModel> furnitureModels;
 
-    public Furniture_RecyclerViewAdapter(Context context, ArrayList<FurnitureModel> furnitureModels) {
+    public Furniture_VerticalRecyclerViewAdapter(Context context, ArrayList<FurnitureModel> furnitureModels) {
         this.context = context;
         this.furnitureModels = furnitureModels;
     }
 
     @NonNull
     @Override
-    public Furniture_RecyclerViewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public Furniture_VerticalRecyclerViewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.recycler_view_row_top_picks, parent, false);
+        View view = inflater.inflate(R.layout.recycler_view_row_list_activity, parent, false);
 
-        return new Furniture_RecyclerViewAdapter.MyViewHolder(view);
+        return new Furniture_VerticalRecyclerViewAdapter.MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Furniture_RecyclerViewAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull Furniture_VerticalRecyclerViewAdapter.MyViewHolder holder, int position) {
         FurnitureModel model = furnitureModels.get(position);
-        holder.textView.setText(model.getFurnitureName());
+        holder.textViewTitle.setText(model.getFurnitureName());
+        holder.textViewPrice.setText(Double.toString(model.getPrice()));
 
         Glide.with(context)
                 .load(model.getImageResources()[0])
@@ -64,13 +64,15 @@ public class Furniture_RecyclerViewAdapter extends RecyclerView.Adapter<Furnitur
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
-        TextView textView;
+        TextView textViewTitle;
+        TextView textViewPrice;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            imageView = itemView.findViewById(R.id.imageView3);
-            textView = itemView.findViewById(R.id.textView6);
+            imageView = itemView.findViewById(R.id.item_thumbnail);
+            textViewTitle = itemView.findViewById(R.id.item_title);
+            textViewPrice = itemView.findViewById(R.id.price_text);
         }
     }
 }

@@ -8,18 +8,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.iikeaapp.R;
-import com.example.iikeaapp.adapter.Furniture_RecyclerViewAdapter;
-import com.example.iikeaapp.adapter.Category_RecyclerViewAdapter;
-import com.example.iikeaapp.data.CategoryModel;
+import com.example.iikeaapp.adapter.Furniture_HorizontalRecyclerViewAdapter;
 import com.example.iikeaapp.data.FurnitureModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,11 +42,10 @@ public class MainActivity extends AppCompatActivity {
 
         // init recycler views
         RecyclerView recyclerViewTopPicks = findViewById(R.id.main_top_picks_recyclerView);
-
         setUpFurnitureModels();
 
         // top picks
-        Furniture_RecyclerViewAdapter fAdapter = new Furniture_RecyclerViewAdapter(this, furnitureModels);
+        Furniture_HorizontalRecyclerViewAdapter fAdapter = new Furniture_HorizontalRecyclerViewAdapter(this, furnitureModels);
         recyclerViewTopPicks.setAdapter(fAdapter);
         recyclerViewTopPicks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
@@ -139,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void topPicksClicked(View v){
-        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+        Intent intent = new Intent(MainActivity.this, ListActivity.class);
         startActivity(intent);
     }
 }
