@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,7 +25,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     private List<Map.Entry<FurnitureModel, Integer>> cartItems;
     private Context context;
     private ShoppingCart shoppingCart;
-
     public CartAdapter(Context context) {
         this.shoppingCart = CartManager.getInstance().getShoppingCart();
         this.cartItems = new ArrayList<>(shoppingCart.getItems().entrySet());
@@ -47,6 +48,26 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         holder.furniturePriceTextView.setText(String.format("$%.2f", furniture.getPrice()));
         holder.quantityTextView.setText(String.valueOf(quantity));
         holder.totalPriceTextView.setText(String.format("$%.2f", furniture.getPrice() * quantity));
+        //holder.furnitureImageView.setImageResource();
+
+        holder.plusButton.setOnClickListener(v -> {
+            shoppingCart.addItem(furniture, 1);
+            notifyDataSetChanged();
+        });
+
+        holder.minusButton.setOnClickListener(v -> {
+            if (quantity > 1) {
+                shoppingCart.updateQuantity(furniture, quantity - 1);
+            } else {
+                shoppingCart.removeItem(furniture);
+            }
+            notifyDataSetChanged();
+        });
+
+        holder.removeButton.setOnClickListener(v -> {
+            shoppingCart.removeItem(furniture);
+            notifyDataSetChanged();
+        });
     }
 
     @Override
@@ -59,6 +80,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         TextView furniturePriceTextView;
         TextView quantityTextView;
         TextView totalPriceTextView;
+        ImageView furnitureImageView;
+        TextView plusButton;
+        TextView minusButton;
+        Button removeButton;
 
         public CartViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -66,6 +91,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             furniturePriceTextView = itemView.findViewById(R.id.furniture_item_price);
             quantityTextView = itemView.findViewById(R.id.item_quantity);
             totalPriceTextView = itemView.findViewById(R.id.furniture_total_price);
+            furnitureImageView = itemView.findViewById(R.id.furniture_item_image);
+            plusButton = itemView.findViewById(R.id.plus_sign);
+            minusButton = itemView.findViewById(R.id.minus_sign);
+            removeButton = itemView.findViewById(R.id.remove_button);
         }
     }
 }

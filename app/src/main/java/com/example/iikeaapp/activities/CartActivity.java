@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.iikeaapp.R;
 import com.example.iikeaapp.adapter.CartAdapter;
@@ -24,10 +25,16 @@ public class CartActivity extends AppCompatActivity {
     private CartAdapter cartAdapter;
     private ShoppingCart shoppingCart;
 
+    private TextView totalPriceTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+
+        totalPriceTextView = findViewById(R.id.total_cost_price);
+        updateTotalPrice();
+
 
         shoppingCart = CartManager.getInstance().getShoppingCart();
 
@@ -69,5 +76,17 @@ public class CartActivity extends AppCompatActivity {
             }
             return false;
         });
+    }
+
+    private void updateTotalPrice() {
+        double totalPrice = shoppingCart.getTotalCost();
+        totalPriceTextView.setText(String.format("Total Price: $%.2f", totalPrice));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        cartAdapter.notifyDataSetChanged();
+        updateTotalPrice();
     }
 }
