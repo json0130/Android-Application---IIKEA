@@ -1,10 +1,11 @@
 package com.example.iikeaapp.data;
 
-public class Funiture {
+// place holder for furnitureModel ?
+public class Furniture {
     private String name;
     private int imageResource;
     private double price;
-    public Funiture(String name, int imageResource, double price) {
+    public Furniture(String name, int imageResource, double price) {
         this.name = name;
         this.imageResource = imageResource;
         this.price = price;

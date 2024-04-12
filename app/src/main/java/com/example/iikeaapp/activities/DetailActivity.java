@@ -5,6 +5,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import android.content.Intent;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -16,8 +18,10 @@ import com.example.iikeaapp.data.ShoppingCart;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class DetailActivity extends AppCompatActivity {
-    ViewPager mViewPager;
     private ShoppingCart shoppingCart;
+    ViewPager mViewPager;
+    TextView furnitureItemTitle, itemPrice, itemDescription;
+    ImageView backButton, saveButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +29,26 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
 
         mViewPager = findViewById(R.id.viewPager);
+        furnitureItemTitle = findViewById(R.id.furniture_item_title);
+        itemPrice = findViewById(R.id.item_price);
+        itemDescription = findViewById(R.id.item_description);
+        backButton = findViewById(R.id.backButton);
+        saveButton = findViewById(R.id.save_button);
 
-        String[] imageURLSs = getIntent().getStringArrayExtra("imageUrls");
+        FurnitureModel furnitureModel = (FurnitureModel) getIntent().getSerializableExtra("FurnitureModel");
+        // Update UI elements with data from FurnitureModel
+        if (furnitureModel != null) {
+            furnitureItemTitle.setText(furnitureModel.getFurnitureName());
+            itemPrice.setText("$" + furnitureModel.getPrice());
+            itemDescription.setText(furnitureModel.getDescription());
 
-        ViewPagerAdapter mViewPagerAdapter = new ViewPagerAdapter(DetailActivity.this, imageURLSs);
-        mViewPager.setAdapter(mViewPagerAdapter);
+            ViewPagerAdapter mViewPagerAdapter = new ViewPagerAdapter(DetailActivity.this, furnitureModel.getImageResources());
+            mViewPager.setAdapter(mViewPagerAdapter);
+        }
+
+        backButton.setOnClickListener(view -> {
+            finish();
+        });
 
         // Add to shopping cart
         FloatingActionButton addToCartButton = findViewById(R.id.add_to_shopping_cart_btn);

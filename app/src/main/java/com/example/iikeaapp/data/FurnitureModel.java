@@ -1,14 +1,16 @@
 package com.example.iikeaapp.data;
 
+import java.io.Serializable;
 
-public class FurnitureModel {
+// this one uses json
+public class FurnitureModel implements Serializable{
     String furnitureName;
     String category;
-    int price;
+    double price;
     String description;
     String[] imageResources;
 
-    public FurnitureModel(String furnitureName, String category, int price, String description, String[] imageResources) {
+    public FurnitureModel(String furnitureName, String category, double price, String description, String[] imageResources) {
         this.furnitureName = furnitureName;
         this.category = category;
         this.price = price;
@@ -24,7 +26,7 @@ public class FurnitureModel {
         return category;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 

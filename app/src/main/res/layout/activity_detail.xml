@@ -19,13 +19,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <ImageView
+                    android:id="@+id/backButton"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginHorizontal="40dp"
-                    android:src="@drawable/baseline_arrow_back_ios_24"
-                    />
+                    android:src="@drawable/baseline_arrow_back_ios_24" />
                 <TextView
                     android:id="@+id/appName"
                     android:layout_width="wrap_content"
@@ -52,7 +53,7 @@
 
                 <TextView
                     android:id="@+id/furniture_item_title"
-                    android:layout_width="wrap_content"
+                    android:layout_width="240dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:text="GAMING CHAIR"
@@ -75,8 +76,8 @@
                     android:layout_below="@+id/item_price"
                     android:layout_alignParentRight="true"
                     android:layout_marginHorizontal="16dp"
-                    android:text="1 + 2"
-                    android:textSize="20sp"/>
+                    android:text="1"
+                    android:textSize="20sp" />
 
                 <ImageView
                     android:id="@+id/save_button"

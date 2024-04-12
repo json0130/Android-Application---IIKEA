@@ -37,7 +37,7 @@ public class Card_RecyclerViewAdapter extends RecyclerView.Adapter<Card_Recycler
     @Override
     public void onBindViewHolder(@NonNull Card_RecyclerViewAdapter.MyViewHolder holder, int position) {
         holder.textView.setText(furnitures.get(position).getFurnitureName());
-        holder.price.setText(furnitures.get(position).getPrice());
+        //holder.price.set(furnitures.get(position).getPrice());
         //holder.imageView.setImageResource(furnitures.get(position).getImageResources());
     }
 
