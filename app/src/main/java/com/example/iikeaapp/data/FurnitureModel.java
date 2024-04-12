@@ -1,5 +1,6 @@
 package com.example.iikeaapp.data;
 
+
 public class FurnitureModel {
     String furnitureName;
     String category;

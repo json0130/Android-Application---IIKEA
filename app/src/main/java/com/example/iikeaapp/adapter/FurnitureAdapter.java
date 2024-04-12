@@ -1,47 +1,58 @@
 package com.example.iikeaapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.iikeaapp.R;
-import com.example.iikeaapp.data.Furniture;
-import android.widget.Filter;
-import android.widget.Filterable;
+import com.example.iikeaapp.activities.DetailActivity;
+import com.example.iikeaapp.data.Funiture;
+import com.example.iikeaapp.data.FurnitureModel;
 
-public class FurnitureAdapter extends RecyclerView.Adapter<FurnitureAdapter.FurnitureViewHolder> implements Filterable{
-    ArrayList<Furniture> furnitureList;
-    Context context;
-    private ArrayList<Furniture> furnitureListFiltered;
-    public FurnitureAdapter(ArrayList<Furniture> items) {
-        furnitureList = items;
-    }
-  
-    public FurnitureAdapter(HashMap<String, Furniture> furnitureMap) {
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class FurnitureAdapter extends RecyclerView.Adapter<FurnitureAdapter.FurnitureViewHolder> implements Filterable {
+    private ArrayList<FurnitureModel> furnitureList;
+    private ArrayList<FurnitureModel> furnitureListFiltered;
+    private OnItemClickListener listener;
+
+    public FurnitureAdapter(HashMap<String, FurnitureModel> furnitureMap, OnItemClickListener listener) {
         furnitureList = new ArrayList<>(furnitureMap.values());
         furnitureListFiltered = furnitureList;
+        this.listener = listener;
     }
 
-    public static class FurnitureViewHolder extends RecyclerView.ViewHolder {
+    public class FurnitureViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView furnitureImage;
         public TextView furnitureName;
         public TextView furniturePrice;
+        private OnItemClickListener listener;
 
-        public FurnitureViewHolder(@NonNull View itemView) {
+        public FurnitureViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
             furnitureImage = itemView.findViewById(R.id.furniture_image);
             furnitureName = itemView.findViewById(R.id.furniture_name);
             furniturePrice = itemView.findViewById(R.id.furniture_price);
+            this.listener = listener;
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION) {
+                listener.onItemClick(furnitureListFiltered.get(position));
+            }
         }
     }
 
@@ -50,8 +61,20 @@ public class FurnitureAdapter extends RecyclerView.Adapter<FurnitureAdapter.Furn
     public FurnitureViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.furniture_listview_layout, parent, false);
-        return new FurnitureViewHolder(view);
+        return new FurnitureViewHolder(view, listener);
+    }
 
+    @Override
+    public void onBindViewHolder(@NonNull FurnitureViewHolder holder, int position) {
+        FurnitureModel furnitureItem = furnitureListFiltered.get(position);
+        //holder.furnitureImage.setImageResource(furnitureItem.getImageResources());
+        holder.furnitureName.setText(furnitureItem.getFurnitureName());
+        holder.furniturePrice.setText("Price: $" + furnitureItem.getPrice());
+    }
+
+    @Override
+    public int getItemCount() {
+        return furnitureListFiltered.size();
     }
 
     @Override
@@ -63,13 +86,12 @@ public class FurnitureAdapter extends RecyclerView.Adapter<FurnitureAdapter.Furn
                 if (charString.isEmpty()) {
                     furnitureListFiltered = furnitureList;
                 } else {
-                    ArrayList<Furniture> filteredList = new ArrayList<>();
-                    for (Furniture row : furnitureList) {
-                        if (row.getName().toLowerCase().contains(charString.toLowerCase())) {
+                    ArrayList<FurnitureModel> filteredList = new ArrayList<>();
+                    for (FurnitureModel row : furnitureList) {
+                        if (row.getFurnitureName().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
                         }
                     }
-
                     furnitureListFiltered = filteredList;
                 }
                 FilterResults filterResults = new FilterResults();
@@ -79,23 +101,13 @@ public class FurnitureAdapter extends RecyclerView.Adapter<FurnitureAdapter.Furn
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                furnitureListFiltered = (ArrayList<Furniture>) results.values;
+                furnitureListFiltered = (ArrayList<FurnitureModel>) results.values;
                 notifyDataSetChanged();
             }
         };
     }
 
-
-    @Override
-    public void onBindViewHolder(@NonNull FurnitureViewHolder holder, int position) {
-        Furniture furnitureItem = furnitureListFiltered.get(position);
-        holder.furnitureImage.setImageResource(furnitureItem.getImageResource());
-        holder.furnitureName.setText(furnitureItem.getName());
-        holder.furniturePrice.setText("Price: $" + furnitureItem.getPrice());
-    }
-
-    @Override
-    public int getItemCount() {
-        return furnitureListFiltered.size();
+    public interface OnItemClickListener {
+        void onItemClick(FurnitureModel funiture);
     }
 }
