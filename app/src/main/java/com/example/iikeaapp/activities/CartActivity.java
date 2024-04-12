@@ -36,9 +36,9 @@ public class CartActivity extends AppCompatActivity {
         recyclerViewCart = findViewById(R.id.furniture_recycler_view);
         recyclerViewCart.setLayoutManager(new LinearLayoutManager(this));
 
-//        // Create and set the CartAdapter
-//        cartAdapter = new CartAdapter(shoppingCart, this);
-//        recyclerViewCart.setAdapter(cartAdapter);
+        // Create and set the CartAdapter
+        cartAdapter = new CartAdapter(shoppingCart, this);
+        recyclerViewCart.setAdapter(cartAdapter);
 
         // Set up the checkout button click listener
         MaterialButton checkoutButton = findViewById(R.id.checkout_button);
