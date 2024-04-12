@@ -53,7 +53,7 @@
 
                 <TextView
                     android:id="@+id/furniture_item_title"
-                    android:layout_width="wrap_content"
+                    android:layout_width="240dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:text="GAMING CHAIR"
