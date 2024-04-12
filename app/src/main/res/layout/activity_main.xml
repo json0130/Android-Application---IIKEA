@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".activities.MainActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?android:attr/colorBackground"
-            />
+            android:layout_below="@+id/textView"/>
 
         <TextView
             android:id="@+id/textView2"
@@ -34,27 +34,30 @@
             android:text="Top Picks"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:onClick="topPicksClicked"
-            />
+            android:layout_below="@+id/list_search_view"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/main_top_picks_recyclerView"
             android:scrollbars="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView2"/>
 
         <TextView
             android:id="@+id/categoriesHeading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Categories"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:layout_below="@+id/main_top_picks_recyclerView"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="175dp"
+            android:layout_height="wrap_content"
             android:id="@+id/row1"
             android:orientation="horizontal"
             android:padding="10dp"
+            android:layout_below="@+id/categoriesHeading"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -131,6 +134,7 @@
             android:id="@+id/row2"
             android:orientation="horizontal"
             android:padding="10dp"
+            android:layout_below="@+id/row1"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -205,14 +209,14 @@
             android:id="@+id/bottomNavigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
             android:background="@drawable/dialogbkg"
             android:elevation="2dp"
             app:itemIconSize="30dp"
             app:itemIconTint="@drawable/item_selector"
             app:itemRippleColor="@android:color/transparent"
             app:labelVisibilityMode="unlabeled"
-            app:menu="@menu/bottom_menu" />
-    </LinearLayout>
+            app:menu="@menu/bottom_menu"
+            android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

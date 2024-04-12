@@ -1,6 +1,5 @@
 package com.example.iikeaapp.data;
 
-
 // place holder for furnitureModel ?
 public class Furniture {
     private String name;

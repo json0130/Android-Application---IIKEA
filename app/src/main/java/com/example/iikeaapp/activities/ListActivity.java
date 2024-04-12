@@ -1,44 +1,31 @@
 package com.example.iikeaapp.activities;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.SearchView;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.iikeaapp.adapter.Card_RecyclerViewAdapter;
 import com.example.iikeaapp.adapter.FurnitureAdapter;
 import com.example.iikeaapp.data.DataProvider;
 import com.example.iikeaapp.R;
-import com.example.iikeaapp.data.Furniture;
-import com.example.iikeaapp.fragment.FilterPage;
+import com.example.iikeaapp.data.Funiture;
+import com.example.iikeaapp.data.FurnitureModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.Toast;
 
-public class ListActivity extends AppCompatActivity {
+public class ListActivity extends AppCompatActivity implements FurnitureAdapter.OnItemClickListener{
 
     private static class ViewHolder {
         public final RecyclerView items;
@@ -53,16 +40,12 @@ public class ListActivity extends AppCompatActivity {
             searchView = activity.findViewById(R.id.list_search_view);
         }
     }
-    private ViewHolder vh;
-    private RecyclerView recyclerView;
-    private FurnitureAdapter adapter;
-    private HashMap<String, Furniture> furnitureMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-
+        
         // nav bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
         bottomNavigationView.setSelectedItemId(R.id.bottom_save);
@@ -119,18 +102,16 @@ public class ListActivity extends AppCompatActivity {
                 });
             }
         });
+    }
 
-
-        furnitureMap = DataProvider.getFurnitureItems();
-
-        vh = new ViewHolder(this);
-
-        recyclerView = findViewById(R.id.furniture_recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        recyclerView = findViewById(R.id.furniture_recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new FurnitureAdapter(furnitureMap);
-        recyclerView.setAdapter(adapter);
+    @Override
+    public void onItemClick(FurnitureModel funiture) {
+        Intent intent = new Intent(ListActivity.this, DetailActivity.class);
+        intent.putExtra("furnitureName", funiture.getFurnitureName());
+        intent.putExtra("category", funiture.getCategory());
+        intent.putExtra("price", funiture.getPrice());
+        intent.putExtra("description", funiture.getDescription());
+        intent.putExtra("imageResources", funiture.getImageResources());
+        startActivity(intent);
     }
 }
