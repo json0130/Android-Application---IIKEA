@@ -18,6 +18,8 @@ import com.example.iikeaapp.adapter.Furniture_RecyclerViewAdapter;
 import com.example.iikeaapp.adapter.Category_RecyclerViewAdapter;
 import com.example.iikeaapp.data.CategoryModel;
 import com.example.iikeaapp.data.FurnitureModel;
+import com.example.iikeaapp.data.ShoppingCart;
+import com.example.iikeaapp.manager.CartManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     // top picks recycler view init
     ArrayList<FurnitureModel> furnitureModels = new ArrayList<>();
 
+    private ShoppingCart shoppingCart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // Get the ShoppingCart instance from the CartManager
+        shoppingCart = CartManager.getInstance().getShoppingCart();
 
         // init recycler views
         RecyclerView recyclerViewTopPicks = findViewById(R.id.main_top_picks_recyclerView);
@@ -58,12 +64,12 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setSelectedItemId(R.id.bottom_home);
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.bottom_home) {
-                return true;
-            } else if (item.getItemId() == R.id.bottom_save) {
-                startActivity(new Intent(getApplicationContext(), ListActivity.class));
+            if (item.getItemId() == R.id.bottom_save) {
+                startActivity(new Intent(getApplicationContext(), SaveActivity.class));
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 finish();
+                return true;
+            } else if (item.getItemId() == R.id.bottom_home) {
                 return true;
             } else if (item.getItemId() == R.id.bottom_cart) {
                 startActivity(new Intent(getApplicationContext(), CartActivity.class));
@@ -123,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
         try {
             InputStream is = getAssets().open("catalogue.json");
             int size = is.available();
-
             byte[] buffer = new byte[size];
             is.read(buffer);
             is.close();

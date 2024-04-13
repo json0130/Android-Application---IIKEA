@@ -6,14 +6,19 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.iikeaapp.R;
+import com.example.iikeaapp.data.ShoppingCart;
+import com.example.iikeaapp.manager.CartManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class SaveActivity extends AppCompatActivity {
 
+    private ShoppingCart shoppingCart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved);
+
+        shoppingCart = CartManager.getInstance().getShoppingCart();
 
         // nav bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);

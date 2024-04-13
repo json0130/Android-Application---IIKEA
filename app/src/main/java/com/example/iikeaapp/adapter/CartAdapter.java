@@ -25,6 +25,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     private List<Map.Entry<FurnitureModel, Integer>> cartItems;
     private Context context;
     private ShoppingCart shoppingCart;
+
     public CartAdapter(Context context) {
         this.shoppingCart = CartManager.getInstance().getShoppingCart();
         this.cartItems = new ArrayList<>(shoppingCart.getItems().entrySet());
@@ -48,7 +49,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         holder.furniturePriceTextView.setText(String.format("$%.2f", furniture.getPrice()));
         holder.quantityTextView.setText(String.valueOf(quantity));
         holder.totalPriceTextView.setText(String.format("$%.2f", furniture.getPrice() * quantity));
-        //holder.furnitureImageView.setImageResource();
 
         holder.plusButton.setOnClickListener(v -> {
             shoppingCart.addItem(furniture, 1);
@@ -91,7 +91,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             furniturePriceTextView = itemView.findViewById(R.id.furniture_item_price);
             quantityTextView = itemView.findViewById(R.id.item_quantity);
             totalPriceTextView = itemView.findViewById(R.id.furniture_total_price);
-            furnitureImageView = itemView.findViewById(R.id.furniture_item_image);
+            furnitureImageView = itemView.findViewById(R.id.furniture_image);
             plusButton = itemView.findViewById(R.id.plus_sign);
             minusButton = itemView.findViewById(R.id.minus_sign);
             removeButton = itemView.findViewById(R.id.remove_button);

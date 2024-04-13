@@ -24,7 +24,6 @@ public class CartActivity extends AppCompatActivity {
     private RecyclerView recyclerViewCart;
     private CartAdapter cartAdapter;
     private ShoppingCart shoppingCart;
-
     private TextView totalPriceTextView;
 
     @Override
