@@ -15,6 +15,8 @@ import com.example.iikeaapp.R;
 import com.example.iikeaapp.adapter.ViewPagerAdapter;
 import com.example.iikeaapp.data.FurnitureModel;
 import com.example.iikeaapp.data.ShoppingCart;
+import com.example.iikeaapp.manager.CartManager;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class DetailActivity extends AppCompatActivity {
@@ -28,6 +30,9 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        // Get the ShoppingCart instance from the CartManager
+        shoppingCart = CartManager.getInstance().getShoppingCart();
+
         mViewPager = findViewById(R.id.viewPager);
         furnitureItemTitle = findViewById(R.id.furniture_item_title);
         itemPrice = findViewById(R.id.item_price);
@@ -35,15 +40,18 @@ public class DetailActivity extends AppCompatActivity {
         backButton = findViewById(R.id.backButton);
         saveButton = findViewById(R.id.save_button);
 
+        // Retrieve the FurnitureModel object from the Intent
         FurnitureModel furnitureModel = (FurnitureModel) getIntent().getSerializableExtra("FurnitureModel");
-        // Update UI elements with data from FurnitureModel
-        if (furnitureModel != null) {
-            furnitureItemTitle.setText(furnitureModel.getFurnitureName());
-            itemPrice.setText("$" + furnitureModel.getPrice());
-            itemDescription.setText(furnitureModel.getDescription());
 
-            ViewPagerAdapter mViewPagerAdapter = new ViewPagerAdapter(DetailActivity.this, furnitureModel.getImageResources());
-            mViewPager.setAdapter(mViewPagerAdapter);
+        // If the FurnitureModel object is available, use it directly
+        if (furnitureModel != null) {
+            updateUIWithFurnitureModel(furnitureModel);
+        } else {
+            // Otherwise, create a new FurnitureModel object from the individual data fields
+            furnitureModel = getFurnitureItem();
+            if (furnitureModel != null) {
+                updateUIWithFurnitureModel(furnitureModel);
+            }
         }
 
         backButton.setOnClickListener(view -> {
@@ -52,47 +60,57 @@ public class DetailActivity extends AppCompatActivity {
 
         // Add to shopping cart
         FloatingActionButton addToCartButton = findViewById(R.id.add_to_shopping_cart_btn);
-
-        // Create an instance of the ShoppingCart
-        shoppingCart = new ShoppingCart();
         addToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FurnitureModel item = getFurnitureItem();
-                shoppingCart.addItem(item, 1);
-                Toast.makeText(DetailActivity.this, "Item added to cart", Toast.LENGTH_SHORT).show();
+                if (item != null) {
+                    shoppingCart.addItem(item, 1);
+                    Toast.makeText(DetailActivity.this, "Item added to cart", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
-        // Set up the click listener for the "View Cart" button
-        Button viewCartButton = findViewById(R.id.view_cart_button);
-        viewCartButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DetailActivity.this, CartActivity.class);
-                intent.putExtra("shoppingCart", shoppingCart);
+        // nav bar
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.bottom_save) {
+                Intent intent = new Intent(getApplicationContext(), SaveActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                return true;
+            } else if (item.getItemId() == R.id.bottom_home) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                return true;
+            } else if (item.getItemId() == R.id.bottom_cart) {
+                Intent intent = new Intent(getApplicationContext(), CartActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                return true;
             }
+            return false;
         });
     }
 
     private FurnitureModel getFurnitureItem() {
-        // Retrieve the data passed from the previous activity
-        Intent intent = getIntent();
-        if (intent != null) {
-            String furnitureName = intent.getStringExtra("furnitureName");
-            String category = intent.getStringExtra("category");
-            int price = intent.getIntExtra("price", 0);
-            String description = intent.getStringExtra("description");
-            String[] imageResources = intent.getStringArrayExtra("imageResources");
+        // Retrieve the FurnitureModel object from the Intent
+        FurnitureModel furnitureModel = (FurnitureModel) getIntent().getSerializableExtra("FurnitureModel");
+        return furnitureModel;
+    }
 
-            // Create a new FurnitureModel object with the retrieved data
-            FurnitureModel item = new FurnitureModel(furnitureName, category, price, description, imageResources);
+    private void updateUIWithFurnitureModel(FurnitureModel furnitureModel) {
+        furnitureItemTitle.setText(furnitureModel.getFurnitureName());
+        itemPrice.setText("$" + furnitureModel.getPrice());
+        itemDescription.setText(furnitureModel.getDescription());
 
-            return item;
-        }
-
-        return null;
+        ViewPagerAdapter mViewPagerAdapter = new ViewPagerAdapter(DetailActivity.this, furnitureModel.getImageResources());
+        mViewPager.setAdapter(mViewPagerAdapter);
     }
 }
 

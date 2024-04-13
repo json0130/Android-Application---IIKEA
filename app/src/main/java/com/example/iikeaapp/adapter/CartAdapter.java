@@ -4,14 +4,18 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.iikeaapp.R;
+import com.example.iikeaapp.activities.CartActivity;
 import com.example.iikeaapp.data.FurnitureModel;
 import com.example.iikeaapp.data.ShoppingCart;
+import com.example.iikeaapp.manager.CartManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +27,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     private Context context;
     private ShoppingCart shoppingCart;
 
-    public CartAdapter(ShoppingCart shoppingCart, Context context) {
-        this.shoppingCart = shoppingCart;
+    public CartAdapter(Context context) {
+        this.shoppingCart = CartManager.getInstance().getShoppingCart();
         this.cartItems = new ArrayList<>(shoppingCart.getItems().entrySet());
         this.context = context;
     }
@@ -46,6 +50,44 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         holder.furniturePriceTextView.setText(String.format("$%.2f", furniture.getPrice()));
         holder.quantityTextView.setText(String.valueOf(quantity));
         holder.totalPriceTextView.setText(String.format("$%.2f", furniture.getPrice() * quantity));
+
+        // Load the furniture image if available
+//        if (furniture.getImageResources() != 0) {
+//            holder.furnitureImageView.setImageResource(furniture.getImageResource());
+//        }
+
+        holder.plusButton.setOnClickListener(v -> {
+            if (containsItem(furniture)) {
+                shoppingCart.updateQuantity(furniture, quantity + 1);
+                notifyItemChanged(position);
+            } else {
+                shoppingCart.addItem(furniture, 1);
+                notifyDataSetChanged();
+            }
+            updateTotalPrice();
+        });
+
+        holder.minusButton.setOnClickListener(v -> {
+            if (quantity > 1) {
+                shoppingCart.updateQuantity(furniture, quantity - 1);
+                notifyItemChanged(position);
+                updateTotalPrice();
+            } else {
+                shoppingCart.removeItem(furniture);
+                cartItems.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, cartItems.size());
+                updateTotalPrice();
+            }
+        });
+
+        holder.removeButton.setOnClickListener(v -> {
+            shoppingCart.removeItem(furniture);
+            cartItems.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, cartItems.size());
+            updateTotalPrice();
+        });
     }
 
     @Override
@@ -53,11 +95,25 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         return cartItems.size();
     }
 
+    private void updateTotalPrice() {
+        if (context instanceof CartActivity) {
+            ((CartActivity) context).updateTotalPrice();
+        }
+    }
+
+    private boolean containsItem(FurnitureModel item) {
+        return shoppingCart.getItems().containsKey(item);
+    }
+
     public class CartViewHolder extends RecyclerView.ViewHolder {
         TextView furnitureNameTextView;
         TextView furniturePriceTextView;
         TextView quantityTextView;
         TextView totalPriceTextView;
+        ImageView furnitureImageView;
+        TextView plusButton;
+        TextView minusButton;
+        ImageView removeButton;
 
         public CartViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -65,6 +121,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             furniturePriceTextView = itemView.findViewById(R.id.furniture_item_price);
             quantityTextView = itemView.findViewById(R.id.item_quantity);
             totalPriceTextView = itemView.findViewById(R.id.furniture_total_price);
+            furnitureImageView = itemView.findViewById(R.id.furniture_image);
+            plusButton = itemView.findViewById(R.id.plus_sign);
+            minusButton = itemView.findViewById(R.id.minus_sign);
+            removeButton = itemView.findViewById(R.id.remove_button);
         }
     }
 }
