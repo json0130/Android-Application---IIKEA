@@ -33,7 +33,6 @@
             android:layout_height="wrap_content"
             android:text="Top Picks"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:onClick="topPicksClicked"
             android:layout_below="@+id/list_search_view"/>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -64,6 +63,8 @@
             app:layout_constraintTop_toBottomOf="@id/categoriesHeading">
 
             <androidx.cardview.widget.CardView
+                android:onClick="categoryClicked"
+                android:tag="Living"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/livingCard"
@@ -97,6 +98,8 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:onClick="categoryClicked"
+                android:tag="Office"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/officeCard"
@@ -141,6 +144,8 @@
             app:layout_constraintTop_toBottomOf="@id/row1">
 
             <androidx.cardview.widget.CardView
+                android:onClick="categoryClicked"
+                android:tag="Outdoor"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
@@ -156,7 +161,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/outdoorCatLabel"
-                        android:text="LIVING"
+                        android:text="OUTDOOR"
                         android:textSize="20sp"
                         android:layout_marginTop="10dp"
                         android:layout_centerHorizontal="true"
@@ -173,6 +178,8 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:onClick="categoryClicked"
+                android:tag="Lighting"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
@@ -187,17 +194,17 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/gaminCatLabel"
-                        android:text="GAMING"
+                        android:id="@+id/lightingCatLabel"
+                        android:text="LIGHTING"
                         android:textSize="20sp"
                         android:layout_marginTop="10dp"
                         android:layout_centerHorizontal="true"
-                        android:layout_below="@+id/gamingCatImage"/>
+                        android:layout_below="@+id/lightingCatImage"/>
 
                     <ImageView
                         android:layout_width="70dp"
                         android:layout_height="70dp"
-                        android:id="@+id/gamingCatImage"
+                        android:id="@+id/lightingCatImage"
                         android:layout_marginTop="15dp"
                         android:layout_centerHorizontal="true"/>
 

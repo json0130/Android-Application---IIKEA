@@ -65,11 +65,20 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
+        String category = getIntent().getStringExtra("category");
+
         // init recycler views
         RecyclerView recyclerView = findViewById(R.id.furniture_recycler_view);
         setUpFurnitureModels();
 
-        Furniture_VerticalRecyclerViewAdapter fAdapter = new Furniture_VerticalRecyclerViewAdapter(this, furnitureModels);
+        ArrayList<FurnitureModel> filteredModels = new ArrayList<>();
+        for (FurnitureModel model : furnitureModels) {
+            if (model.getCategory().equalsIgnoreCase(category)) {
+                filteredModels.add(model);
+            }
+        }
+
+        Furniture_VerticalRecyclerViewAdapter fAdapter = new Furniture_VerticalRecyclerViewAdapter(this, filteredModels);
         recyclerView.setAdapter(fAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 

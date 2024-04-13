@@ -159,15 +159,15 @@
                 />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/filter_chip_gaming"
+                android:id="@+id/filter_chip_lighting"
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:text="GAMING"
-                app:chipIconEnabled="false"
-                app:checkedIconEnabled="true"
                 android:checkable="true"
-                android:checked="true" />
+                android:checked="true"
+                android:text="LIGHTING"
+                app:checkedIconEnabled="true"
+                app:chipIconEnabled="false" />
 
             <Space
                 android:layout_width="wrap_content"

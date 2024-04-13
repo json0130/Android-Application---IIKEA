@@ -3,7 +3,7 @@ package com.example.iikeaapp.data;
 import java.util.Optional;
 
 public enum FurnitureTag {
-    GAMING("Gaming"),
+    LIGHTING("Lighting"),
     OUTDOOR("Outdoor"),
     OFFICE("Office"),
     LIVING("Living");

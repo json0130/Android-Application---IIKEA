@@ -133,8 +133,11 @@ public class MainActivity extends AppCompatActivity {
         return json;
     }
 
-    public void topPicksClicked(View v){
+    public void categoryClicked(View v){
+        String category = (String) v.getTag();
+
         Intent intent = new Intent(MainActivity.this, ListActivity.class);
+        intent.putExtra("category", category);
         startActivity(intent);
     }
 }
