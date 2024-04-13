@@ -15,13 +15,6 @@
         <item>test4</item>
     </string-array>
 
-    <string-array name="categories">
-        <item>Office</item>
-        <item>Living</item>
-        <item>Gaming</item>
-        <item>Outdoors</item>
-    </string-array>
-
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
         volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus
