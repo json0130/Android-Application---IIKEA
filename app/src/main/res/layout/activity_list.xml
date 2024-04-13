@@ -17,12 +17,11 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Display3" />
 
     <androidx.appcompat.widget.SearchView
-        android:id="@+id/listview_search"
+        android:id="@+id/list_search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:layout_below="@+id/title"
-        />
+        android:background="?android:attr/colorBackground"
+        android:layout_below="@+id/title"/>
 
     <LinearLayout
         android:id="@+id/button_layout"
@@ -30,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@+id/listview_search">
+        android:layout_below="@+id/list_search_view">
 
         <Space
             android:layout_width="wrap_content"

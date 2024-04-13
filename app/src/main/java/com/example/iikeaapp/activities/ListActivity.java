@@ -65,21 +65,37 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        // init recycler views
-        RecyclerView recyclerView = findViewById(R.id.furniture_recycler_view);
         setUpFurnitureModels();
 
-        // intent extras
+        // init recycler views
+        RecyclerView recyclerView = findViewById(R.id.furniture_recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        updateAdapter(furnitureModels);
+
+        // Setup SearchView
+        androidx.appcompat.widget.SearchView searchView = findViewById(R.id.list_search_view);
+        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                filterFurnitureBySearchQuery(query);
+                searchView.clearFocus();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterFurnitureBySearchQuery(newText);
+                return true;
+            }
+        });
+
         String category = getIntent().getStringExtra("category");
         String searchQuery = getIntent().getStringExtra("searchQuery");
-
-        // filter based on category clicked or search query
-        ArrayList<FurnitureModel> filteredModels = filterModels(category, searchQuery);
-
-        // Setup RecyclerView with filtered models
-        Furniture_VerticalRecyclerViewAdapter fAdapter = new Furniture_VerticalRecyclerViewAdapter(this, filteredModels);
-        recyclerView.setAdapter(fAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        if (category != null || searchQuery != null) {
+            ArrayList<FurnitureModel> filteredModels = filterModels(category, searchQuery);
+            updateAdapter(filteredModels);
+        }
 
         // nav bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
@@ -143,13 +159,17 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
         });
     }
 
+    private void updateAdapter(ArrayList<FurnitureModel> models) {
+        Furniture_VerticalRecyclerViewAdapter adapter = new Furniture_VerticalRecyclerViewAdapter(this, models);
+        RecyclerView recyclerView = findViewById(R.id.furniture_recycler_view);
+        recyclerView.setAdapter(adapter);
+    }
+
     private ArrayList<FurnitureModel> filterModels(String category, String searchQuery) {
         ArrayList<FurnitureModel> filteredModels = new ArrayList<>();
-
         for (FurnitureModel model : furnitureModels) {
-            boolean matchesCategory = (category == null || model.getCategory().equalsIgnoreCase(category));
-            boolean matchesSearch = (searchQuery == null || model.getFurnitureName().toLowerCase().contains(searchQuery.toLowerCase()));
-
+            boolean matchesCategory = category == null || model.getCategory().equalsIgnoreCase(category);
+            boolean matchesSearch = searchQuery == null || model.getFurnitureName().toLowerCase().contains(searchQuery.toLowerCase());
             if (matchesCategory && matchesSearch) {
                 filteredModels.add(model);
             }
@@ -164,11 +184,7 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
                 filteredModels.add(model);
             }
         }
-
-        Furniture_VerticalRecyclerViewAdapter fAdapter = new Furniture_VerticalRecyclerViewAdapter(this, filteredModels);
-        RecyclerView recyclerView = findViewById(R.id.furniture_recycler_view);
-        recyclerView.setAdapter(fAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        updateAdapter(filteredModels);
     }
 
     private void setUpFurnitureModels() {
