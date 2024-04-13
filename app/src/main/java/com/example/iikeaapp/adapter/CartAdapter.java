@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.iikeaapp.R;
+import com.example.iikeaapp.activities.CartActivity;
 import com.example.iikeaapp.data.FurnitureModel;
 import com.example.iikeaapp.data.ShoppingCart;
 import com.example.iikeaapp.manager.CartManager;
@@ -50,29 +51,58 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         holder.quantityTextView.setText(String.valueOf(quantity));
         holder.totalPriceTextView.setText(String.format("$%.2f", furniture.getPrice() * quantity));
 
+        // Load the furniture image if available
+//        if (furniture.getImageResources() != 0) {
+//            holder.furnitureImageView.setImageResource(furniture.getImageResource());
+//        }
+
         holder.plusButton.setOnClickListener(v -> {
-            shoppingCart.addItem(furniture, 1);
-            notifyDataSetChanged();
+            if (containsItem(furniture)) {
+                shoppingCart.updateQuantity(furniture, quantity + 1);
+                notifyItemChanged(position);
+            } else {
+                shoppingCart.addItem(furniture, 1);
+                notifyDataSetChanged();
+            }
+            updateTotalPrice();
         });
 
         holder.minusButton.setOnClickListener(v -> {
             if (quantity > 1) {
                 shoppingCart.updateQuantity(furniture, quantity - 1);
+                notifyItemChanged(position);
+                updateTotalPrice();
             } else {
                 shoppingCart.removeItem(furniture);
+                cartItems.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, cartItems.size());
+                updateTotalPrice();
             }
-            notifyDataSetChanged();
         });
 
         holder.removeButton.setOnClickListener(v -> {
             shoppingCart.removeItem(furniture);
-            notifyDataSetChanged();
+            cartItems.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, cartItems.size());
+            updateTotalPrice();
         });
     }
 
     @Override
     public int getItemCount() {
         return cartItems.size();
+    }
+
+    private void updateTotalPrice() {
+        if (context instanceof CartActivity) {
+            ((CartActivity) context).updateTotalPrice();
+        }
+    }
+
+    private boolean containsItem(FurnitureModel item) {
+        return shoppingCart.getItems().containsKey(item);
     }
 
     public class CartViewHolder extends RecyclerView.ViewHolder {
@@ -83,7 +113,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         ImageView furnitureImageView;
         TextView plusButton;
         TextView minusButton;
-        Button removeButton;
+        ImageView removeButton;
 
         public CartViewHolder(@NonNull View itemView) {
             super(itemView);
