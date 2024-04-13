@@ -14,13 +14,17 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.iikeaapp.R;
 import com.example.iikeaapp.adapter.ViewPagerAdapter;
 import com.example.iikeaapp.data.FurnitureModel;
+import com.example.iikeaapp.data.SavedFurniture;
 import com.example.iikeaapp.data.ShoppingCart;
+import com.example.iikeaapp.manager.SavedManager;
 import com.example.iikeaapp.manager.CartManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class DetailActivity extends AppCompatActivity {
     private ShoppingCart shoppingCart;
+
+    private SavedFurniture savedFurniture;
     ViewPager mViewPager;
     TextView furnitureItemTitle, itemPrice, itemDescription;
     ImageView backButton, saveButton;
@@ -60,6 +64,18 @@ public class DetailActivity extends AppCompatActivity {
 
         // Add to shopping cart
         FloatingActionButton addToCartButton = findViewById(R.id.add_to_shopping_cart_btn);
+
+        // Create an instance of the ShoppingCart
+        shoppingCart = new ShoppingCart();
+        savedFurniture = SavedManager.getInstance().getSavedFurniture();
+        addToCartButton.setOnClickListener(v -> {
+            FurnitureModel item = getFurnitureItem();
+            if (item != null) {
+                shoppingCart.addItem(item, 1);
+                Toast.makeText(DetailActivity.this, "Item added to cart", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         addToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

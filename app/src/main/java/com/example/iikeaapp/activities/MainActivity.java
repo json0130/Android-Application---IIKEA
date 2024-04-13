@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.iikeaapp.R;
 import com.example.iikeaapp.adapter.Furniture_HorizontalRecyclerViewAdapter;
 import com.example.iikeaapp.data.FurnitureModel;
+import com.example.iikeaapp.data.SavedFurniture;
+import com.example.iikeaapp.manager.SavedManager;
 import com.example.iikeaapp.data.ShoppingCart;
 import com.example.iikeaapp.manager.CartManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -32,8 +34,10 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     // top picks recycler view init
     ArrayList<FurnitureModel> furnitureModels = new ArrayList<>();
+    private SavedFurniture savedItems;
 
     private ShoppingCart shoppingCart;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerViewTopPicks.setAdapter(fAdapter);
         recyclerViewTopPicks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
+        savedItems = SavedManager.getInstance().getSavedFurniture();
+
         // Setup SearchView
         androidx.appcompat.widget.SearchView searchView = findViewById(R.id.list_search_view);
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
@@ -75,20 +81,21 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // nav bar
+        // Set up the bottom navigation bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
-        bottomNavigationView.setSelectedItemId(R.id.bottom_home);
+        bottomNavigationView.setSelectedItemId(R.id.bottom_cart);
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.bottom_save) {
-                Intent intent = new Intent(getApplicationContext(), SaveActivity.class);
+            if (item.getItemId() == R.id.bottom_cart) {
+                return true;
+            } else if (item.getItemId() == R.id.bottom_home) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 return true;
-            } else if (item.getItemId() == R.id.bottom_home) {
-                return true;
-            } else if (item.getItemId() == R.id.bottom_cart) {
-                Intent intent = new Intent(getApplicationContext(), CartActivity.class);
+            } else if (item.getItemId() == R.id.bottom_save) {
+                Intent intent = new Intent(getApplicationContext(), SaveActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
