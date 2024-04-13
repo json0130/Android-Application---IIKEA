@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Setup SearchView
         androidx.appcompat.widget.SearchView searchView = findViewById(R.id.list_search_view);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 // Start ListActivity with the search query
