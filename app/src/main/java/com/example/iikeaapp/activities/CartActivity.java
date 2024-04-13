@@ -35,7 +35,6 @@ public class CartActivity extends AppCompatActivity {
         totalPriceTextView = findViewById(R.id.total_cost_price);
         updateTotalPrice();
 
-
         shoppingCart = CartManager.getInstance().getShoppingCart();
 
         // Initialize the RecyclerView

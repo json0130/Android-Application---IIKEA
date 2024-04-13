@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
 
         // init recycler views
         RecyclerView recyclerViewTopPicks = findViewById(R.id.main_top_picks_recyclerView);
-
         setUpFurnitureModels();
 
         // top picks
