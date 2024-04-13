@@ -1,18 +1,22 @@
 package com.example.iikeaapp.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.iikeaapp.R;
+import com.example.iikeaapp.activities.DetailActivity;
+import com.example.iikeaapp.activities.SaveActivity;
 import com.example.iikeaapp.data.FurnitureModel;
 import com.example.iikeaapp.data.SavedFurniture;
-import com.example.iikeaapp.data.ShoppingCart;
 import com.example.iikeaapp.manager.SavedManager;
 
 import java.util.ArrayList;
@@ -21,14 +25,18 @@ import java.util.Map;
 
 public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SavedViewHolder> {
 
-    private List<Map.Entry<FurnitureModel, Integer>> cartItems;
+    private List<Map.Entry<FurnitureModel, Integer>> savedItems;
     private Context context;
+    private int requestCode;
     private SavedFurniture savedFurniture;
 
-    public SavedAdapter(Context context) {
+    private static final int REQUEST_CODE_SAVE_ACTIVITY = 100;
+
+    public SavedAdapter(Context context, int requestCode) {
         this.savedFurniture = SavedManager.getInstance().getSavedFurniture();
-        this.cartItems = new ArrayList<>(savedFurniture.getItems().entrySet());
+        this.savedItems = new ArrayList<>(savedFurniture.getItems().entrySet());
         this.context = context;
+        this.requestCode = requestCode;
     }
 
     @NonNull
@@ -40,35 +48,42 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SavedViewHol
 
     @Override
     public void onBindViewHolder(@NonNull SavedViewHolder holder, int position) {
-        Map.Entry<FurnitureModel, Integer> entry = cartItems.get(position);
+        Map.Entry<FurnitureModel, Integer> entry = savedItems.get(position);
         FurnitureModel furniture = entry.getKey();
-        int quantity = entry.getValue();
 
         holder.furnitureNameTextView.setText(furniture.getFurnitureName());
         holder.furniturePriceTextView.setText(String.format("$%.2f", furniture.getPrice()));
-        holder.quantityTextView.setText(String.valueOf(quantity));
-        holder.totalPriceTextView.setText(String.format("$%.2f", furniture.getPrice() * quantity));
 
-        // Add click listeners or other functionality as needed
+        holder.savedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                savedFurniture.removeItem(furniture);
+                savedItems.remove(entry);
+                notifyDataSetChanged();
+
+                // Set the result intent with the removed item
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("removedItem", furniture);
+                ((Activity) context).setResult(Activity.RESULT_OK, resultIntent);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return cartItems.size();
+        return savedItems.size();
     }
 
     public class SavedViewHolder extends RecyclerView.ViewHolder {
         TextView furnitureNameTextView;
         TextView furniturePriceTextView;
-        TextView quantityTextView;
-        TextView totalPriceTextView;
+        ImageView savedButton;
 
         public SavedViewHolder(@NonNull View itemView) {
             super(itemView);
             furnitureNameTextView = itemView.findViewById(R.id.furniture_item_title);
             furniturePriceTextView = itemView.findViewById(R.id.furniture_item_price);
-            quantityTextView = itemView.findViewById(R.id.item_quantity);
-            totalPriceTextView = itemView.findViewById(R.id.furniture_total_price);
+            savedButton = itemView.findViewById(R.id.favorite_button);
         }
     }
 }

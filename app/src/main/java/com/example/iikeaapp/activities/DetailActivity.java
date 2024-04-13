@@ -1,5 +1,6 @@
 package com.example.iikeaapp.activities;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.iikeaapp.R;
+import com.example.iikeaapp.adapter.SavedAdapter;
 import com.example.iikeaapp.adapter.ViewPagerAdapter;
 import com.example.iikeaapp.data.FurnitureModel;
 import com.example.iikeaapp.data.SavedFurniture;
@@ -29,10 +31,17 @@ public class DetailActivity extends AppCompatActivity {
     TextView furnitureItemTitle, itemPrice, itemDescription;
     ImageView backButton, saveButton;
 
+    SavedAdapter savedAdapter;
+
+    private boolean isSaved = false;
+    private static final int REQUEST_CODE_SAVE_ACTIVITY = 100;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        savedAdapter = new SavedAdapter(this, REQUEST_CODE_SAVE_ACTIVITY);
 
         // Get the ShoppingCart instance from the CartManager
         savedFurniture = SavedManager.getInstance().getSavedFurniture();
@@ -76,6 +85,26 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FurnitureModel item = getFurnitureItem();
+                if (item != null) {
+                    if (isSaved) {
+                        savedFurniture.removeItem(item);
+                        isSaved = false;
+                        saveButton.setImageResource(R.drawable.baseline_favorite_border_24);
+                        Toast.makeText(DetailActivity.this, "Item removed from favorites", Toast.LENGTH_SHORT).show();
+                    } else {
+                        savedFurniture.addItem(item, 1);
+                        isSaved = true;
+                        saveButton.setImageResource(R.drawable.baseline_favorite_24);
+                        Toast.makeText(DetailActivity.this, "Item added to favorites", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+
         // nav bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
 
@@ -83,7 +112,7 @@ public class DetailActivity extends AppCompatActivity {
             if (item.getItemId() == R.id.bottom_save) {
                 Intent intent = new Intent(getApplicationContext(), SaveActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE_SAVE_ACTIVITY);
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 return true;
             } else if (item.getItemId() == R.id.bottom_home) {
@@ -116,6 +145,25 @@ public class DetailActivity extends AppCompatActivity {
 
         ViewPagerAdapter mViewPagerAdapter = new ViewPagerAdapter(DetailActivity.this, furnitureModel.getImageResources());
         mViewPager.setAdapter(mViewPagerAdapter);
+
+        isSaved = savedFurniture.getItems().containsKey(furnitureModel);
+        saveButton.setImageResource(isSaved ? R.drawable.baseline_favorite_24 : R.drawable.baseline_favorite_border_24);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE_SAVE_ACTIVITY && resultCode == RESULT_OK) {
+            if (data != null && data.hasExtra("removedItem")) {
+                FurnitureModel removedItem = (FurnitureModel) data.getSerializableExtra("removedItem");
+                FurnitureModel currentItem = getFurnitureItem();
+                if (currentItem != null && currentItem.equals(removedItem)) {
+                    isSaved = false;
+                    saveButton.setImageResource(R.drawable.baseline_favorite_border_24);
+                }
+            }
+        }
     }
 }
 

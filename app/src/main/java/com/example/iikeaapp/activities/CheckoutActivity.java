@@ -14,16 +14,24 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.iikeaapp.R;
+import com.example.iikeaapp.data.SavedFurniture;
+import com.example.iikeaapp.data.ShoppingCart;
+import com.example.iikeaapp.manager.CartManager;
+import com.example.iikeaapp.manager.SavedManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 
 public class CheckoutActivity extends AppCompatActivity {
-
+    private SavedFurniture savedFurniture;
+    private ShoppingCart shoppingCart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
+
+        savedFurniture = SavedManager.getInstance().getSavedFurniture();
+        shoppingCart = CartManager.getInstance().getShoppingCart();
 
         MaterialButton checkOutButton = findViewById(R.id.checkout_button);
         checkOutButton.setOnClickListener(new View.OnClickListener() {

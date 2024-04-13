@@ -34,7 +34,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     // top picks recycler view init
     ArrayList<FurnitureModel> furnitureModels = new ArrayList<>();
-    private SavedFurniture savedItems;
+    private SavedFurniture savedFurniture;
 
     private ShoppingCart shoppingCart;
 
@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Get the ShoppingCart instance from the CartManager
+        savedFurniture = SavedManager.getInstance().getSavedFurniture();
         shoppingCart = CartManager.getInstance().getShoppingCart();
 
         // init recycler views
@@ -59,8 +60,6 @@ public class MainActivity extends AppCompatActivity {
         Furniture_HorizontalRecyclerViewAdapter fAdapter = new Furniture_HorizontalRecyclerViewAdapter(this, furnitureModels);
         recyclerViewTopPicks.setAdapter(fAdapter);
         recyclerViewTopPicks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-
-        savedItems = SavedManager.getInstance().getSavedFurniture();
 
         // Setup SearchView
         androidx.appcompat.widget.SearchView searchView = findViewById(R.id.list_search_view);
@@ -83,13 +82,13 @@ public class MainActivity extends AppCompatActivity {
         // nav bar
         // Set up the bottom navigation bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
-        bottomNavigationView.setSelectedItemId(R.id.bottom_cart);
+        bottomNavigationView.setSelectedItemId(R.id.bottom_home);
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.bottom_cart) {
+            if (item.getItemId() == R.id.bottom_home) {
                 return true;
-            } else if (item.getItemId() == R.id.bottom_home) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            } else if (item.getItemId() == R.id.bottom_cart) {
+                Intent intent = new Intent(getApplicationContext(), CartActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
