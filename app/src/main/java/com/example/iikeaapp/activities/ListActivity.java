@@ -64,20 +64,19 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-      
-        String category = getIntent().getStringExtra("category");
 
         // init recycler views
         RecyclerView recyclerView = findViewById(R.id.furniture_recycler_view);
         setUpFurnitureModels();
 
-        ArrayList<FurnitureModel> filteredModels = new ArrayList<>();
-        for (FurnitureModel model : furnitureModels) {
-            if (model.getCategory().equalsIgnoreCase(category)) {
-                filteredModels.add(model);
-            }
-        }
+        // intent extras
+        String category = getIntent().getStringExtra("category");
+        String searchQuery = getIntent().getStringExtra("searchQuery");
 
+        // filter based on category clicked or search query
+        ArrayList<FurnitureModel> filteredModels = filterModels(category, searchQuery);
+
+        // Setup RecyclerView with filtered models
         Furniture_VerticalRecyclerViewAdapter fAdapter = new Furniture_VerticalRecyclerViewAdapter(this, filteredModels);
         recyclerView.setAdapter(fAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -142,6 +141,34 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
                 });
             }
         });
+    }
+
+    private ArrayList<FurnitureModel> filterModels(String category, String searchQuery) {
+        ArrayList<FurnitureModel> filteredModels = new ArrayList<>();
+
+        for (FurnitureModel model : furnitureModels) {
+            boolean matchesCategory = (category == null || model.getCategory().equalsIgnoreCase(category));
+            boolean matchesSearch = (searchQuery == null || model.getFurnitureName().toLowerCase().contains(searchQuery.toLowerCase()));
+
+            if (matchesCategory && matchesSearch) {
+                filteredModels.add(model);
+            }
+        }
+        return filteredModels;
+    }
+
+    private void filterFurnitureBySearchQuery(String query) {
+        ArrayList<FurnitureModel> filteredModels = new ArrayList<>();
+        for (FurnitureModel model : furnitureModels) {
+            if (model.getFurnitureName().toLowerCase().contains(query.toLowerCase())) {
+                filteredModels.add(model);
+            }
+        }
+
+        Furniture_VerticalRecyclerViewAdapter fAdapter = new Furniture_VerticalRecyclerViewAdapter(this, filteredModels);
+        RecyclerView recyclerView = findViewById(R.id.furniture_recycler_view);
+        recyclerView.setAdapter(fAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void setUpFurnitureModels() {
