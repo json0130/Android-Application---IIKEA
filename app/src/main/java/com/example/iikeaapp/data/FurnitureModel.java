@@ -9,6 +9,7 @@ public class FurnitureModel implements Serializable{
     double price;
     String description;
     String[] imageResources;
+    private boolean isSaved;
 
     public FurnitureModel(String furnitureName, String category, double price, String description, String[] imageResources) {
         this.furnitureName = furnitureName;
@@ -16,6 +17,7 @@ public class FurnitureModel implements Serializable{
         this.price = price;
         this.description = description;
         this.imageResources = imageResources;
+        this.isSaved = false;
     }
 
     public String getFurnitureName() {
@@ -36,5 +38,15 @@ public class FurnitureModel implements Serializable{
 
     public String[] getImageResources() {
         return imageResources;
+    }
+
+    // Add the isSaved() getter method
+    public boolean isSaved() {
+        return isSaved;
+    }
+
+    // Add the setSaved() method
+    public void setSaved(boolean saved) {
+        isSaved = saved;
     }
 }

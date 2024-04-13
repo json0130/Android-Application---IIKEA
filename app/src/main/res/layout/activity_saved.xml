@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".activities.CartActivity">
+    tools:context=".activities.SaveActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -35,7 +35,7 @@
             android:layout_below="@+id/title"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/favourite_recycler_view"
+            android:id="@+id/saved_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/saved_text"

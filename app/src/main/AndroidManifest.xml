@@ -26,6 +26,9 @@
             android:exported="false"
             android:theme="@style/Theme.IikeaApp" />
         <activity
+            android:name=".activities.SaveActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.DetailActivity"
             android:exported="false" />
         <activity

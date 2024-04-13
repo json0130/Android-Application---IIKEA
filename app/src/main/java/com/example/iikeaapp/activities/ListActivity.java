@@ -18,6 +18,10 @@ import com.example.iikeaapp.R;
 import com.example.iikeaapp.adapter.FurnitureAdapter;
 import com.example.iikeaapp.adapter.Furniture_VerticalRecyclerViewAdapter;
 import com.example.iikeaapp.data.FurnitureModel;
+import com.example.iikeaapp.data.SavedFurniture;
+import com.example.iikeaapp.data.ShoppingCart;
+import com.example.iikeaapp.manager.CartManager;
+import com.example.iikeaapp.manager.SavedManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
@@ -35,16 +39,26 @@ import java.util.ArrayList;
 public class ListActivity extends AppCompatActivity implements FurnitureAdapter.OnItemClickListener {
     ArrayList<FurnitureModel> furnitureModels = new ArrayList<>();
 
+    private SavedFurniture savedFurniture;
+
+    private ShoppingCart shoppingCart;
+
     @Override
-    public void onItemClick (FurnitureModel funiture){
+    public void onItemClick(FurnitureModel furniture) {
         Intent intent = new Intent(ListActivity.this, DetailActivity.class);
-        intent.putExtra("furnitureName", funiture.getFurnitureName());
-        intent.putExtra("category", funiture.getCategory());
-        intent.putExtra("price", funiture.getPrice());
-        intent.putExtra("description", funiture.getDescription());
-        intent.putExtra("imageResources", funiture.getImageResources());
+        intent.putExtra("FurnitureModel", furniture);
         startActivity(intent);
     }
+//    @Override
+//    public void onItemClick (FurnitureModel funiture){
+//        Intent intent = new Intent(ListActivity.this, DetailActivity.class);
+//        intent.putExtra("furnitureName", funiture.getFurnitureName());
+//        intent.putExtra("category", funiture.getCategory());
+//        intent.putExtra("price", funiture.getPrice());
+//        intent.putExtra("description", funiture.getDescription());
+//        intent.putExtra("imageResources", funiture.getImageResources());
+//        startActivity(intent);
+//    }
 
     private static class ViewHolder {
         public final RecyclerView items;
@@ -64,6 +78,9 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+
+        savedFurniture = SavedManager.getInstance().getSavedFurniture();
+        shoppingCart = CartManager.getInstance().getShoppingCart();
 
         setUpFurnitureModels();
 
@@ -227,6 +244,15 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
             FurnitureModel temp = new FurnitureModel(furnitureNames.get(i), categories.get(i), prices.get(i), descriptions.get(i), tempImages);
             furnitureModels.add(temp);
         }
+        savedFurniture.addOnSavedFurnitureChangeListener(new SavedFurniture.OnSavedFurnitureChangeListener() {
+            @Override
+            public void onSavedFurnitureChanged() {
+                for (FurnitureModel model : furnitureModels) {
+                    model.setSaved(savedFurniture.getItems().containsKey(model));
+                }
+                updateAdapter(furnitureModels);
+            }
+        });
     }
 
     private String loadJSONfromAssets() {
