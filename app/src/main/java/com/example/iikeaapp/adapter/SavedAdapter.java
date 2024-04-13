@@ -48,6 +48,8 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SavedViewHol
         holder.furniturePriceTextView.setText(String.format("$%.2f", furniture.getPrice()));
         holder.quantityTextView.setText(String.valueOf(quantity));
         holder.totalPriceTextView.setText(String.format("$%.2f", furniture.getPrice() * quantity));
+
+        // Add click listeners or other functionality as needed
     }
 
     @Override

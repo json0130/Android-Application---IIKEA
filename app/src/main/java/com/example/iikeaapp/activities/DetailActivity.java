@@ -14,11 +14,15 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.iikeaapp.R;
 import com.example.iikeaapp.adapter.ViewPagerAdapter;
 import com.example.iikeaapp.data.FurnitureModel;
+import com.example.iikeaapp.data.SavedFurniture;
 import com.example.iikeaapp.data.ShoppingCart;
+import com.example.iikeaapp.manager.SavedManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class DetailActivity extends AppCompatActivity {
     private ShoppingCart shoppingCart;
+
+    private SavedFurniture savedFurniture;
     ViewPager mViewPager;
     TextView furnitureItemTitle, itemPrice, itemDescription;
     ImageView backButton, saveButton;
@@ -55,10 +59,10 @@ public class DetailActivity extends AppCompatActivity {
 
         // Create an instance of the ShoppingCart
         shoppingCart = new ShoppingCart();
-        addToCartButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FurnitureModel item = getFurnitureItem();
+        savedFurniture = SavedManager.getInstance().getSavedFurniture();
+        addToCartButton.setOnClickListener(v -> {
+            FurnitureModel item = getFurnitureItem();
+            if (item != null) {
                 shoppingCart.addItem(item, 1);
                 Toast.makeText(DetailActivity.this, "Item added to cart", Toast.LENGTH_SHORT).show();
             }
@@ -66,12 +70,18 @@ public class DetailActivity extends AppCompatActivity {
 
         // Set up the click listener for the "View Cart" button
         Button viewCartButton = findViewById(R.id.view_cart_button);
-        viewCartButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DetailActivity.this, CartActivity.class);
-                intent.putExtra("shoppingCart", shoppingCart);
-                startActivity(intent);
+        viewCartButton.setOnClickListener(v -> {
+            Intent intent = new Intent(DetailActivity.this, CartActivity.class);
+            intent.putExtra("shoppingCart", shoppingCart);
+            startActivity(intent);
+        });
+
+        // Set up the click listener for the "Save" button
+        saveButton.setOnClickListener(v -> {
+            FurnitureModel item = getFurnitureItem();
+            if (item != null) {
+                savedFurniture.addItem(item, 1);
+                Toast.makeText(DetailActivity.this, "Item saved to favorites", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -91,7 +101,6 @@ public class DetailActivity extends AppCompatActivity {
 
             return item;
         }
-
         return null;
     }
 }

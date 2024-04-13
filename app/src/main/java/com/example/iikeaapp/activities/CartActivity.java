@@ -58,14 +58,16 @@ public class CartActivity extends AppCompatActivity {
             if (item.getItemId() == R.id.bottom_cart) {
                 return true;
             } else if (item.getItemId() == R.id.bottom_home) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-                finish();
                 return true;
             } else if (item.getItemId() == R.id.bottom_save) {
-                startActivity(new Intent(getApplicationContext(), ListActivity.class));
+                Intent intent = new Intent(getApplicationContext(), SaveActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-                finish();
                 return true;
             }
             return false;

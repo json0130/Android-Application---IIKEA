@@ -10,7 +10,6 @@ public class SavedFurniture implements Serializable {
     public void addItem(FurnitureModel item, int quantity) {
         items.put(item, items.containsKey(item) ? items.get(item) : 0 + quantity);
     }
-
     public void removeItem(FurnitureModel item) {
         items.remove(item);
     }

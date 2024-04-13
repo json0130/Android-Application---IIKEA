@@ -28,7 +28,7 @@ public class SaveActivity extends AppCompatActivity {
         recyclerViewCart = findViewById(R.id.favourite_recycler_view);
         recyclerViewCart.setLayoutManager(new LinearLayoutManager(this));
 
-        // Create and set the CartAdapter
+        // Create and set the SavedAdapter
         savedAdapter = new SavedAdapter(this);
         recyclerViewCart.setAdapter(savedAdapter);
 
@@ -40,14 +40,16 @@ public class SaveActivity extends AppCompatActivity {
             if (item.getItemId() == R.id.bottom_save) {
                 return true;
             } else if (item.getItemId() == R.id.bottom_home) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-                finish();
                 return true;
             } else if (item.getItemId() == R.id.bottom_cart) {
-                startActivity(new Intent(getApplicationContext(), CartActivity.class));
+                Intent intent = new Intent(getApplicationContext(), CartActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-                finish();
                 return true;
             }
             return false;
