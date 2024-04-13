@@ -69,30 +69,42 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
         RecyclerView recyclerView = findViewById(R.id.furniture_recycler_view);
         setUpFurnitureModels();
 
-        Furniture_VerticalRecyclerViewAdapter fAdapter = new Furniture_VerticalRecyclerViewAdapter(this, furnitureModels);
+        // intent extras
+        String category = getIntent().getStringExtra("category");
+        String searchQuery = getIntent().getStringExtra("searchQuery");
+
+        // filter based on category clicked or search query
+        ArrayList<FurnitureModel> filteredModels = filterModels(category, searchQuery);
+
+        // Setup RecyclerView with filtered models
+        Furniture_VerticalRecyclerViewAdapter fAdapter = new Furniture_VerticalRecyclerViewAdapter(this, filteredModels);
         recyclerView.setAdapter(fAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // nav bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
-        bottomNavigationView.setSelectedItemId(R.id.bottom_save);
-
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.bottom_save) {
-                return true;
-            } else if (item.getItemId() == R.id.bottom_home) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-                finish();
-                return true;
-            } else if (item.getItemId() == R.id.bottom_cart) {
-                startActivity(new Intent(getApplicationContext(), CartActivity.class));
-                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-                finish();
-                return true;
-            }
-            return false;
-        });
+            bottomNavigationView.setOnItemSelectedListener(item -> {
+                if (item.getItemId() == R.id.bottom_save) {
+                    Intent intent = new Intent(getApplicationContext(), SaveActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                    return true;
+                } else if (item.getItemId() == R.id.bottom_home) {
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                    return true;
+                } else if (item.getItemId() == R.id.bottom_cart) {
+                    Intent intent = new Intent(getApplicationContext(), CartActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                    return true;
+                }
+                return false;
+            });
 
         MaterialButton filterbutton = findViewById(R.id.listview_filter_button);
         filterbutton.setOnClickListener(new View.OnClickListener() {
@@ -129,6 +141,34 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
                 });
             }
         });
+    }
+
+    private ArrayList<FurnitureModel> filterModels(String category, String searchQuery) {
+        ArrayList<FurnitureModel> filteredModels = new ArrayList<>();
+
+        for (FurnitureModel model : furnitureModels) {
+            boolean matchesCategory = (category == null || model.getCategory().equalsIgnoreCase(category));
+            boolean matchesSearch = (searchQuery == null || model.getFurnitureName().toLowerCase().contains(searchQuery.toLowerCase()));
+
+            if (matchesCategory && matchesSearch) {
+                filteredModels.add(model);
+            }
+        }
+        return filteredModels;
+    }
+
+    private void filterFurnitureBySearchQuery(String query) {
+        ArrayList<FurnitureModel> filteredModels = new ArrayList<>();
+        for (FurnitureModel model : furnitureModels) {
+            if (model.getFurnitureName().toLowerCase().contains(query.toLowerCase())) {
+                filteredModels.add(model);
+            }
+        }
+
+        Furniture_VerticalRecyclerViewAdapter fAdapter = new Furniture_VerticalRecyclerViewAdapter(this, filteredModels);
+        RecyclerView recyclerView = findViewById(R.id.furniture_recycler_view);
+        recyclerView.setAdapter(fAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void setUpFurnitureModels() {

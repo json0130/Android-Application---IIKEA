@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -17,6 +18,8 @@ import com.example.iikeaapp.adapter.Furniture_HorizontalRecyclerViewAdapter;
 import com.example.iikeaapp.data.FurnitureModel;
 import com.example.iikeaapp.data.SavedFurniture;
 import com.example.iikeaapp.manager.SavedManager;
+import com.example.iikeaapp.data.ShoppingCart;
+import com.example.iikeaapp.manager.CartManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONArray;
@@ -31,8 +34,10 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     // top picks recycler view init
     ArrayList<FurnitureModel> furnitureModels = new ArrayList<>();
-
     private SavedFurniture savedItems;
+
+    private ShoppingCart shoppingCart;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // Get the ShoppingCart instance from the CartManager
+        shoppingCart = CartManager.getInstance().getShoppingCart();
 
         // init recycler views
         RecyclerView recyclerViewTopPicks = findViewById(R.id.main_top_picks_recyclerView);
@@ -54,21 +62,40 @@ public class MainActivity extends AppCompatActivity {
 
         savedItems = SavedManager.getInstance().getSavedFurniture();
 
+        // Setup SearchView
+        androidx.appcompat.widget.SearchView searchView = findViewById(R.id.list_search_view);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // Start ListActivity with the search query
+                Intent intent = new Intent(MainActivity.this, ListActivity.class);
+                intent.putExtra("searchQuery", query);
+                startActivity(intent);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
         // nav bar
+        // Set up the bottom navigation bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
-        bottomNavigationView.setSelectedItemId(R.id.bottom_home);
+        bottomNavigationView.setSelectedItemId(R.id.bottom_cart);
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.bottom_home) {
+            if (item.getItemId() == R.id.bottom_cart) {
                 return true;
-            } else if (item.getItemId() == R.id.bottom_save) {
-                Intent intent = new Intent(getApplicationContext(), SaveActivity.class);
+            } else if (item.getItemId() == R.id.bottom_home) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 return true;
-            } else if (item.getItemId() == R.id.bottom_cart) {
-                Intent intent = new Intent(getApplicationContext(), CartActivity.class);
+            } else if (item.getItemId() == R.id.bottom_save) {
+                Intent intent = new Intent(getApplicationContext(), SaveActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
@@ -126,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
         try {
             InputStream is = getAssets().open("catalogue.json");
             int size = is.available();
-
             byte[] buffer = new byte[size];
             is.read(buffer);
             is.close();
@@ -140,8 +166,11 @@ public class MainActivity extends AppCompatActivity {
         return json;
     }
 
-    public void topPicksClicked(View v){
+    public void categoryClicked(View v){
+        String category = (String) v.getTag();
+
         Intent intent = new Intent(MainActivity.this, ListActivity.class);
+        intent.putExtra("category", category);
         startActivity(intent);
     }
 }

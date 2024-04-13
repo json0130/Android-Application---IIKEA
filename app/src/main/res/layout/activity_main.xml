@@ -33,7 +33,6 @@
             android:layout_height="wrap_content"
             android:text="Top Picks"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:onClick="topPicksClicked"
             android:layout_below="@+id/list_search_view"/>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -64,6 +63,8 @@
             app:layout_constraintTop_toBottomOf="@id/categoriesHeading">
 
             <androidx.cardview.widget.CardView
+                android:onClick="categoryClicked"
+                android:tag="Living"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/livingCard"
@@ -87,16 +88,19 @@
                         android:layout_below="@+id/livingCatImage"/>
 
                     <ImageView
+                        android:id="@+id/livingCatImage"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
-                        android:id="@+id/livingCatImage"
+                        android:layout_centerHorizontal="true"
                         android:layout_marginTop="15dp"
-                        android:layout_centerHorizontal="true"/>
+                        app:srcCompat="@drawable/sofa" />
 
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:onClick="categoryClicked"
+                android:tag="Office"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/officeCard"
@@ -120,11 +124,12 @@
                         android:layout_below="@+id/officeCatImage"/>
 
                     <ImageView
+                        android:id="@+id/officeCatImage"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
-                        android:id="@+id/officeCatImage"
+                        android:layout_centerHorizontal="true"
                         android:layout_marginTop="15dp"
-                        android:layout_centerHorizontal="true"/>
+                        app:srcCompat="@drawable/workplace" />
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>
@@ -141,6 +146,8 @@
             app:layout_constraintTop_toBottomOf="@id/row1">
 
             <androidx.cardview.widget.CardView
+                android:onClick="categoryClicked"
+                android:tag="Outdoor"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
@@ -156,23 +163,26 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/outdoorCatLabel"
-                        android:text="LIVING"
+                        android:text="OUTDOOR"
                         android:textSize="20sp"
                         android:layout_marginTop="10dp"
                         android:layout_centerHorizontal="true"
                         android:layout_below="@+id/outdoorCatImage"/>
 
                     <ImageView
+                        android:id="@+id/outdoorCatImage"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
-                        android:id="@+id/outdoorCatImage"
+                        android:layout_centerHorizontal="true"
                         android:layout_marginTop="15dp"
-                        android:layout_centerHorizontal="true"/>
+                        app:srcCompat="@drawable/chairs" />
 
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:onClick="categoryClicked"
+                android:tag="Lighting"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
@@ -187,19 +197,20 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/gaminCatLabel"
-                        android:text="GAMING"
+                        android:id="@+id/lightingCatLabel"
+                        android:text="LIGHTING"
                         android:textSize="20sp"
                         android:layout_marginTop="10dp"
                         android:layout_centerHorizontal="true"
-                        android:layout_below="@+id/gamingCatImage"/>
+                        android:layout_below="@+id/lightingCatImage"/>
 
                     <ImageView
+                        android:id="@+id/lightingCatImage"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
-                        android:id="@+id/gamingCatImage"
+                        android:layout_centerHorizontal="true"
                         android:layout_marginTop="15dp"
-                        android:layout_centerHorizontal="true"/>
+                        app:srcCompat="@drawable/hanging_lamp" />
 
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>

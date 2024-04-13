@@ -114,26 +114,10 @@
         android:id="@+id/furniture_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/bottomNavigation"
         android:layout_below="@+id/list_label_text"
-        android:layout_marginHorizontal="16dp" />
-
-    <TextView
-        android:id="@+id/related_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="RELATED ITEMS"
-        android:textSize="20dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_below="@+id/furniture_recycler_view"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/related_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/related_item"
         android:layout_marginHorizontal="16dp"
-        android:orientation="horizontal"/>
+        android:layout_marginBottom="1dp" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"
