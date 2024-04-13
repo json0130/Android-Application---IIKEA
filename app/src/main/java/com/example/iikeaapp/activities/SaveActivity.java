@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.iikeaapp.R;
-<<<<<<< HEAD
 import com.example.iikeaapp.adapter.SavedAdapter;
 import com.example.iikeaapp.data.SavedFurniture;
 import com.example.iikeaapp.manager.SavedManager;
@@ -18,21 +17,11 @@ public class SaveActivity extends AppCompatActivity {
     private RecyclerView recyclerViewCart;
     private SavedAdapter savedAdapter;
     private SavedFurniture savedFurniture;
-=======
-import com.example.iikeaapp.data.ShoppingCart;
-import com.example.iikeaapp.manager.CartManager;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-public class SaveActivity extends AppCompatActivity {
-
-    private ShoppingCart shoppingCart;
->>>>>>> main
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved);
 
-<<<<<<< HEAD
         savedFurniture = SavedManager.getInstance().getSavedFurniture();
 
         // Initialize the RecyclerView
@@ -42,9 +31,6 @@ public class SaveActivity extends AppCompatActivity {
         // Create and set the SavedAdapter
         savedAdapter = new SavedAdapter(this);
         recyclerViewCart.setAdapter(savedAdapter);
-=======
-        shoppingCart = CartManager.getInstance().getShoppingCart();
->>>>>>> main
 
         // nav bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);

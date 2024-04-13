@@ -35,6 +35,7 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
 
         // Get the ShoppingCart instance from the CartManager
+        savedFurniture = SavedManager.getInstance().getSavedFurniture();
         shoppingCart = CartManager.getInstance().getShoppingCart();
 
         mViewPager = findViewById(R.id.viewPager);
@@ -64,18 +65,6 @@ public class DetailActivity extends AppCompatActivity {
 
         // Add to shopping cart
         FloatingActionButton addToCartButton = findViewById(R.id.add_to_shopping_cart_btn);
-
-        // Create an instance of the ShoppingCart
-        shoppingCart = new ShoppingCart();
-        savedFurniture = SavedManager.getInstance().getSavedFurniture();
-        addToCartButton.setOnClickListener(v -> {
-            FurnitureModel item = getFurnitureItem();
-            if (item != null) {
-                shoppingCart.addItem(item, 1);
-                Toast.makeText(DetailActivity.this, "Item added to cart", Toast.LENGTH_SHORT).show();
-            }
-        });
-
         addToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
