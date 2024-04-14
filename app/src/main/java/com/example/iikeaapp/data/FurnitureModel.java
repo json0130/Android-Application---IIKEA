@@ -40,7 +40,6 @@ public class FurnitureModel implements Serializable{
         return imageResources;
     }
 
-    // Add the isSaved() getter method
     public boolean isSaved() {
         return isSaved;
     }

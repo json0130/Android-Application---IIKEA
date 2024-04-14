@@ -1,15 +1,10 @@
 package com.example.iikeaapp.activities;
 
-import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.RadioGroup;
-import android.widget.SearchView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,7 +20,9 @@ import com.example.iikeaapp.manager.CartManager;
 import com.example.iikeaapp.manager.SavedManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.slider.RangeSlider;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,63 +33,37 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class ListActivity extends AppCompatActivity implements FurnitureAdapter.OnItemClickListener {
-    ArrayList<FurnitureModel> furnitureModels = new ArrayList<>();
-
-    private SavedFurniture savedFurniture;
-
-    private ShoppingCart shoppingCart;
-
-    @Override
-    public void onItemClick(FurnitureModel furniture) {
-        Intent intent = new Intent(ListActivity.this, DetailActivity.class);
-        intent.putExtra("FurnitureModel", furniture);
-        startActivity(intent);
-    }
-//    @Override
-//    public void onItemClick (FurnitureModel funiture){
-//        Intent intent = new Intent(ListActivity.this, DetailActivity.class);
-//        intent.putExtra("furnitureName", funiture.getFurnitureName());
-//        intent.putExtra("category", funiture.getCategory());
-//        intent.putExtra("price", funiture.getPrice());
-//        intent.putExtra("description", funiture.getDescription());
-//        intent.putExtra("imageResources", funiture.getImageResources());
-//        startActivity(intent);
-//    }
-
-    private static class ViewHolder {
-        public final RecyclerView items;
-        public final Button filterButton;
-        public final Button sortButton;
-        public final SearchView searchView;
-
-        public ViewHolder(Activity activity) {
-            items = activity.findViewById(R.id.furniture_recycler_view);
-            filterButton = activity.findViewById(R.id.listview_filter_button);
-            sortButton = activity.findViewById(R.id.listview_sort_button);
-            searchView = activity.findViewById(R.id.list_search_view);
-        }
-    }
+    private ArrayList<FurnitureModel> furnitureModels = new ArrayList<>();
+    private SavedManager savedManager;
+    private CartManager cartManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        savedFurniture = SavedManager.getInstance().getSavedFurniture();
-        shoppingCart = CartManager.getInstance().getShoppingCart();
+        savedManager = SavedManager.getInstance();
+        cartManager = CartManager.getInstance();
 
         setUpFurnitureModels();
+        initRecyclerView();
+        setupSearchView();
+        setupNavigation();
+        setupButtonListeners();
+    }
 
-        // init recycler views
+    private void initRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.furniture_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         updateAdapter(furnitureModels);
+    }
 
-        // Setup SearchView
+    private void setupSearchView() {
         androidx.appcompat.widget.SearchView searchView = findViewById(R.id.list_search_view);
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
@@ -108,103 +79,141 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
                 return true;
             }
         });
+    }
 
-        String category = getIntent().getStringExtra("category");
-        String searchQuery = getIntent().getStringExtra("searchQuery");
-        if (category != null || searchQuery != null) {
-            ArrayList<FurnitureModel> filteredModels = filterModels(category, searchQuery);
-            updateAdapter(filteredModels);
-        }
-
-        // nav bar
+    private void setupNavigation() {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
-            bottomNavigationView.setOnItemSelectedListener(item -> {
-                if (item.getItemId() == R.id.bottom_save) {
-                    Intent intent = new Intent(getApplicationContext(), SaveActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-                    return true;
-                } else if (item.getItemId() == R.id.bottom_home) {
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-                    return true;
-                } else if (item.getItemId() == R.id.bottom_cart) {
-                    Intent intent = new Intent(getApplicationContext(), CartActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-                    return true;
-                }
-                return false;
-            });
-
-        MaterialButton filterbutton = findViewById(R.id.listview_filter_button);
-        filterbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ListActivity.this);
-                View view = LayoutInflater.from(ListActivity.this).inflate(R.layout.filter_listview_layout, null);
-                bottomSheetDialog.setContentView(view);
-                bottomSheetDialog.show();
-
-                bottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        Toast.makeText(ListActivity.this, "Bottom Sheet dismissed", Toast.LENGTH_SHORT).show();
-                    }
-                });
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.bottom_save) {
+                startActivity(new Intent(getApplicationContext(), SaveActivity.class));
+                return true;
+            } else if (itemId == R.id.bottom_home) {
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                return true;
+            } else if (itemId == R.id.bottom_cart) {
+                startActivity(new Intent(getApplicationContext(), CartActivity.class));
+                return true;
             }
-        });
-
-        MaterialButton sortButton = findViewById(R.id.listview_sort_button);
-        sortButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ListActivity.this);
-                View view = LayoutInflater.from(ListActivity.this).inflate(R.layout.sort_listview_layout, null);
-                bottomSheetDialog.setContentView(view);
-                bottomSheetDialog.show();
-
-                RadioGroup sortGroup = view.findViewById(R.id.sort_group);
-                sortGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(RadioGroup group, int checkedId) {
-                        if (checkedId == R.id.sort_high_low) {
-                            sortFurnitureByPrice(true);
-                        } else if (checkedId == R.id.sort_low_high) {
-                            sortFurnitureByPrice(false);
-                        }
-                        bottomSheetDialog.dismiss();
-                    }
-                });
-            }
+            return false;
         });
     }
 
-    private void sortFurnitureByPrice(boolean highestToLowest) {
-        if (highestToLowest) {
-            Collections.sort(furnitureModels, (o1, o2) -> Double.compare(o2.getPrice(), o1.getPrice()));
-        } else {
-            Collections.sort(furnitureModels, (o1, o2) -> Double.compare(o1.getPrice(), o2.getPrice()));
+
+    private void setupButtonListeners() {
+        findViewById(R.id.listview_filter_button).setOnClickListener(this::showFilterDialog);
+        findViewById(R.id.listview_sort_button).setOnClickListener(this::showSortDialog);
+    }
+
+    private void showFilterDialog(View view) {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        View filterView = LayoutInflater.from(this).inflate(R.layout.filter_listview_layout, null);
+        bottomSheetDialog.setContentView(filterView);
+        setupChips(filterView);
+        setupPriceSlider(filterView);
+        bottomSheetDialog.show();
+    }
+
+    private void showSortDialog(View view) {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        View sortView = LayoutInflater.from(this).inflate(R.layout.sort_listview_layout, null);
+        bottomSheetDialog.setContentView(sortView);
+        setupSortGroup(sortView);
+        bottomSheetDialog.show();
+    }
+
+    private void setupPriceSlider(View view) {
+        RangeSlider priceSlider = view.findViewById(R.id.max_price_slider);
+        double maxPrice = getMaxPrice();
+        priceSlider.setValueFrom(0f);
+        priceSlider.setValueTo((float) maxPrice);
+        priceSlider.setValues((float) maxPrice);
+        priceSlider.addOnChangeListener((slider, value, fromUser) -> {
+            if (fromUser) filterFurnitureByMaxPrice(value);
+        });
+    }
+
+    private void setupChips(View view) {
+        ChipGroup chipGroup = view.findViewById(R.id.filter_tag_group);
+        // Initialize active filters with all categories if all chips are initially checked.
+        Set<String> activeFilters = new HashSet<>();
+        int chipCount = chipGroup.getChildCount();
+        for (int i = 0; i < chipCount; i++) {
+            Chip chip = (Chip) chipGroup.getChildAt(i);
+            if (chip.isChecked()) {
+                activeFilters.add(chip.getText().toString().toUpperCase());
+            }
+            // Listen to changes on each chip.
+            chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                String category = buttonView.getText().toString().toUpperCase();
+                if (isChecked) {
+                    activeFilters.add(category);
+                } else {
+                    activeFilters.remove(category);
+                }
+                filterFurnitureByCategories(activeFilters);
+            });
         }
+    }
+
+    private void filterFurnitureByCategories(Set<String> categories) {
+        ArrayList<FurnitureModel> filteredModels = new ArrayList<>();
+        for (FurnitureModel model : furnitureModels) {
+            if (categories.isEmpty() || categories.contains(model.getCategory().toUpperCase())) {
+                filteredModels.add(model);
+            }
+        }
+        updateAdapter(filteredModels);
+    }
+
+
+
+    private void setupSortGroup(View view) {
+        RadioGroup sortGroup = view.findViewById(R.id.sort_group);
+        sortGroup.setOnCheckedChangeListener((group, checkedId) -> sortFurnitureByPrice(checkedId == R.id.sort_high_low));
+    }
+
+    private double getMaxPrice() {
+        double maxPrice = 0;
+        for (FurnitureModel model : furnitureModels) {
+            maxPrice = Math.max(maxPrice, model.getPrice());
+        }
+        return maxPrice;
+    }
+
+    private void filterFurnitureByMaxPrice(float maxPrice) {
+        ArrayList<FurnitureModel> filteredModels = new ArrayList<>();
+        for (FurnitureModel model : furnitureModels) {
+            if (model.getPrice() <= maxPrice) filteredModels.add(model);
+        }
+        updateAdapter(filteredModels);
+    }
+
+    private void filterFurnitureByCategory(String category) {
+        ArrayList<FurnitureModel> filteredModels = new ArrayList<>();
+        for (FurnitureModel model : furnitureModels) {
+            if (model.getCategory().equalsIgnoreCase(category)) {
+                filteredModels.add(model);
+            }
+        }
+        updateAdapter(filteredModels);
+    }
+
+    private void sortFurnitureByPrice(boolean highestToLowest) {
+        Collections.sort(furnitureModels, (o1, o2) -> Double.compare(highestToLowest ? o2.getPrice() : o1.getPrice(), highestToLowest ? o1.getPrice() : o2.getPrice()));
         updateAdapter(furnitureModels);
     }
 
     private void updateAdapter(ArrayList<FurnitureModel> models) {
         Furniture_VerticalRecyclerViewAdapter adapter = new Furniture_VerticalRecyclerViewAdapter(this, models);
-        RecyclerView recyclerView = findViewById(R.id.furniture_recycler_view);
-        recyclerView.setAdapter(adapter);
+        ((RecyclerView) findViewById(R.id.furniture_recycler_view)).setAdapter(adapter);
     }
 
     private ArrayList<FurnitureModel> filterModels(String category, String searchQuery) {
         ArrayList<FurnitureModel> filteredModels = new ArrayList<>();
         for (FurnitureModel model : furnitureModels) {
-            boolean matchesCategory = category == null || model.getCategory().equalsIgnoreCase(category);
-            boolean matchesSearch = searchQuery == null || model.getFurnitureName().toLowerCase().contains(searchQuery.toLowerCase());
-            if (matchesCategory && matchesSearch) {
+            if ((category == null || model.getCategory().equalsIgnoreCase(category)) &&
+                    (searchQuery == null || model.getFurnitureName().toLowerCase().contains(searchQuery.toLowerCase()))) {
                 filteredModels.add(model);
             }
         }
@@ -212,83 +221,54 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
     }
 
     private void filterFurnitureBySearchQuery(String query) {
-        ArrayList<FurnitureModel> filteredModels = new ArrayList<>();
-        for (FurnitureModel model : furnitureModels) {
-            if (model.getFurnitureName().toLowerCase().contains(query.toLowerCase())) {
-                filteredModels.add(model);
-            }
-        }
-        updateAdapter(filteredModels);
+        updateAdapter(filterModels(null, query));
     }
 
     private void setUpFurnitureModels() {
-        // String[] furnitureNames = getResources().getStringArray(R.array.furnitures);
-        ArrayList<String> furnitureNames = new ArrayList<>();
-        ArrayList<String> categories = new ArrayList<>();
-        ArrayList<Double> prices = new ArrayList<>();
-        ArrayList<String> descriptions = new ArrayList<>();
-        ArrayList<String> image1URLs = new ArrayList<>();
-        ArrayList<String> image2URLs = new ArrayList<>();
-        ArrayList<String> image3URLs = new ArrayList<>();
+        furnitureModels = loadFurnitureData();
+    }
 
-
+    private ArrayList<FurnitureModel> loadFurnitureData() {
+        ArrayList<FurnitureModel> models = new ArrayList<>();
         try {
-            JSONObject obj = new JSONObject(loadJSONfromAssets());
-
-            JSONArray productArray = obj.getJSONArray("products");
-
-            // load products from JSON to arraylists
+            JSONArray productArray = new JSONObject(loadJSONfromAssets()).getJSONArray("products");
             for (int i = 0; i < productArray.length(); i++) {
                 JSONObject productDetail = productArray.getJSONObject(i);
-
-                furnitureNames.add(productDetail.getString("name"));
-                categories.add(productDetail.getString("category"));
-                prices.add(productDetail.getDouble("price"));
-                descriptions.add(productDetail.getString("description"));
-
-                // nested values
-                JSONObject imageResources = productDetail.getJSONObject("imageResources");
-                image1URLs.add(imageResources.getString("image1"));
-                image2URLs.add(imageResources.getString("image2"));
-                image3URLs.add(imageResources.getString("image3"));
+                models.add(new FurnitureModel(
+                        productDetail.getString("name"),
+                        productDetail.getString("category"),
+                        productDetail.getDouble("price"),
+                        productDetail.getString("description"),
+                        new String[]{
+                                productDetail.getJSONObject("imageResources").getString("image1"),
+                                productDetail.getJSONObject("imageResources").getString("image2"),
+                                productDetail.getJSONObject("imageResources").getString("image3")
+                        }
+                ));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        for (int i = 0; i < furnitureNames.size(); i++) {
-            String[] tempImages = {image1URLs.get(i), image2URLs.get(i), image3URLs.get(i)};
-            FurnitureModel temp = new FurnitureModel(furnitureNames.get(i), categories.get(i), prices.get(i), descriptions.get(i), tempImages);
-            furnitureModels.add(temp);
-        }
-        savedFurniture.addOnSavedFurnitureChangeListener(new SavedFurniture.OnSavedFurnitureChangeListener() {
-            @Override
-            public void onSavedFurnitureChanged() {
-                for (FurnitureModel model : furnitureModels) {
-                    model.setSaved(savedFurniture.getItems().containsKey(model));
-                }
-                updateAdapter(furnitureModels);
-            }
-        });
+        return models;
     }
 
     private String loadJSONfromAssets() {
-        String json;
-
         try {
             InputStream is = getAssets().open("catalogue.json");
-            int size = is.available();
-
-            byte[] buffer = new byte[size];
+            byte[] buffer = new byte[is.available()];
             is.read(buffer);
             is.close();
-
-            json = new String(buffer, StandardCharsets.UTF_8);
+            return new String(buffer, StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
+    }
 
-        return json;
+    @Override
+    public void onItemClick(FurnitureModel furniture) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra("FurnitureModel", furniture);
+        startActivity(intent);
     }
 }
