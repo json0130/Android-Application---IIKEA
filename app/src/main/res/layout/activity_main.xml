@@ -82,7 +82,7 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/livingCatLabel"
                         android:text="LIVING"
-                        android:textSize="20sp"
+                        android:textSize="20dp"
                         android:layout_marginTop="10dp"
                         android:layout_centerHorizontal="true"
                         android:layout_below="@+id/livingCatImage"/>
@@ -118,7 +118,7 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/officeCatLabel"
                         android:text="OFFICE"
-                        android:textSize="20sp"
+                        android:textSize="20dp"
                         android:layout_marginTop="10dp"
                         android:layout_centerHorizontal="true"
                         android:layout_below="@+id/officeCatImage"/>
@@ -164,7 +164,7 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/outdoorCatLabel"
                         android:text="OUTDOOR"
-                        android:textSize="20sp"
+                        android:textSize="20dp"
                         android:layout_marginTop="10dp"
                         android:layout_centerHorizontal="true"
                         android:layout_below="@+id/outdoorCatImage"/>
@@ -199,7 +199,7 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/lightingCatLabel"
                         android:text="LIGHTING"
-                        android:textSize="20sp"
+                        android:textSize="20dp"
                         android:layout_marginTop="10dp"
                         android:layout_centerHorizontal="true"
                         android:layout_below="@+id/lightingCatImage"/>
