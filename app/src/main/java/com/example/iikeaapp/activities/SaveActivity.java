@@ -13,12 +13,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.iikeaapp.R;
+import com.example.iikeaapp.adapter.FurnitureAdapter;
 import com.example.iikeaapp.adapter.SavedAdapter;
 import com.example.iikeaapp.data.FurnitureModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class SaveActivity extends AppCompatActivity {
+public class SaveActivity extends AppCompatActivity implements SavedAdapter.OnItemClickListener {
     private RecyclerView recyclerViewSaved;
     private SavedAdapter savedAdapter;
     private TextView titleTextView;
@@ -38,7 +39,7 @@ public class SaveActivity extends AppCompatActivity {
         recyclerViewSaved.setLayoutManager(new LinearLayoutManager(this));
 
         // Create and set the SavedAdapter
-        savedAdapter = new SavedAdapter(this, REQUEST_CODE_DETAIL_ACTIVITY);
+        savedAdapter = new SavedAdapter(this, this);
         recyclerViewSaved.setAdapter(savedAdapter);
 
         backIcon = findViewById(R.id.back_icon);
@@ -126,6 +127,13 @@ public class SaveActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         updateAdapterData();
+    }
+
+    @Override
+    public void onItemClick(FurnitureModel furniture) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra("FurnitureModel", furniture);
+        startActivity(intent);
     }
 
     private void updateAdapterData() {

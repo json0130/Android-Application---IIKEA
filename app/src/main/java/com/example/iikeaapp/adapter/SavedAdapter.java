@@ -3,7 +3,6 @@ package com.example.iikeaapp.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.iikeaapp.R;
 import com.example.iikeaapp.data.FurnitureModel;
 import com.example.iikeaapp.manager.Saved;
@@ -20,17 +20,22 @@ import com.example.iikeaapp.manager.Saved;
 import java.util.ArrayList;
 
 public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SavedViewHolder> {
+    public interface OnItemClickListener {
+        void onItemClick(FurnitureModel item);
+    }
+
 
     private ArrayList<FurnitureModel> savedItems;
     private Context context;
-    private int requestCode;
+
+    private OnItemClickListener listener;
 
     private static final int REQUEST_CODE_SAVE_ACTIVITY = 100;
 
-    public SavedAdapter(Context context, int requestCode) {
+    public SavedAdapter(Context context, OnItemClickListener listener) {
         this.savedItems = new ArrayList<>(Saved.getInstance().getSavedItems());
         this.context = context;
-        this.requestCode = requestCode;
+        this.listener = listener;
     }
 
     @NonNull
@@ -46,6 +51,10 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SavedViewHol
 
         holder.furnitureNameTextView.setText(furniture.getFurnitureName());
         holder.furniturePriceTextView.setText(String.format("$%.2f", furniture.getPrice()));
+
+        Glide.with(context)
+                .load(furniture.getImageResources()[0])
+                .into(holder.imageView);
 
         holder.savedButton.setOnClickListener(v -> {
             Saved.removeItem(furniture);
@@ -68,15 +77,27 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SavedViewHol
     }
 
     public class SavedViewHolder extends RecyclerView.ViewHolder {
+        ImageView imageView;
         TextView furnitureNameTextView;
         TextView furniturePriceTextView;
         ImageView savedButton;
 
         public SavedViewHolder(@NonNull View itemView) {
             super(itemView);
+            imageView = itemView.findViewById(R.id.furniture_item_image);
             furnitureNameTextView = itemView.findViewById(R.id.furniture_item_title);
             furniturePriceTextView = itemView.findViewById(R.id.furniture_item_price);
             savedButton = itemView.findViewById(R.id.favorite_button);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION && listener != null) {
+                        listener.onItemClick(savedItems.get(position));
+                    }
+                }
+            });
         }
     }
 }
