@@ -10,24 +10,26 @@
         android:layout_height="wrap_content"
         android:text="PRICE"
         android:textSize="25dp"
+        android:paddingTop="8dp"
+        android:paddingLeft="24dp"
         />
 
     <RadioGroup
+        android:id="@+id/sort_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+        android:paddingLeft="24dp">
+
         <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/sort_high_low"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="HIGHEST TO LOWEST"
-            android:layout_margin="5dp"/>
+            android:text="HIGHEST TO LOWEST" />
 
         <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/sort_low_high"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="LOWEST TO HIGHEST"/>
+            android:text="LOWEST TO HIGHEST" />
     </RadioGroup>
 </LinearLayout>

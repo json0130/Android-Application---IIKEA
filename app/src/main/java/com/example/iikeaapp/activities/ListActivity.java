@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioGroup;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -34,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class ListActivity extends AppCompatActivity implements FurnitureAdapter.OnItemClickListener {
@@ -157,8 +159,8 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
             }
         });
 
-        MaterialButton sortbutton = findViewById(R.id.listview_sort_button);
-        sortbutton.setOnClickListener(new View.OnClickListener() {
+        MaterialButton sortButton = findViewById(R.id.listview_sort_button);
+        sortButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ListActivity.this);
@@ -166,14 +168,29 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
                 bottomSheetDialog.setContentView(view);
                 bottomSheetDialog.show();
 
-                bottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                RadioGroup sortGroup = view.findViewById(R.id.sort_group);
+                sortGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                     @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        Toast.makeText(ListActivity.this, "Bottom Sheet dismissed", Toast.LENGTH_SHORT).show();
+                    public void onCheckedChanged(RadioGroup group, int checkedId) {
+                        if (checkedId == R.id.sort_high_low) {
+                            sortFurnitureByPrice(true);
+                        } else if (checkedId == R.id.sort_low_high) {
+                            sortFurnitureByPrice(false);
+                        }
+                        bottomSheetDialog.dismiss();
                     }
                 });
             }
         });
+    }
+
+    private void sortFurnitureByPrice(boolean highestToLowest) {
+        if (highestToLowest) {
+            Collections.sort(furnitureModels, (o1, o2) -> Double.compare(o2.getPrice(), o1.getPrice()));
+        } else {
+            Collections.sort(furnitureModels, (o1, o2) -> Double.compare(o1.getPrice(), o2.getPrice()));
+        }
+        updateAdapter(furnitureModels);
     }
 
     private void updateAdapter(ArrayList<FurnitureModel> models) {
