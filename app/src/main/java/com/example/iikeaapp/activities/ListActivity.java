@@ -1,10 +1,18 @@
 package com.example.iikeaapp.activities;
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.SearchView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,6 +22,7 @@ import com.example.iikeaapp.R;
 import com.example.iikeaapp.adapter.FurnitureAdapter;
 import com.example.iikeaapp.adapter.Furniture_VerticalRecyclerViewAdapter;
 import com.example.iikeaapp.data.FurnitureModel;
+import com.example.iikeaapp.data.ShoppingCart;
 import com.example.iikeaapp.manager.CartManager;
 import com.example.iikeaapp.manager.Saved;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -21,6 +30,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.slider.RangeSlider;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,9 +47,28 @@ import java.util.Set;
 
 
 public class ListActivity extends AppCompatActivity implements FurnitureAdapter.OnItemClickListener {
-    private ArrayList<FurnitureModel> furnitureModels = new ArrayList<>();
+    ArrayList<FurnitureModel> furnitureModels = new ArrayList<>();
     private Saved saved;
-    private CartManager cartManager;
+    private ShoppingCart shoppingCart;
+    private TextView titleTextView;
+    private androidx.appcompat.widget.SearchView searchView;
+    private ImageView searchIcon;
+
+    private ImageView backIcon;
+
+    private static class ViewHolder {
+        public final RecyclerView items;
+        public final Button filterButton;
+        public final Button sortButton;
+        public final SearchView searchView;
+
+        public ViewHolder(Activity activity) {
+            items = activity.findViewById(R.id.furniture_recycler_view);
+            filterButton = activity.findViewById(R.id.listview_filter_button);
+            sortButton = activity.findViewById(R.id.listview_sort_button);
+            searchView = activity.findViewById(R.id.list_search_view);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +76,7 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
         setContentView(R.layout.activity_list);
 
         saved = Saved.getInstance();
-        cartManager = CartManager.getInstance();
+        shoppingCart = CartManager.getInstance().getShoppingCart();
 
         setUpFurnitureModels();
         initRecyclerView();
@@ -62,7 +92,46 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
     }
 
     private void setupSearchView() {
-        androidx.appcompat.widget.SearchView searchView = findViewById(R.id.list_search_view);
+        // Setup SearchView
+        backIcon = findViewById(R.id.back_icon);
+
+        backIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Expand the search bar and hide the title with animation
+                Intent intent = new Intent(ListActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        // Setup SearchView
+        FloatingActionButton searchIcon = findViewById(R.id.search_icon);
+        titleTextView = findViewById(R.id.title);
+        searchView = findViewById(R.id.list_search_view);
+
+        searchIcon.setOnClickListener(v -> {
+            // Toggle the visibility of the SearchView and title
+            if (searchView.getVisibility() == View.VISIBLE) {
+                searchView.setVisibility(View.GONE);
+                titleTextView.setVisibility(View.VISIBLE);
+            } else {
+                titleTextView.setVisibility(View.GONE);
+                searchView.setVisibility(View.VISIBLE);
+                searchView.setIconified(false);
+                searchView.startAnimation(AnimationUtils.loadAnimation(ListActivity.this, R.anim.search_animation));
+            }
+        });
+
+        searchView.setOnCloseListener(new androidx.appcompat.widget.SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                // Collapse the search bar and show the title with animation
+                searchView.setVisibility(View.GONE);
+                titleTextView.setVisibility(View.VISIBLE);
+                searchView.startAnimation(AnimationUtils.loadAnimation(ListActivity.this, R.anim.search_animation));
+                return false;
+            }
+        });
+
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -77,20 +146,36 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
                 return true;
             }
         });
+
+        String category = getIntent().getStringExtra("category");
+        String searchQuery = getIntent().getStringExtra("searchQuery");
+        if (category != null || searchQuery != null) {
+            ArrayList<FurnitureModel> filteredModels = filterModels(category, searchQuery);
+            updateAdapter(filteredModels);
+        }
     }
 
     private void setupNavigation() {
+        // nav bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
         bottomNavigationView.setOnItemSelectedListener(item -> {
-            int itemId = item.getItemId();
-            if (itemId == R.id.bottom_save) {
-                startActivity(new Intent(getApplicationContext(), SaveActivity.class));
+            if (item.getItemId() == R.id.bottom_save) {
+                Intent intent = new Intent(getApplicationContext(), SaveActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 return true;
-            } else if (itemId == R.id.bottom_home) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            } else if (item.getItemId() == R.id.bottom_home) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 return true;
-            } else if (itemId == R.id.bottom_cart) {
-                startActivity(new Intent(getApplicationContext(), CartActivity.class));
+            } else if (item.getItemId() == R.id.bottom_cart) {
+                Intent intent = new Intent(getApplicationContext(), CartActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 return true;
             }
             return false;
@@ -268,5 +353,14 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra("FurnitureModel", furniture);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Hide the SearchView and show the title
+        searchView.setVisibility(View.GONE);
+        titleTextView.setVisibility(View.VISIBLE);
     }
 }

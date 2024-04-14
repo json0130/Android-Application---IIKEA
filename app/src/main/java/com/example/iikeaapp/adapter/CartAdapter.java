@@ -50,7 +50,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         holder.furniturePriceTextView.setText(String.format("$%.2f", furniture.getPrice()));
         holder.quantityTextView.setText(String.valueOf(quantity));
         holder.totalPriceTextView.setText(String.format("$%.2f", furniture.getPrice() * quantity));
-
+        holder.quantityTextView.setText(String.valueOf(quantity));
         // Load the furniture image if available
 //        if (furniture.getImageResources() != 0) {
 //            holder.furnitureImageView.setImageResource(furniture.getImageResource());

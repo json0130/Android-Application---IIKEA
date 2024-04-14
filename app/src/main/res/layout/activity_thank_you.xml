@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".activities.SaveActivity">
+    tools:context=".activities.CartActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -52,23 +52,28 @@
             android:layout_marginHorizontal="16dp"
             android:layout_below="@+id/toolbar" />
 
-        <TextView
-            android:id="@+id/saved_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="FAVOURITE ITEMS"
-            android:textSize="20dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_below="@+id/toolbar"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/saved_recycler_view"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/saved_text"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginVertical="10dp"/>
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/thank_you_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="THANK YOU \nFOR \nSHOPPING AT \nIIKEA"
+                android:textSize="35dp"
+                android:singleLine="false"
+                android:gravity="center"
+                android:layout_centerInParent="true"/>
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:src="@drawable/baseline_check_24"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/thank_you_text"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
 
         <FrameLayout
             android:id="@+id/bottomNavigation_group"

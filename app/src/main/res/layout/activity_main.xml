@@ -12,222 +12,278 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textView"
+        <RelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/app_name"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display3" />
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/list_search_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@color/white"
+                android:iconifiedByDefault="true"
+                android:visibility="gone"
+                app:queryHint="Search..." />
+
+        </RelativeLayout>
+
+        <!-- Divider -->
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/app_name"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display3" />
+            android:layout_below="@+id/toolbar"
+            android:layout_marginHorizontal="16dp" />
 
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/list_search_view"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?android:attr/colorBackground"
-            android:layout_below="@+id/textView"/>
+            android:layout_height="match_parent"
+            android:layout_below="@+id/divider"
+            android:layout_above="@+id/bottomNavigation_group">
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Top Picks"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:layout_below="@+id/list_search_view"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/main_top_picks_recyclerView"
-            android:scrollbars="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textView2"/>
+                <TextView
+                    android:id="@+id/top_picks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/top_picks"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-        <TextView
-            android:id="@+id/categoriesHeading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Categories"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:layout_below="@+id/main_top_picks_recyclerView"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/main_top_picks_recyclerView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="5dp"
+                    android:scrollbars="horizontal" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/row1"
-            android:orientation="horizontal"
-            android:padding="10dp"
-            android:layout_below="@+id/categoriesHeading"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/categoriesHeading">
-
-            <androidx.cardview.widget.CardView
-                android:onClick="categoryClicked"
-                android:tag="Living"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:id="@+id/livingCard"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                app:cardElevation="20dp"
-                app:cardCornerRadius="20dp">
-
-                <RelativeLayout
+                <!-- Divider -->
+                <com.google.android.material.divider.MaterialDivider
+                    android:id="@+id/divider2"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/toolbar"
+                    android:layout_marginHorizontal="16dp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/livingCatLabel"
-                        android:text="LIVING"
-                        android:textSize="20dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_below="@+id/livingCatImage"/>
+                <TextView
+                    android:id="@+id/categoriesHeading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/category"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-                    <ImageView
-                        android:id="@+id/livingCatImage"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="15dp"
-                        app:srcCompat="@drawable/sofa" />
-
-                </RelativeLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:onClick="categoryClicked"
-                android:tag="Office"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:id="@+id/officeCard"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                app:cardElevation="20dp"
-                app:cardCornerRadius="20dp">
-
-                <RelativeLayout
+                <LinearLayout
+                    android:id="@+id/row1"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="7dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <!-- Living Room Card -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/livingCard"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:id="@+id/officeCatLabel"
-                        android:text="OFFICE"
-                        android:textSize="20dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_below="@+id/officeCatImage"/>
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:onClick="categoryClicked"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="20dp">
 
-                    <ImageView
-                        android:id="@+id/officeCatImage"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="15dp"
-                        app:srcCompat="@drawable/workplace" />
-                </RelativeLayout>
-            </androidx.cardview.widget.CardView>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="175dp"
-            android:id="@+id/row2"
-            android:orientation="horizontal"
-            android:padding="10dp"
-            android:layout_below="@+id/row1"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/row1">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
-            <androidx.cardview.widget.CardView
-                android:onClick="categoryClicked"
-                android:tag="Outdoor"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                app:cardElevation="20dp"
-                app:cardCornerRadius="20dp">
+                            <ImageView
+                                android:id="@+id/livingCatImage"
+                                android:layout_width="70dp"
+                                android:layout_height="70dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="15dp"
+                                app:srcCompat="@drawable/sofa" />
 
-                <RelativeLayout
+                            <TextView
+                                android:id="@+id/livingCatLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/livingCatImage"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="10dp"
+                                android:text="@string/living_cat"
+                                android:textSize="20dp" />
+
+                        </RelativeLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Office Card -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/officeCard"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:onClick="categoryClicked"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="20dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:id="@+id/officeCatImage"
+                                android:layout_width="70dp"
+                                android:layout_height="70dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="15dp"
+                                app:srcCompat="@drawable/workplace" />
+
+                            <TextView
+                                android:id="@+id/officeCatLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/officeCatImage"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="10dp"
+                                android:text="@string/office_cat"
+                                android:textSize="20dp" />
+
+                        </RelativeLayout>
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/row2"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="7dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <!-- Outdoor Card -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:id="@+id/outdoorCatLabel"
-                        android:text="OUTDOOR"
-                        android:textSize="20dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_below="@+id/outdoorCatImage"/>
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:onClick="categoryClicked"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="20dp">
 
-                    <ImageView
-                        android:id="@+id/outdoorCatImage"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="15dp"
-                        app:srcCompat="@drawable/chairs" />
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
-                </RelativeLayout>
-            </androidx.cardview.widget.CardView>
+                            <ImageView
+                                android:id="@+id/outdoorCatImage"
+                                android:layout_width="70dp"
+                                android:layout_height="70dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="15dp"
+                                app:srcCompat="@drawable/chairs" />
 
-            <androidx.cardview.widget.CardView
-                android:onClick="categoryClicked"
-                android:tag="Lighting"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                app:cardElevation="20dp"
-                app:cardCornerRadius="20dp">
+                            <TextView
+                                android:id="@+id/outdoorCatLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/outdoorCatImage"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="10dp"
+                                android:text="@string/outdoor_cat"
+                                android:textSize="20dp" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                        </RelativeLayout>
+                    </androidx.cardview.widget.CardView>
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <!-- Lighting Card -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:id="@+id/lightingCatLabel"
-                        android:text="LIGHTING"
-                        android:textSize="20dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_below="@+id/lightingCatImage"/>
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:onClick="categoryClicked"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="20dp">
 
-                    <ImageView
-                        android:id="@+id/lightingCatImage"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="15dp"
-                        app:srcCompat="@drawable/hanging_lamp" />
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
-                </RelativeLayout>
-            </androidx.cardview.widget.CardView>
-        </LinearLayout>
+                            <ImageView
+                                android:id="@+id/lightingCatImage"
+                                android:layout_width="70dp"
+                                android:layout_height="70dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="15dp"
+                                app:srcCompat="@drawable/hanging_lamp" />
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottomNavigation"
+                            <TextView
+                                android:id="@+id/lightingCatLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/lightingCatImage"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="10dp"
+                                android:text="@string/light_cat"
+                                android:textSize="20dp" />
+
+                        </RelativeLayout>
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <FrameLayout
+            android:id="@+id/bottomNavigation_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/dialogbkg"
-            android:elevation="2dp"
-            app:itemIconSize="30dp"
-            app:itemIconTint="@drawable/item_selector"
-            app:itemRippleColor="@android:color/transparent"
-            app:labelVisibilityMode="unlabeled"
-            app:menu="@menu/bottom_menu"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true">
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottomNavigation"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/dialogbkg"
+                android:elevation="2dp"
+                app:itemIconSize="30dp"
+                app:itemIconTint="@drawable/item_selector"
+                app:itemRippleColor="@android:color/transparent"
+                app:labelVisibilityMode="unlabeled"
+                app:menu="@menu/bottom_menu" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/search_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/baseline_search_24"
+                app:backgroundTint="@color/md_theme_light_onPrimary"
+                app:tint="@color/md_theme_dark_inversePrimary"
+                app:elevation="20dp"
+                app:fabSize="normal" />
+
+        </FrameLayout>
+
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

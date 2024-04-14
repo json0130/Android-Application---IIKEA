@@ -1,6 +1,7 @@
 package com.example.iikeaapp.data;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Objects;
 
 // this one uses json
@@ -41,6 +42,7 @@ public class FurnitureModel implements Serializable{
         return imageResources;
     }
 
+    // Add the isSaved() getter method
     public boolean isSaved() {
         return isSaved;
     }
@@ -55,11 +57,18 @@ public class FurnitureModel implements Serializable{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FurnitureModel that = (FurnitureModel) o;
-        return Objects.equals(furnitureName, that.furnitureName);
+        return Double.compare(that.price, price) == 0 &&
+                isSaved == that.isSaved &&
+                Objects.equals(furnitureName, that.furnitureName) &&
+                Objects.equals(category, that.category) &&
+                Objects.equals(description, that.description) &&
+                Arrays.equals(imageResources, that.imageResources);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(furnitureName);
+        int result = Objects.hash(furnitureName, category, price, description, isSaved);
+        result = 31 * result + Arrays.hashCode(imageResources);
+        return result;
     }
 }

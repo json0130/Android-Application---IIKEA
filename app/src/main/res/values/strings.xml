@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">I I K E A</string>
     <string name="furniture_name">N A M E</string>
+    <string name="top_picks">TOP TRENDS</string>
+    <string name="category">CATEGORIES</string>
+
+    <string name="living_cat">LIVING</string>
+    <string name="office_cat">OFFICE</string>
+    <string name="outdoor_cat">OUTDOOR</string>
+    <string name="light_cat">LIGHTING</string>
+
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>

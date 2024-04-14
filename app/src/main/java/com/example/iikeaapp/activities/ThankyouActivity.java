@@ -1,10 +1,5 @@
 package com.example.iikeaapp.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,42 +7,32 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.iikeaapp.R;
-import com.example.iikeaapp.adapter.SavedAdapter;
-import com.example.iikeaapp.data.FurnitureModel;
+import com.example.iikeaapp.data.ShoppingCart;
+import com.example.iikeaapp.manager.CartManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class SaveActivity extends AppCompatActivity {
-    private RecyclerView recyclerViewSaved;
-    private SavedAdapter savedAdapter;
+public class ThankyouActivity extends AppCompatActivity {
+    private ShoppingCart shoppingCart;
+
     private TextView titleTextView;
     private androidx.appcompat.widget.SearchView searchView;
     private ImageView backIcon;
-
-    private static final int REQUEST_CODE_DETAIL_ACTIVITY = 100;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_saved);
+        setContentView(R.layout.activity_thank_you);
 
+        shoppingCart = CartManager.getInstance().getShoppingCart();
 
-        // Initialize the RecyclerView
-        recyclerViewSaved = findViewById(R.id.saved_recycler_view);
-        recyclerViewSaved.setLayoutManager(new LinearLayoutManager(this));
-
-        // Create and set the SavedAdapter
-        savedAdapter = new SavedAdapter(this, REQUEST_CODE_DETAIL_ACTIVITY);
-        recyclerViewSaved.setAdapter(savedAdapter);
-
-        backIcon = findViewById(R.id.back_icon);
-
+        ImageView backIcon = findViewById(R.id.back_icon);
         backIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Expand the search bar and hide the title with animation
-                Intent intent = new Intent(SaveActivity.this, MainActivity.class);
+                Intent intent = new Intent(ThankyouActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -66,7 +51,7 @@ public class SaveActivity extends AppCompatActivity {
                 titleTextView.setVisibility(View.GONE);
                 searchView.setVisibility(View.VISIBLE);
                 searchView.setIconified(false);
-                searchView.startAnimation(AnimationUtils.loadAnimation(SaveActivity.this, R.anim.search_animation));
+                searchView.startAnimation(AnimationUtils.loadAnimation(ThankyouActivity.this, R.anim.search_animation));
             }
         });
 
@@ -76,7 +61,7 @@ public class SaveActivity extends AppCompatActivity {
                 // Collapse the search bar and show the title with animation
                 searchView.setVisibility(View.GONE);
                 titleTextView.setVisibility(View.VISIBLE);
-                searchView.startAnimation(AnimationUtils.loadAnimation(SaveActivity.this, R.anim.search_animation));
+                searchView.startAnimation(AnimationUtils.loadAnimation(ThankyouActivity.this, R.anim.search_animation));
                 return false;
             }
         });
@@ -85,7 +70,7 @@ public class SaveActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 // Start ListActivity with the search query
-                Intent intent = new Intent(SaveActivity.this, ListActivity.class);
+                Intent intent = new Intent(ThankyouActivity.this, ListActivity.class);
                 intent.putExtra("searchQuery", query);
                 startActivity(intent);
                 return false;
@@ -99,10 +84,13 @@ public class SaveActivity extends AppCompatActivity {
 
         // nav bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
-        bottomNavigationView.setSelectedItemId(R.id.bottom_save);
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.bottom_save) {
+            if (item.getItemId() == R.id.bottom_cart) {
+                Intent intent = new Intent(getApplicationContext(), CartActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 return true;
             } else if (item.getItemId() == R.id.bottom_home) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -110,8 +98,8 @@ public class SaveActivity extends AppCompatActivity {
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 return true;
-            } else if (item.getItemId() == R.id.bottom_cart) {
-                Intent intent = new Intent(getApplicationContext(), CartActivity.class);
+            } else if (item.getItemId() == R.id.bottom_save) {
+                Intent intent = new Intent(getApplicationContext(), SaveActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
@@ -119,21 +107,5 @@ public class SaveActivity extends AppCompatActivity {
             }
             return false;
         });
-    }
-
-    // Update the savedAdapter when the activity is resumed
-    @Override
-    protected void onResume() {
-        super.onResume();
-        updateAdapterData();
-    }
-
-    private void updateAdapterData() {
-        savedAdapter.updateData();
-        savedAdapter.notifyDataSetChanged();
-
-        // Hide the SearchView and show the title
-        searchView.setVisibility(View.GONE);
-        titleTextView.setVisibility(View.VISIBLE);
     }
 }

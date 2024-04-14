@@ -3,6 +3,8 @@ package com.example.iikeaapp.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -19,6 +21,7 @@ import com.example.iikeaapp.manager.Saved;
 import com.example.iikeaapp.data.ShoppingCart;
 import com.example.iikeaapp.manager.CartManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<FurnitureModel> furnitureModels = new ArrayList<>();
 
     private ShoppingCart shoppingCart;
+    private TextView titleTextView;
+    private androidx.appcompat.widget.SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +63,34 @@ public class MainActivity extends AppCompatActivity {
         recyclerViewTopPicks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         // Setup SearchView
-        androidx.appcompat.widget.SearchView searchView = findViewById(R.id.list_search_view);
+        FloatingActionButton searchIcon = findViewById(R.id.search_icon);
+        //titleTextView = findViewById(R.id.title); //TODO: find this?
+        searchView = findViewById(R.id.list_search_view);
+
+        searchIcon.setOnClickListener(v -> {
+            // Toggle the visibility of the SearchView and title
+            if (searchView.getVisibility() == View.VISIBLE) {
+                searchView.setVisibility(View.GONE);
+                titleTextView.setVisibility(View.VISIBLE);
+            } else {
+                titleTextView.setVisibility(View.GONE);
+                searchView.setVisibility(View.VISIBLE);
+                searchView.setIconified(false);
+                searchView.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.search_animation));
+            }
+        });
+
+        searchView.setOnCloseListener(new androidx.appcompat.widget.SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                // Collapse the search bar and show the title with animation
+                searchView.setVisibility(View.GONE);
+                titleTextView.setVisibility(View.VISIBLE);
+                searchView.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.search_animation));
+                return false;
+            }
+        });
+
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.iikeaapp.R;
@@ -16,12 +18,16 @@ import com.example.iikeaapp.manager.CartManager;
 import com.example.iikeaapp.manager.Saved;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class CartActivity extends AppCompatActivity {
     private RecyclerView recyclerViewCart;
     private CartAdapter cartAdapter;
     private ShoppingCart shoppingCart;
     private TextView totalPriceTextView;
+    private TextView titleTextView;
+    private androidx.appcompat.widget.SearchView searchView;
+    private ImageView backIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +56,62 @@ public class CartActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        backIcon = findViewById(R.id.back_icon);
+        backIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Expand the search bar and hide the title with animation
+                Intent intent = new Intent(CartActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // Setup SearchView
+        FloatingActionButton searchIcon = findViewById(R.id.search_icon);
+        titleTextView = findViewById(R.id.title);
+        searchView = findViewById(R.id.list_search_view);
+
+        searchIcon.setOnClickListener(v -> {
+            // Toggle the visibility of the SearchView and title
+            if (searchView.getVisibility() == View.VISIBLE) {
+                searchView.setVisibility(View.GONE);
+                titleTextView.setVisibility(View.VISIBLE);
+            } else {
+                titleTextView.setVisibility(View.GONE);
+                searchView.setVisibility(View.VISIBLE);
+                searchView.setIconified(false);
+                searchView.startAnimation(AnimationUtils.loadAnimation(CartActivity.this, R.anim.search_animation));
+            }
+        });
+
+        searchView.setOnCloseListener(new androidx.appcompat.widget.SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                // Collapse the search bar and show the title with animation
+                searchView.setVisibility(View.GONE);
+                titleTextView.setVisibility(View.VISIBLE);
+                searchView.startAnimation(AnimationUtils.loadAnimation(CartActivity.this, R.anim.search_animation));
+                return false;
+            }
+        });
+
+        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // Start ListActivity with the search query
+                Intent intent = new Intent(CartActivity.this, ListActivity.class);
+                intent.putExtra("searchQuery", query);
+                startActivity(intent);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
 
         // Set up the bottom navigation bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
@@ -80,11 +142,14 @@ public class CartActivity extends AppCompatActivity {
         totalPriceTextView.setText(String.format("Total Price: $%.2f", totalPrice));
         // You can also update any other UI elements related to the total price here
     }
-
     @Override
     protected void onResume() {
         super.onResume();
         cartAdapter.notifyDataSetChanged();
         updateTotalPrice();
+
+        // Hide the SearchView and show the title
+        searchView.setVisibility(View.GONE);
+        titleTextView.setVisibility(View.VISIBLE);
     }
 }
