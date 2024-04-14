@@ -1,36 +1,25 @@
 package com.example.iikeaapp.activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.iikeaapp.R;
-import com.example.iikeaapp.data.SavedFurniture;
 import com.example.iikeaapp.data.ShoppingCart;
 import com.example.iikeaapp.manager.CartManager;
-import com.example.iikeaapp.manager.SavedManager;
+import com.example.iikeaapp.manager.Saved;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 
 public class CheckoutActivity extends AppCompatActivity {
-    private SavedFurniture savedFurniture;
     private ShoppingCart shoppingCart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
 
-        savedFurniture = SavedManager.getInstance().getSavedFurniture();
         shoppingCart = CartManager.getInstance().getShoppingCart();
 
         MaterialButton checkOutButton = findViewById(R.id.checkout_button);

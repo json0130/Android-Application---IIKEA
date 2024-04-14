@@ -4,38 +4,35 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.iikeaapp.R;
 import com.example.iikeaapp.adapter.SavedAdapter;
 import com.example.iikeaapp.data.FurnitureModel;
-import com.example.iikeaapp.data.SavedFurniture;
-import com.example.iikeaapp.manager.SavedManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class SaveActivity extends AppCompatActivity {
-    private RecyclerView recyclerViewCart;
+    private RecyclerView recyclerViewSaved;
     private SavedAdapter savedAdapter;
-    private SavedFurniture savedFurniture;
 
     private static final int REQUEST_CODE_DETAIL_ACTIVITY = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("debug", "created");
         setContentView(R.layout.activity_saved);
 
-        savedFurniture = SavedManager.getInstance().getSavedFurniture();
 
         // Initialize the RecyclerView
-        recyclerViewCart = findViewById(R.id.saved_recycler_view);
-        recyclerViewCart.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewSaved = findViewById(R.id.saved_recycler_view);
+        recyclerViewSaved.setLayoutManager(new LinearLayoutManager(this));
 
         // Create and set the SavedAdapter
         savedAdapter = new SavedAdapter(this, REQUEST_CODE_DETAIL_ACTIVITY);
-        recyclerViewCart.setAdapter(savedAdapter);
+        recyclerViewSaved.setAdapter(savedAdapter);
 
         // nav bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
@@ -65,13 +62,12 @@ public class SaveActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        savedAdapter.notifyDataSetChanged();
+        Log.d("debug", "resumed");
+        updateAdapterData();
+    }
 
-        // Check if an item was removed
-        if (getIntent().hasExtra("removedItem")) {
-            FurnitureModel removedItem = (FurnitureModel) getIntent().getSerializableExtra("removedItem");
-            // Update the UI or perform any necessary actions based on the removed item
-            getIntent().removeExtra("removedItem");
-        }
+    private void updateAdapterData() {
+        savedAdapter.updateData();
+        savedAdapter.notifyDataSetChanged();
     }
 }

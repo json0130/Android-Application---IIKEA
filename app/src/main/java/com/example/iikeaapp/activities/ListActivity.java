@@ -14,10 +14,8 @@ import com.example.iikeaapp.R;
 import com.example.iikeaapp.adapter.FurnitureAdapter;
 import com.example.iikeaapp.adapter.Furniture_VerticalRecyclerViewAdapter;
 import com.example.iikeaapp.data.FurnitureModel;
-import com.example.iikeaapp.data.SavedFurniture;
-import com.example.iikeaapp.data.ShoppingCart;
 import com.example.iikeaapp.manager.CartManager;
-import com.example.iikeaapp.manager.SavedManager;
+import com.example.iikeaapp.manager.Saved;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
@@ -39,7 +37,7 @@ import java.util.Set;
 
 public class ListActivity extends AppCompatActivity implements FurnitureAdapter.OnItemClickListener {
     private ArrayList<FurnitureModel> furnitureModels = new ArrayList<>();
-    private SavedManager savedManager;
+    private Saved saved;
     private CartManager cartManager;
 
     @Override
@@ -47,7 +45,7 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        savedManager = SavedManager.getInstance();
+        saved = Saved.getInstance();
         cartManager = CartManager.getInstance();
 
         setUpFurnitureModels();

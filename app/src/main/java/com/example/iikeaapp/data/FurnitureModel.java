@@ -1,6 +1,7 @@
 package com.example.iikeaapp.data;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 // this one uses json
 public class FurnitureModel implements Serializable{
@@ -47,5 +48,18 @@ public class FurnitureModel implements Serializable{
     // Add the setSaved() method
     public void setSaved(boolean saved) {
         isSaved = saved;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FurnitureModel that = (FurnitureModel) o;
+        return Objects.equals(furnitureName, that.furnitureName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(furnitureName);
     }
 }

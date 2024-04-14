@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -16,8 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.iikeaapp.R;
 import com.example.iikeaapp.adapter.Furniture_HorizontalRecyclerViewAdapter;
 import com.example.iikeaapp.data.FurnitureModel;
-import com.example.iikeaapp.data.SavedFurniture;
-import com.example.iikeaapp.manager.SavedManager;
+import com.example.iikeaapp.manager.Saved;
 import com.example.iikeaapp.data.ShoppingCart;
 import com.example.iikeaapp.manager.CartManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -34,7 +32,6 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     // top picks recycler view init
     ArrayList<FurnitureModel> furnitureModels = new ArrayList<>();
-    private SavedFurniture savedFurniture;
 
     private ShoppingCart shoppingCart;
 
@@ -49,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Get the ShoppingCart instance from the CartManager
-        savedFurniture = SavedManager.getInstance().getSavedFurniture();
         shoppingCart = CartManager.getInstance().getShoppingCart();
 
         // init recycler views
