@@ -51,7 +51,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         int quantity = entry.getValue();
 
         holder.furnitureNameTextView.setText(furniture.getFurnitureName());
-        holder.furniturePriceTextView.setText(String.format("$%.2f", furniture.getPrice()));
         holder.quantityTextView.setText(String.valueOf(quantity));
         holder.totalPriceTextView.setText(String.format("$%.2f", furniture.getPrice() * quantity));
         holder.quantityTextView.setText(String.valueOf(quantity));
@@ -77,11 +76,19 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                 notifyItemChanged(position);
                 updateTotalPrice();
             } else {
-                shoppingCart.removeItem(furniture);
-                cartItems.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, cartItems.size());
-                updateTotalPrice();
+                Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_out_right);
+                holder.itemView.startAnimation(animation);
+
+                // Remove the item from the list after the animation ends
+                Handler handler = new Handler();
+                handler.postDelayed(() -> {
+                    shoppingCart.removeItem(furniture);
+                    cartItems.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, cartItems.size());
+                    updateTotalPrice();
+                }, animation.getDuration());
+
             }
         });
 
@@ -130,7 +137,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         public CartViewHolder(@NonNull View itemView) {
             super(itemView);
             furnitureNameTextView = itemView.findViewById(R.id.furniture_item_title);
-            furniturePriceTextView = itemView.findViewById(R.id.furniture_item_price);
             quantityTextView = itemView.findViewById(R.id.item_quantity);
             totalPriceTextView = itemView.findViewById(R.id.furniture_total_price);
             furnitureImageView = itemView.findViewById(R.id.furniture_image);

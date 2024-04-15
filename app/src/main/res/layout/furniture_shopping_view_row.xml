@@ -64,7 +64,7 @@
                     app:layout_constraintTop_toTopOf="@+id/view" />
 
                 <TextView
-                    android:id="@+id/furniture_item_price"
+                    android:id="@+id/furniture_total_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="$0"
@@ -72,17 +72,6 @@
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="@+id/view"
                     app:layout_constraintStart_toStartOf="@+id/furniture_item_title" />
-
-                <TextView
-                    android:id="@+id/furniture_total_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:text="$0"
-                    android:textColor="@color/md_theme_light_onTertiaryContainer"
-                    android:textSize="18sp"
-                    app:layout_constraintEnd_toStartOf="@+id/remove_button"
-                    app:layout_constraintTop_toTopOf="@+id/furniture_item_title" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayout"

@@ -94,7 +94,6 @@ public class DetailActivity extends AppCompatActivity {
             quantityTextView.setText(String.valueOf(this.quantity));
         });
 
-        ImageView cartAnimationView = findViewById(R.id.cart_animation_view);
         // Add to shopping cart
         FloatingActionButton addToCartButton = findViewById(R.id.add_to_shopping_cart_btn);
         addToCartButton.setOnClickListener(v -> {
@@ -102,29 +101,6 @@ public class DetailActivity extends AppCompatActivity {
             if (item != null) {
                 shoppingCart.addItem(item, this.quantity);
                 Toast.makeText(DetailActivity.this, "Item added to cart", Toast.LENGTH_SHORT).show();
-
-                // Show the shopping cart ImageView
-                cartAnimationView.setVisibility(View.VISIBLE);
-
-                // Load the animation
-                Animation animation = AnimationUtils.loadAnimation(DetailActivity.this, R.anim.blink_animation);
-
-                // Set an animation listener to hide the ImageView when the animation ends
-                animation.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {}
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        cartAnimationView.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {}
-                });
-
-                // Start the animation on the shopping cart ImageView
-                cartAnimationView.startAnimation(animation);
             }
         });
 
@@ -180,19 +156,16 @@ public class DetailActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), SaveActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivityForResult(intent, REQUEST_CODE_SAVE_ACTIVITY);
-                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 return true;
             } else if (item.getItemId() == R.id.bottom_home) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
-                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 return true;
             } else if (item.getItemId() == R.id.bottom_cart) {
                 Intent intent = new Intent(getApplicationContext(), CartActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
-                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 return true;
             }
             return false;

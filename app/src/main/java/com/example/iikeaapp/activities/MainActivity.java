@@ -78,13 +78,11 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), CartActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
-                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 return true;
             } else if (item.getItemId() == R.id.bottom_save) {
                 Intent intent = new Intent(getApplicationContext(), SaveActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
-                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 return true;
             }
             return false;
@@ -142,7 +140,6 @@ public class MainActivity extends AppCompatActivity {
         expandFadeOut.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                // Show the overlay view
             }
 
             @Override
