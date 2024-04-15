@@ -249,6 +249,16 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
         updateAdapter(filteredModels);
     }
 
+    private void filterFurnitureByCategory(String category) {
+        ArrayList<FurnitureModel> filteredModels = new ArrayList<>();
+        for (FurnitureModel model : furnitureModels) {
+            if (model.getCategory().equalsIgnoreCase(category)) {
+                filteredModels.add(model);
+            }
+        }
+        updateAdapter(filteredModels);
+    }
+
 
 
     private void setupSortGroup(View view) {
@@ -268,16 +278,6 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
         ArrayList<FurnitureModel> filteredModels = new ArrayList<>();
         for (FurnitureModel model : furnitureModels) {
             if (model.getPrice() <= maxPrice) filteredModels.add(model);
-        }
-        updateAdapter(filteredModels);
-    }
-
-    private void filterFurnitureByCategory(String category) {
-        ArrayList<FurnitureModel> filteredModels = new ArrayList<>();
-        for (FurnitureModel model : furnitureModels) {
-            if (model.getCategory().equalsIgnoreCase(category)) {
-                filteredModels.add(model);
-            }
         }
         updateAdapter(filteredModels);
     }
