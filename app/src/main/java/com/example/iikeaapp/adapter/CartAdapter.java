@@ -1,6 +1,7 @@
 package com.example.iikeaapp.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,21 +17,28 @@ import com.example.iikeaapp.activities.CartActivity;
 import com.example.iikeaapp.data.FurnitureModel;
 import com.example.iikeaapp.data.ShoppingCart;
 import com.example.iikeaapp.manager.CartManager;
-
+import com.bumptech.glide.Glide;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> {
+    public interface OnItemClickListener {
+        void onItemClick(FurnitureModel item);
+    }
 
     private List<Map.Entry<FurnitureModel, Integer>> cartItems;
     private Context context;
     private ShoppingCart shoppingCart;
+    private OnItemClickListener listener;
 
-    public CartAdapter(Context context) {
+
+    public CartAdapter(Context context, OnItemClickListener listener) {
         this.shoppingCart = CartManager.getInstance().getShoppingCart();
         this.cartItems = new ArrayList<>(shoppingCart.getItems().entrySet());
         this.context = context;
+        this.listener = listener;
     }
 
     @NonNull
@@ -52,9 +60,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         holder.totalPriceTextView.setText(String.format("$%.2f", furniture.getPrice() * quantity));
         holder.quantityTextView.setText(String.valueOf(quantity));
         // Load the furniture image if available
-//        if (furniture.getImageResources() != 0) {
-//            holder.furnitureImageView.setImageResource(furniture.getImageResource());
-//        }
+        Log.d("debug", context.toString());
+        Log.d("debug", Arrays.toString(furniture.getImageResources()));
+        Log.d("debug", holder.furnitureImageView.toString());
+        Glide.with(context)
+                .load(furniture.getImageResources()[0])
+                .into(holder.furnitureImageView);
 
         holder.plusButton.setOnClickListener(v -> {
             if (containsItem(furniture)) {
@@ -115,6 +126,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         TextView minusButton;
         ImageView removeButton;
 
+
         public CartViewHolder(@NonNull View itemView) {
             super(itemView);
             furnitureNameTextView = itemView.findViewById(R.id.furniture_item_title);
@@ -125,6 +137,16 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             plusButton = itemView.findViewById(R.id.plus_sign);
             minusButton = itemView.findViewById(R.id.minus_sign);
             removeButton = itemView.findViewById(R.id.remove_button);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION && listener != null) {
+                        listener.onItemClick(cartItems.get(position).getKey());
+                    }
+                }
+            });
         }
     }
 }

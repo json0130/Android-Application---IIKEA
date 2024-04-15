@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.iikeaapp.R;
 import com.example.iikeaapp.adapter.CartAdapter;
+import com.example.iikeaapp.data.FurnitureModel;
 import com.example.iikeaapp.data.ShoppingCart;
 import com.example.iikeaapp.manager.CartManager;
 import com.example.iikeaapp.manager.Saved;
@@ -20,7 +21,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class CartActivity extends AppCompatActivity {
+public class CartActivity extends AppCompatActivity implements CartAdapter.OnItemClickListener {
     private RecyclerView recyclerViewCart;
     private CartAdapter cartAdapter;
     private ShoppingCart shoppingCart;
@@ -44,7 +45,7 @@ public class CartActivity extends AppCompatActivity {
         recyclerViewCart.setLayoutManager(new LinearLayoutManager(this));
 
         // Create and set the CartAdapter
-        cartAdapter = new CartAdapter(this);
+        cartAdapter = new CartAdapter(this, this);
         recyclerViewCart.setAdapter(cartAdapter);
 
         // Set up the checkout button click listener
@@ -151,5 +152,12 @@ public class CartActivity extends AppCompatActivity {
         // Hide the SearchView and show the title
         searchView.setVisibility(View.GONE);
         titleTextView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onItemClick(FurnitureModel furniture) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra("FurnitureModel", furniture);
+        startActivity(intent);
     }
 }
