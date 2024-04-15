@@ -1,9 +1,9 @@
 package com.example.iikeaapp.activities;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,14 +22,12 @@ import com.example.iikeaapp.adapter.FurnitureAdapter;
 import com.example.iikeaapp.adapter.Furniture_VerticalRecyclerViewAdapter;
 import com.example.iikeaapp.data.FurnitureModel;
 import com.example.iikeaapp.data.ShoppingCart;
-import com.example.iikeaapp.manager.CartManager;
 import com.example.iikeaapp.manager.Saved;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.slider.RangeSlider;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
@@ -43,11 +40,17 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 
 public class ListActivity extends AppCompatActivity implements FurnitureAdapter.OnItemClickListener {
+    private String currentSearchQuery = "";
+    private Set<String> currentCategories = new HashSet<>();
+    private double currentMaxPrice = Double.MAX_VALUE;
+    private boolean sortHighestToLowest = false;
     ArrayList<FurnitureModel> furnitureModels = new ArrayList<>();
+    private Set<String> visibleCategories = new HashSet<>();
     private Saved saved;
     private ShoppingCart shoppingCart;
     private TextView titleTextView;
@@ -75,20 +78,22 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        saved = Saved.getInstance();
-        shoppingCart = CartManager.getInstance().getShoppingCart();
+        furnitureModels = loadFurnitureData();
 
-        setUpFurnitureModels();
+        // Initialize necessary components and listeners
         initRecyclerView();
         setupSearchView();
         setupNavigation();
         setupButtonListeners();
+
+        // Load furniture data and apply initial filters
+        updateAdapter();
     }
 
     private void initRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.furniture_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        updateAdapter(furnitureModels);
+        updateAdapter();
     }
 
     private void setupSearchView() {
@@ -149,9 +154,13 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
 
         String category = getIntent().getStringExtra("category");
         String searchQuery = getIntent().getStringExtra("searchQuery");
-        if (category != null || searchQuery != null) {
-            ArrayList<FurnitureModel> filteredModels = filterModels(category, searchQuery);
-            updateAdapter(filteredModels);
+        if (category != null) {
+            currentCategories.add(category);
+            updateAdapter();
+        }
+        if (searchQuery != null) {
+            currentSearchQuery = searchQuery;
+            updateAdapter();
         }
     }
 
@@ -209,58 +218,37 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
         priceSlider.setValueTo((float) maxPrice);
         priceSlider.setValues((float) maxPrice);
         priceSlider.addOnChangeListener((slider, value, fromUser) -> {
-            if (fromUser) filterFurnitureByMaxPrice(value);
+            if (fromUser) {
+                currentMaxPrice = value;
+                updateAdapter();
+            }
         });
     }
 
     private void setupChips(View view) {
         ChipGroup chipGroup = view.findViewById(R.id.filter_tag_group);
-        // Initialize active filters with all categories if all chips are initially checked.
-        Set<String> activeFilters = new HashSet<>();
-        int chipCount = chipGroup.getChildCount();
-        for (int i = 0; i < chipCount; i++) {
+        for (int i = 0; i < chipGroup.getChildCount(); i++) {
             Chip chip = (Chip) chipGroup.getChildAt(i);
-            if (chip.isChecked()) {
-                activeFilters.add(chip.getText().toString().toUpperCase());
-            }
-            // Listen to changes on each chip.
+            chip.setChecked(currentCategories.contains(chip.getText().toString().toUpperCase()));
             chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 String category = buttonView.getText().toString().toUpperCase();
                 if (isChecked) {
-                    activeFilters.add(category);
+                    currentCategories.add(category);
                 } else {
-                    activeFilters.remove(category);
+                    currentCategories.remove(category);
                 }
-                filterFurnitureByCategories(activeFilters);
+                updateAdapter();
             });
         }
     }
 
-    private void filterFurnitureByCategories(Set<String> categories) {
-        ArrayList<FurnitureModel> filteredModels = new ArrayList<>();
-        for (FurnitureModel model : furnitureModels) {
-            if (categories.isEmpty() || categories.contains(model.getCategory().toUpperCase())) {
-                filteredModels.add(model);
-            }
-        }
-        updateAdapter(filteredModels);
-    }
-
-    private void filterFurnitureByCategory(String category) {
-        ArrayList<FurnitureModel> filteredModels = new ArrayList<>();
-        for (FurnitureModel model : furnitureModels) {
-            if (model.getCategory().equalsIgnoreCase(category)) {
-                filteredModels.add(model);
-            }
-        }
-        updateAdapter(filteredModels);
-    }
-
-
-
     private void setupSortGroup(View view) {
         RadioGroup sortGroup = view.findViewById(R.id.sort_group);
-        sortGroup.setOnCheckedChangeListener((group, checkedId) -> sortFurnitureByPrice(checkedId == R.id.sort_high_low));
+        sortGroup.check(sortHighestToLowest ? R.id.sort_high_low : R.id.sort_low_high);
+        sortGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            sortHighestToLowest = checkedId == R.id.sort_high_low;
+            updateAdapter();
+        });
     }
 
     private double getMaxPrice() {
@@ -271,41 +259,53 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
         return maxPrice;
     }
 
-    private void filterFurnitureByMaxPrice(float maxPrice) {
+    private void updateAdapter() {
         ArrayList<FurnitureModel> filteredModels = new ArrayList<>();
+
+        // Filter by category if specified
         for (FurnitureModel model : furnitureModels) {
-            if (model.getPrice() <= maxPrice) filteredModels.add(model);
-        }
-        updateAdapter(filteredModels);
-    }
-
-    private void sortFurnitureByPrice(boolean highestToLowest) {
-        Collections.sort(furnitureModels, (o1, o2) -> Double.compare(highestToLowest ? o2.getPrice() : o1.getPrice(), highestToLowest ? o1.getPrice() : o2.getPrice()));
-        updateAdapter(furnitureModels);
-    }
-
-    private void updateAdapter(ArrayList<FurnitureModel> models) {
-        Furniture_VerticalRecyclerViewAdapter adapter = new Furniture_VerticalRecyclerViewAdapter(this, models);
-        ((RecyclerView) findViewById(R.id.furniture_recycler_view)).setAdapter(adapter);
-    }
-
-    private ArrayList<FurnitureModel> filterModels(String category, String searchQuery) {
-        ArrayList<FurnitureModel> filteredModels = new ArrayList<>();
-        for (FurnitureModel model : furnitureModels) {
-            if ((category == null || model.getCategory().equalsIgnoreCase(category)) &&
-                    (searchQuery == null || model.getFurnitureName().toLowerCase().contains(searchQuery.toLowerCase()))) {
+            if (currentCategories.isEmpty() || currentCategories.contains(model.getCategory().toUpperCase())) {
                 filteredModels.add(model);
             }
         }
-        return filteredModels;
+
+        // Further filter by search query if non-empty
+        if (!currentSearchQuery.isEmpty()) {
+            filteredModels = new ArrayList<>(filteredModels); // Make a copy to avoid concurrent modification
+            for (Iterator<FurnitureModel> it = filteredModels.iterator(); it.hasNext(); ) {
+                FurnitureModel model = it.next();
+                if (!model.getFurnitureName().toLowerCase().contains(currentSearchQuery.toLowerCase())) {
+                    it.remove();
+                }
+            }
+        }
+
+        // Further filter by max price
+        double maxPrice = currentMaxPrice;
+        filteredModels = new ArrayList<>(filteredModels); // Make a copy to avoid concurrent modification
+        for (Iterator<FurnitureModel> it = filteredModels.iterator(); it.hasNext(); ) {
+            FurnitureModel model = it.next();
+            if (model.getPrice() > maxPrice) {
+                it.remove();
+            }
+        }
+
+        // Sort the final list
+        if (sortHighestToLowest) {
+            Collections.sort(filteredModels, (a, b) -> Double.compare(b.getPrice(), a.getPrice()));
+        } else {
+            Collections.sort(filteredModels, (a, b) -> Double.compare(a.getPrice(), b.getPrice()));
+        }
+
+        // Set the adapter with the filtered and sorted list
+        Furniture_VerticalRecyclerViewAdapter adapter = new Furniture_VerticalRecyclerViewAdapter(this, filteredModels);
+        RecyclerView recyclerView = findViewById(R.id.furniture_recycler_view);
+        recyclerView.setAdapter(adapter);
     }
 
     private void filterFurnitureBySearchQuery(String query) {
-        updateAdapter(filterModels(null, query));
-    }
-
-    private void setUpFurnitureModels() {
-        furnitureModels = loadFurnitureData();
+        currentSearchQuery = query;
+        updateAdapter();
     }
 
     private ArrayList<FurnitureModel> loadFurnitureData() {
