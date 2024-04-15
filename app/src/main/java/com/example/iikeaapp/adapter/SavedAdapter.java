@@ -6,9 +6,14 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import android.os.Handler;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -57,13 +62,21 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SavedViewHol
                 .into(holder.imageView);
 
         holder.savedButton.setOnClickListener(v -> {
-            Saved.removeItem(furniture);
-            savedItems.remove(position);
-            notifyItemRemoved(position);
+            // Start the slide-out animation
+            Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_out_right);
+            holder.itemView.startAnimation(animation);
 
-            Intent resultIntent = new Intent();
-            resultIntent.putExtra("removedItem", furniture);
-            ((Activity) context).setResult(Activity.RESULT_OK, resultIntent);
+            // Remove the item from the list after the animation ends
+            Handler handler = new Handler();
+            handler.postDelayed(() -> {
+                Saved.removeItem(furniture);
+                savedItems.remove(position);
+                notifyItemRemoved(position);
+
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("removedItem", furniture);
+                ((Activity) context).setResult(Activity.RESULT_OK, resultIntent);
+            }, animation.getDuration());
         });
     }
 

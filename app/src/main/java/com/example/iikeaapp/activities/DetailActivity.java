@@ -1,17 +1,14 @@
 package com.example.iikeaapp.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.Toast;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -97,6 +94,7 @@ public class DetailActivity extends AppCompatActivity {
             quantityTextView.setText(String.valueOf(this.quantity));
         });
 
+        ImageView cartAnimationView = findViewById(R.id.cart_animation_view);
         // Add to shopping cart
         FloatingActionButton addToCartButton = findViewById(R.id.add_to_shopping_cart_btn);
         addToCartButton.setOnClickListener(v -> {
@@ -104,10 +102,32 @@ public class DetailActivity extends AppCompatActivity {
             if (item != null) {
                 shoppingCart.addItem(item, this.quantity);
                 Toast.makeText(DetailActivity.this, "Item added to cart", Toast.LENGTH_SHORT).show();
+
+                // Show the shopping cart ImageView
+                cartAnimationView.setVisibility(View.VISIBLE);
+
+                // Load the animation
+                Animation animation = AnimationUtils.loadAnimation(DetailActivity.this, R.anim.blink_animation);
+
+                // Set an animation listener to hide the ImageView when the animation ends
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {}
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        cartAnimationView.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {}
+                });
+
+                // Start the animation on the shopping cart ImageView
+                cartAnimationView.startAnimation(animation);
             }
         });
 
-        // Setup SearchView
         // Setup SearchView
         FloatingActionButton searchIcon = findViewById(R.id.search_icon);
         titleTextView = findViewById(R.id.title);
@@ -155,7 +175,6 @@ public class DetailActivity extends AppCompatActivity {
 
         // nav bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
-
         bottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.bottom_save) {
                 Intent intent = new Intent(getApplicationContext(), SaveActivity.class);

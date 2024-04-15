@@ -3,6 +3,7 @@ package com.example.iikeaapp.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
@@ -134,9 +135,30 @@ public class MainActivity extends AppCompatActivity {
     public void categoryClicked(View v) {
         String category = (String) v.getTag();
 
-        Intent intent = new Intent(MainActivity.this, ListActivity.class);
-        intent.putExtra("category", category);
-        startActivity(intent);
+        // Load the animation
+        Animation expandFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out_categroy);
+
+        // Set an animation listener to start the activity when the animation ends
+        expandFadeOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                // Show the overlay view
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                Intent intent = new Intent(MainActivity.this, ListActivity.class);
+                intent.putExtra("category", category);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+
+        // Start the animation on the clicked view
+        v.startAnimation(expandFadeOut);
     }
 
     private void setupSearchView() {

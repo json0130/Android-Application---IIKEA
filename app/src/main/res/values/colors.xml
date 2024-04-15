@@ -4,6 +4,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="lavender">#8692f7</color>
     <color name="grey">#d2d2d2</color>
+    <color name="default_icon_color">#000000</color>
+    <color name="highlight_icon_color">#526600</color>
 
     <color name="seed">#526600</color>
     <color name="md_theme_light_primary">#526600</color>

@@ -4,10 +4,14 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import android.os.Handler;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -82,11 +86,19 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         });
 
         holder.removeButton.setOnClickListener(v -> {
-            shoppingCart.removeItem(furniture);
-            cartItems.remove(position);
-            notifyItemRemoved(position);
-            notifyItemRangeChanged(position, cartItems.size());
-            updateTotalPrice();
+            // Start the slide-out animation
+            Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_out_right);
+            holder.itemView.startAnimation(animation);
+
+            // Remove the item from the list after the animation ends
+            Handler handler = new Handler();
+            handler.postDelayed(() -> {
+                shoppingCart.removeItem(furniture);
+                cartItems.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, cartItems.size());
+                updateTotalPrice();
+            }, animation.getDuration());
         });
     }
 

@@ -108,7 +108,7 @@
                         android:layout_weight="1"
                         android:onClick="categoryClicked"
                         app:cardCornerRadius="20dp"
-                        app:cardElevation="20dp">
+                        app:cardElevation="4dp">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -144,7 +144,7 @@
                         android:layout_weight="1"
                         android:onClick="categoryClicked"
                         app:cardCornerRadius="20dp"
-                        app:cardElevation="20dp">
+                        app:cardElevation="4dp">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -188,7 +188,7 @@
                         android:layout_weight="1"
                         android:onClick="categoryClicked"
                         app:cardCornerRadius="20dp"
-                        app:cardElevation="20dp">
+                        app:cardElevation="4dp">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -223,7 +223,7 @@
                         android:layout_weight="1"
                         android:onClick="categoryClicked"
                         app:cardCornerRadius="20dp"
-                        app:cardElevation="20dp">
+                        app:cardElevation="4dp">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -285,5 +285,4 @@
         </FrameLayout>
 
     </RelativeLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

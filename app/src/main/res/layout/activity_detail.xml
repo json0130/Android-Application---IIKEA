@@ -228,6 +228,17 @@
             app:elevation="20dp"
             app:fabSize="normal" />
 
+        <!-- Floating shopping cart ImageView -->
+        <ImageView
+            android:id="@+id/cart_animation_view"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/baseline_shopping_cart_24"
+            android:scaleType="centerInside"
+            android:elevation="8dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="238dp" />
+
     </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
