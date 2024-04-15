@@ -2,6 +2,7 @@ package com.example.iikeaapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
@@ -133,6 +134,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void categoryClicked(View v) {
         String category = (String) v.getTag();
+
+        Log.d("debug", category);
 
         Intent intent = new Intent(MainActivity.this, ListActivity.class);
         intent.putExtra("category", category);

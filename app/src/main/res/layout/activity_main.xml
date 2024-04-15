@@ -106,6 +106,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:layout_weight="1"
+                        android:tag="Living"
                         android:onClick="categoryClicked"
                         app:cardCornerRadius="20dp"
                         app:cardElevation="20dp">
@@ -142,6 +143,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:layout_weight="1"
+                        android:tag="Office"
                         android:onClick="categoryClicked"
                         app:cardCornerRadius="20dp"
                         app:cardElevation="20dp">
@@ -186,6 +188,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:layout_weight="1"
+                        android:tag="Outdoor"
                         android:onClick="categoryClicked"
                         app:cardCornerRadius="20dp"
                         app:cardElevation="20dp">
@@ -221,6 +224,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:layout_weight="1"
+                        android:tag="Lighting"
                         android:onClick="categoryClicked"
                         app:cardCornerRadius="20dp"
                         app:cardElevation="20dp">

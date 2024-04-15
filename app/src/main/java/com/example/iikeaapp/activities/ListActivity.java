@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -48,6 +49,7 @@ import java.util.Set;
 
 public class ListActivity extends AppCompatActivity implements FurnitureAdapter.OnItemClickListener {
     ArrayList<FurnitureModel> furnitureModels = new ArrayList<>();
+    private Set<String> visibleCategories = new HashSet<>();
     private Saved saved;
     private ShoppingCart shoppingCart;
     private TextView titleTextView;
@@ -223,6 +225,7 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
         int chipCount = chipGroup.getChildCount();
         for (int i = 0; i < chipCount; i++) {
             Chip chip = (Chip) chipGroup.getChildAt(i);
+            chip.setChecked(visibleCategories.contains(chip.getText().toString().toUpperCase()));
             if (chip.isChecked()) {
                 activeFilters.add(chip.getText().toString().toUpperCase());
             }
@@ -288,6 +291,10 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
     }
 
     private void updateAdapter(ArrayList<FurnitureModel> models) {
+        visibleCategories.clear();
+        for (FurnitureModel model : models) {
+            visibleCategories.add(model.getCategory().toUpperCase());
+        }
         Furniture_VerticalRecyclerViewAdapter adapter = new Furniture_VerticalRecyclerViewAdapter(this, models);
         ((RecyclerView) findViewById(R.id.furniture_recycler_view)).setAdapter(adapter);
     }
