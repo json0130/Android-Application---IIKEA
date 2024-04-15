@@ -135,12 +135,13 @@ public class MainActivity extends AppCompatActivity {
         String category = (String) v.getTag();
 
         // Load the animation
-        Animation expandFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out_categroy);
+        Animation blinkAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_out_categroy);
 
         // Set an animation listener to start the activity when the animation ends
-        expandFadeOut.setAnimationListener(new Animation.AnimationListener() {
+        blinkAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
+                // Do nothing
             }
 
             @Override
@@ -152,11 +153,12 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationRepeat(Animation animation) {
+                // Do nothing
             }
         });
 
         // Start the animation on the clicked view
-        v.startAnimation(expandFadeOut);
+        v.startAnimation(blinkAnimation);
         Log.d("debug", category);
     }
 
