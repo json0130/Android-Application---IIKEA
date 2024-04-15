@@ -8,9 +8,12 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="8dp"
+        app:cardCornerRadius="10dp"
         app:cardElevation="4dp"
-        app:cardUseCompatPadding="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,7 +22,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:padding="10dp">
 
             <ImageView
                 android:id="@+id/furniture_item_image"
@@ -34,7 +37,7 @@
                 android:id="@+id/furniture_item_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="6dp"
                 android:text="Item Name"
                 android:textColor="@color/black"
                 android:textSize="18sp"
@@ -47,12 +50,14 @@
                 android:id="@+id/furniture_item_price"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="32dp"
                 android:text="$99.99"
                 android:textColor="@color/black"
                 android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/furniture_item_image"
                 app:layout_constraintEnd_toStartOf="@id/favorite_button"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@id/furniture_item_image"
                 app:layout_constraintTop_toBottomOf="@id/furniture_item_title" />
 
@@ -60,8 +65,9 @@
                 android:id="@+id/favorite_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/lavender"
-                android:src="@drawable/outline_favorite_24"
+                android:background="@color/md_theme_light_onBackground"
+                android:src="@drawable/baseline_favorite_24"
+                android:onClick="onFavoriteClick"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

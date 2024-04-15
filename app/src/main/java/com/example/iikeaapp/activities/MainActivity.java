@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
@@ -78,13 +79,11 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), CartActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
-                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 return true;
             } else if (item.getItemId() == R.id.bottom_save) {
                 Intent intent = new Intent(getApplicationContext(), SaveActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
-                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 return true;
             }
             return false;
@@ -135,11 +134,30 @@ public class MainActivity extends AppCompatActivity {
     public void categoryClicked(View v) {
         String category = (String) v.getTag();
 
-        Log.d("debug", category);
+        // Load the animation
+        Animation expandFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out_categroy);
 
-        Intent intent = new Intent(MainActivity.this, ListActivity.class);
-        intent.putExtra("category", category);
-        startActivity(intent);
+        // Set an animation listener to start the activity when the animation ends
+        expandFadeOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                Intent intent = new Intent(MainActivity.this, ListActivity.class);
+                intent.putExtra("category", category);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+
+        // Start the animation on the clicked view
+        v.startAnimation(expandFadeOut);
+        Log.d("debug", category);
     }
 
     private void setupSearchView() {

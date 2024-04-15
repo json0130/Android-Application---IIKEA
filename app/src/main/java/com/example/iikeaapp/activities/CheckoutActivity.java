@@ -22,10 +22,14 @@ public class CheckoutActivity extends AppCompatActivity {
     private TextView titleTextView;
     private androidx.appcompat.widget.SearchView searchView;
     private ImageView backIcon;
+
+    private TextView totalPriceTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
+
+        totalPriceTextView = findViewById(R.id.total_cost_price);
 
         shoppingCart = CartManager.getInstance().getShoppingCart();
 
@@ -101,22 +105,35 @@ public class CheckoutActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), CartActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
-                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 return true;
             } else if (item.getItemId() == R.id.bottom_home) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
-                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 return true;
             } else if (item.getItemId() == R.id.bottom_save) {
                 Intent intent = new Intent(getApplicationContext(), SaveActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
-                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 return true;
             }
             return false;
         });
+    }
+
+    public void updateTotalPrice() {
+        double totalPrice = shoppingCart.getTotalCost();
+        totalPriceTextView.setText(String.format("$%.2f", totalPrice));
+        // You can also update any other UI elements related to the total price here
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateTotalPrice();
+
+        // Hide the SearchView and show the title
+        searchView.setVisibility(View.GONE);
+        titleTextView.setVisibility(View.VISIBLE);
     }
 }

@@ -36,7 +36,6 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
         setContentView(R.layout.activity_cart);
 
         totalPriceTextView = findViewById(R.id.total_cost_price);
-        //updateTotalPrice();
 
         shoppingCart = CartManager.getInstance().getShoppingCart();
 
@@ -125,13 +124,11 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
-                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 return true;
             } else if (item.getItemId() == R.id.bottom_save) {
                 Intent intent = new Intent(getApplicationContext(), SaveActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
-                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 return true;
             }
             return false;
