@@ -13,9 +13,9 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.example.iikeaapp.R;
 import com.example.iikeaapp.adapter.Furniture_HorizontalRecyclerViewAdapter;
+import com.example.iikeaapp.adapter.Furniture_VerticalRecyclerViewAdapter;
 import com.example.iikeaapp.data.FurnitureModel;
 import com.example.iikeaapp.manager.Saved;
 import com.example.iikeaapp.data.ShoppingCart;
@@ -35,7 +35,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     // top picks recycler view init
     ArrayList<FurnitureModel> furnitureModels = new ArrayList<>();
-
+    private Saved saved;
     private ShoppingCart shoppingCart;
     private TextView titleTextView;
     private androidx.appcompat.widget.SearchView searchView;
@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Get the ShoppingCart instance from the CartManager
+        saved = Saved.getInstance();
         shoppingCart = CartManager.getInstance().getShoppingCart();
 
         // init recycler views
@@ -63,51 +64,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerViewTopPicks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         // Setup SearchView
-        FloatingActionButton searchIcon = findViewById(R.id.search_icon);
-        //titleTextView = findViewById(R.id.title); //TODO: find this?
-        searchView = findViewById(R.id.list_search_view);
+        setupSearchView();
 
-        searchIcon.setOnClickListener(v -> {
-            // Toggle the visibility of the SearchView and title
-            if (searchView.getVisibility() == View.VISIBLE) {
-                searchView.setVisibility(View.GONE);
-                titleTextView.setVisibility(View.VISIBLE);
-            } else {
-                titleTextView.setVisibility(View.GONE);
-                searchView.setVisibility(View.VISIBLE);
-                searchView.setIconified(false);
-                searchView.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.search_animation));
-            }
-        });
-
-        searchView.setOnCloseListener(new androidx.appcompat.widget.SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                // Collapse the search bar and show the title with animation
-                searchView.setVisibility(View.GONE);
-                titleTextView.setVisibility(View.VISIBLE);
-                searchView.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.search_animation));
-                return false;
-            }
-        });
-
-        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                // Start ListActivity with the search query
-                Intent intent = new Intent(MainActivity.this, ListActivity.class);
-                intent.putExtra("searchQuery", query);
-                startActivity(intent);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-
-        // nav bar
         // Set up the bottom navigation bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
         bottomNavigationView.setSelectedItemId(R.id.bottom_home);
@@ -133,71 +91,103 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUpFurnitureModels() {
-        // String[] furnitureNames = getResources().getStringArray(R.array.furnitures);
-        ArrayList<String> furnitureNames = new ArrayList<>();
-        ArrayList<String> categories = new ArrayList<>();
-        ArrayList<Double> prices = new ArrayList<>();
-        ArrayList<String> descriptions = new ArrayList<>();
-        ArrayList<String> image1URLs = new ArrayList<>();
-        ArrayList<String> image2URLs = new ArrayList<>();
-        ArrayList<String> image3URLs = new ArrayList<>();
+        furnitureModels = loadFurnitureData();
+    }
 
-
+    private ArrayList<FurnitureModel> loadFurnitureData() {
+        ArrayList<FurnitureModel> models = new ArrayList<>();
         try {
-            JSONObject obj = new JSONObject(loadJSONfromAssets());
-
-            JSONArray productArray = obj.getJSONArray("products");
-
-            // load products from JSON to arraylists
-            for (int i = 0; i<productArray.length(); i++) {
+            JSONArray productArray = new JSONObject(loadJSONfromAssets()).getJSONArray("products");
+            for (int i = 0; i < productArray.length(); i++) {
                 JSONObject productDetail = productArray.getJSONObject(i);
-
-                furnitureNames.add(productDetail.getString("name"));
-                categories.add(productDetail.getString("category"));
-                prices.add(productDetail.getDouble("price"));
-                descriptions.add(productDetail.getString("description"));
-
-                // nested values
-                JSONObject imageResources = productDetail.getJSONObject("imageResources");
-                image1URLs.add(imageResources.getString("image1"));
-                image2URLs.add(imageResources.getString("image2"));
-                image3URLs.add(imageResources.getString("image3"));
+                models.add(new FurnitureModel(
+                        productDetail.getString("name"),
+                        productDetail.getString("category"),
+                        productDetail.getDouble("price"),
+                        productDetail.getString("description"),
+                        new String[]{
+                                productDetail.getJSONObject("imageResources").getString("image1"),
+                                productDetail.getJSONObject("imageResources").getString("image2"),
+                                productDetail.getJSONObject("imageResources").getString("image3")
+                        }
+                ));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        for (int i = 0; i<furnitureNames.size(); i++) {
-            String[] tempImages = {image1URLs.get(i), image2URLs.get(i), image3URLs.get(i)};
-            FurnitureModel temp = new FurnitureModel(furnitureNames.get(i), categories.get(i), prices.get(i), descriptions.get(i), tempImages);
-            furnitureModels.add(temp);
-        }
+        return models;
     }
 
     private String loadJSONfromAssets() {
-        String json;
-
         try {
             InputStream is = getAssets().open("catalogue.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
+            byte[] buffer = new byte[is.available()];
             is.read(buffer);
             is.close();
-
-            json = new String(buffer, StandardCharsets.UTF_8);
+            return new String(buffer, StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
-
-        return json;
     }
 
-    public void categoryClicked(View v){
+    public void categoryClicked(View v) {
         String category = (String) v.getTag();
 
         Intent intent = new Intent(MainActivity.this, ListActivity.class);
         intent.putExtra("category", category);
         startActivity(intent);
+    }
+
+    private void setupSearchView() {
+        // Setup SearchView
+        FloatingActionButton searchIcon = findViewById(R.id.search_icon);
+        titleTextView = findViewById(R.id.textView);
+        searchView = findViewById(R.id.list_search_view);
+
+        searchIcon.setOnClickListener(v -> {
+            // Toggle the visibility of the SearchView and title
+            if (searchView.getVisibility() == View.VISIBLE) {
+                searchView.setVisibility(View.GONE);
+                titleTextView.setVisibility(View.VISIBLE);
+            } else {
+                titleTextView.setVisibility(View.GONE);
+                searchView.setVisibility(View.VISIBLE);
+                searchView.setIconified(false);
+                searchView.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.search_animation));
+            }
+        });
+
+        searchView.setOnCloseListener(() -> {
+            // Collapse the search bar and show the title with animation
+            searchView.setVisibility(View.GONE);
+            titleTextView.setVisibility(View.VISIBLE);
+            searchView.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.search_animation));
+            return false;
+        });
+
+        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Intent intent = new Intent(MainActivity.this, ListActivity.class);
+                intent.putExtra("searchQuery", query);
+                startActivity(intent);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Hide the SearchView and show the title
+        searchView.setVisibility(View.GONE);
+        titleTextView.setVisibility(View.VISIBLE);
     }
 }
