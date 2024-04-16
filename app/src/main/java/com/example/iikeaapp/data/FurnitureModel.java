@@ -1,10 +1,11 @@
 package com.example.iikeaapp.data;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
 
-// this one uses json
 public class FurnitureModel implements Serializable{
     String furnitureName;
     String category;
@@ -12,6 +13,7 @@ public class FurnitureModel implements Serializable{
     String description;
     String[] imageResources;
     private boolean isSaved;
+    private int viewCount;
 
     public FurnitureModel(String furnitureName, String category, double price, String description, String[] imageResources) {
         this.furnitureName = furnitureName;
@@ -20,6 +22,7 @@ public class FurnitureModel implements Serializable{
         this.description = description;
         this.imageResources = imageResources;
         this.isSaved = false;
+        this.viewCount = 0;
     }
 
     public String getFurnitureName() {
@@ -42,14 +45,8 @@ public class FurnitureModel implements Serializable{
         return imageResources;
     }
 
-    // Add the isSaved() getter method
-    public boolean isSaved() {
-        return isSaved;
-    }
-
-    // Add the setSaved() method
-    public void setSaved(boolean saved) {
-        isSaved = saved;
+    public int getViewCount() {
+        return viewCount;
     }
 
     @Override
@@ -70,5 +67,9 @@ public class FurnitureModel implements Serializable{
         int result = Objects.hash(furnitureName, category, price, description, isSaved);
         result = 31 * result + Arrays.hashCode(imageResources);
         return result;
+    }
+
+    public void incrementViewCount() {
+        this.viewCount++;
     }
 }

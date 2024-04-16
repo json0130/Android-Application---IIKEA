@@ -39,13 +39,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
+
 
 public class MainActivity extends AppCompatActivity {
     // top picks recycler view init
     private RecyclerView recyclerViewTopPicks;
-    ArrayList<FurnitureModel> furnitureModels = new ArrayList<>();
     private Saved saved;
     private ShoppingCart shoppingCart;
     private TextView titleTextView;
@@ -111,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
     private void initRecyclerView() {
         recyclerViewTopPicks = findViewById(R.id.main_top_picks_recyclerView);
         ArrayList<FurnitureModel> furnitureModels = DataProvider.getInstance(this).getFurnitureModels();
+        Collections.sort(furnitureModels, (a, b) -> Integer.compare(b.getViewCount(), a.getViewCount()));
         Furniture_HorizontalRecyclerViewAdapter adapter = new Furniture_HorizontalRecyclerViewAdapter(this, furnitureModels);
         recyclerViewTopPicks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerViewTopPicks.setAdapter(adapter);
@@ -194,6 +196,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        initRecyclerView();
+
         // Hide the SearchView and show the title
         searchView.setVisibility(View.GONE);
         titleTextView.setVisibility(View.VISIBLE);
@@ -247,4 +251,5 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
 }
