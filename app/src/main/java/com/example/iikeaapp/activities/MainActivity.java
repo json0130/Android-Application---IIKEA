@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
         if (!isAutoScrolling) {
             isAutoScrolling = true;
             autoScrollTimer = new Timer();
-            autoScrollTimer.scheduleAtFixedRate(new AutoScrollTask(), 0, 1500); // Scroll every 3 seconds
+            autoScrollTimer.scheduleAtFixedRate(new AutoScrollTask(), 0, 4000); // Scroll every 4 seconds
         }
     }
 
