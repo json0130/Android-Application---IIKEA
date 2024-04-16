@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -295,6 +296,14 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
             Collections.sort(filteredModels, (a, b) -> Double.compare(b.getPrice(), a.getPrice()));
         } else {
             Collections.sort(filteredModels, (a, b) -> Double.compare(a.getPrice(), b.getPrice()));
+        }
+
+        // empty list popup
+        TextView noProductMsg = findViewById(R.id.emptyListText);
+        if (filteredModels.isEmpty()) {
+            noProductMsg.setVisibility(View.VISIBLE);
+        } else {
+            noProductMsg.setVisibility(View.INVISIBLE);
         }
 
         // Set the adapter with the filtered and sorted list

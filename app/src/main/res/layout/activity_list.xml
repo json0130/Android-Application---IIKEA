@@ -126,6 +126,17 @@
             app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <TextView
+        android:id="@+id/emptyListText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/list_label_text"
+        android:paddingTop="20dp"
+        android:alpha="0.3"
+        android:text="No product match"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display3" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/furniture_recycler_view"
         android:layout_width="match_parent"
