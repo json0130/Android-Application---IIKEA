@@ -330,7 +330,7 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
     @Override
     public void onItemClick(FurnitureModel furniture) {
         Intent intent = new Intent(this, DetailActivity.class);
-        intent.putExtra("FurnitureModel", furniture);
+        intent.putExtra("furnitureName", furniture.getFurnitureName());
         startActivity(intent);
     }
 

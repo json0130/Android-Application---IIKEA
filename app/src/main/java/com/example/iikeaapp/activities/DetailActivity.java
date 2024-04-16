@@ -55,7 +55,8 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        setUpFurnitureModels();
+        furnitureModels = DataProvider.getInstance(this).getFurnitureModels();
+        Log.d("debug", furnitureModels.toString());
 
         // Apply the current theme mode
         ThemeManager.setNightMode(this, ThemeManager.getNightMode(this));
@@ -70,10 +71,12 @@ public class DetailActivity extends AppCompatActivity {
         ImageView saveHeart = findViewById(R.id.save_heart);
 
         // Retrieve the FurnitureModel object from the Intent
-        FurnitureModel furnitureModel = (FurnitureModel) getIntent().getSerializableExtra("FurnitureModel");
+        String furnitureName = getIntent().getStringExtra("furnitureName");
+        FurnitureModel furnitureModel = DataProvider.getInstance(this).getFurnitureByName(furnitureName);
 
         // If the FurnitureModel object is available, use it directly
         if (furnitureModel != null) {
+            furnitureModel.incrementViewCount();
             updateUIWithFurnitureModel(furnitureModel);
         } else {
             // Otherwise, create a new FurnitureModel object from the individual data fields
@@ -123,10 +126,10 @@ public class DetailActivity extends AppCompatActivity {
 
         // Add to shopping cart
         FloatingActionButton addToCartButton = findViewById(R.id.add_to_shopping_cart_btn);
+        FurnitureModel finalFurnitureModel1 = furnitureModel;
         addToCartButton.setOnClickListener(v -> {
-            FurnitureModel item = getFurnitureItem();
-            if (item != null) {
-                shoppingCart.addItem(item, this.quantity);
+            if (finalFurnitureModel1 != null) {
+                shoppingCart.addItem(finalFurnitureModel1, this.quantity);
                 Toast.makeText(DetailActivity.this, "Item added to cart", Toast.LENGTH_SHORT).show();
             }
         });
@@ -214,8 +217,8 @@ public class DetailActivity extends AppCompatActivity {
 
     private FurnitureModel getFurnitureItem() {
         // Retrieve the FurnitureModel object from the Intent
-        FurnitureModel furnitureModel = (FurnitureModel) getIntent().getSerializableExtra("FurnitureModel");
-        return furnitureModel;
+        String furnitureName = getIntent().getStringExtra("furnitureName");
+        return DataProvider.getInstance(this).getFurnitureByName(furnitureName);
     }
 
     private void updateUIWithFurnitureModel(FurnitureModel furnitureModel) {
@@ -245,9 +248,5 @@ public class DetailActivity extends AppCompatActivity {
         Furniture_HorizontalRecyclerViewAdapter fAdapter = new Furniture_HorizontalRecyclerViewAdapter(this, relatedModels);
         recyclerViewRelatedItems.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerViewRelatedItems.setAdapter(fAdapter);
-    }
-
-    private void setUpFurnitureModels() {
-        furnitureModels = DataProvider.getInstance(this).getFurnitureModels();
     }
 }

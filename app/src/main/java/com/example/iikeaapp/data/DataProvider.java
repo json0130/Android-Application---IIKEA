@@ -69,4 +69,13 @@ public class DataProvider {
             return null;
         }
     }
+
+    public FurnitureModel getFurnitureByName(String name) {
+        for (FurnitureModel model : furnitureModels) {
+            if (model.getFurnitureName().equals(name)) {
+                return model;
+            }
+        }
+        return null;
+    }
 }

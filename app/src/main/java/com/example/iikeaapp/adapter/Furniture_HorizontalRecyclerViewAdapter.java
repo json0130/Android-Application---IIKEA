@@ -51,7 +51,7 @@ public class Furniture_HorizontalRecyclerViewAdapter extends RecyclerView.Adapte
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, DetailActivity.class);
-                intent.putExtra("FurnitureModel", model);
+                intent.putExtra("furnitureName", model.getFurnitureName());
                 context.startActivity(intent);
             }
         });
