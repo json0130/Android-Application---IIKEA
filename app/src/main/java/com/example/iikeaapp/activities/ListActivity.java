@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.iikeaapp.R;
 import com.example.iikeaapp.adapter.FurnitureAdapter;
 import com.example.iikeaapp.adapter.Furniture_VerticalRecyclerViewAdapter;
+import com.example.iikeaapp.data.DataProvider;
 import com.example.iikeaapp.data.FurnitureModel;
 import com.example.iikeaapp.data.ShoppingCart;
 import com.example.iikeaapp.manager.Saved;
@@ -81,7 +83,7 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
 
         // Apply the current theme mode
         ThemeManager.setNightMode(this, ThemeManager.getNightMode(this));
-        furnitureModels = loadFurnitureData();
+        furnitureModels = DataProvider.getInstance(this).getFurnitureModels();
 
         // Initialize necessary components and listeners
         initRecyclerView();
@@ -306,6 +308,14 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
             Collections.sort(filteredModels, (a, b) -> Double.compare(a.getPrice(), b.getPrice()));
         }
 
+        // empty list msg
+        TextView noProductMsg = findViewById(R.id.emptyListText);
+        if (filteredModels.isEmpty()) {
+            noProductMsg.setVisibility(View.VISIBLE);
+        } else {
+            noProductMsg.setVisibility(View.INVISIBLE);
+        }
+
         // Set the adapter with the filtered and sorted list
         Furniture_VerticalRecyclerViewAdapter adapter = new Furniture_VerticalRecyclerViewAdapter(this, filteredModels);
         RecyclerView recyclerView = findViewById(R.id.furniture_recycler_view);
@@ -315,43 +325,6 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
     private void filterFurnitureBySearchQuery(String query) {
         currentSearchQuery = query;
         updateAdapter();
-    }
-
-    private ArrayList<FurnitureModel> loadFurnitureData() {
-        ArrayList<FurnitureModel> models = new ArrayList<>();
-        try {
-            JSONArray productArray = new JSONObject(loadJSONfromAssets()).getJSONArray("products");
-            for (int i = 0; i < productArray.length(); i++) {
-                JSONObject productDetail = productArray.getJSONObject(i);
-                models.add(new FurnitureModel(
-                        productDetail.getString("name"),
-                        productDetail.getString("category"),
-                        productDetail.getDouble("price"),
-                        productDetail.getString("description"),
-                        new String[]{
-                                productDetail.getJSONObject("imageResources").getString("image1"),
-                                productDetail.getJSONObject("imageResources").getString("image2"),
-                                productDetail.getJSONObject("imageResources").getString("image3")
-                        }
-                ));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return models;
-    }
-
-    private String loadJSONfromAssets() {
-        try {
-            InputStream is = getAssets().open("catalogue.json");
-            byte[] buffer = new byte[is.available()];
-            is.read(buffer);
-            is.close();
-            return new String(buffer, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     @Override

@@ -12,7 +12,7 @@
         android:layout_height="match_parent">
 
         <RelativeLayout
-            android:id="@+id/toolbar"
+            android:id="@+id/topBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -50,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:layout_below="@+id/toolbar" />
+            android:layout_below="@+id/topBar" />
 
         <TextView
             android:id="@+id/saved_text"
@@ -60,7 +60,18 @@
             android:textSize="20dp"
             android:layout_marginTop="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_below="@+id/toolbar"/>
+            android:layout_below="@+id/topBar"/>
+
+        <TextView
+            android:id="@+id/emptyListText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/saved_text"
+            android:paddingTop="20dp"
+            android:alpha="0.3"
+            android:text="No saved products :("
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display3" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/saved_recycler_view"

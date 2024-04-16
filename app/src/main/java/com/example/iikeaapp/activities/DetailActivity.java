@@ -11,10 +11,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.iikeaapp.R;
+import com.example.iikeaapp.adapter.Furniture_HorizontalRecyclerViewAdapter;
 import com.example.iikeaapp.adapter.ViewPagerAdapter;
+import com.example.iikeaapp.data.DataProvider;
 import com.example.iikeaapp.data.FurnitureModel;
 import com.example.iikeaapp.manager.CartManager;
 import com.example.iikeaapp.manager.Saved;
@@ -25,9 +29,17 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class DetailActivity extends AppCompatActivity {
+    ArrayList<FurnitureModel> furnitureModels = new ArrayList<>();
     private ShoppingCart shoppingCart;
 
     ViewPager mViewPager;
@@ -43,6 +55,7 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        setUpFurnitureModels();
 
         // Apply the current theme mode
         ThemeManager.setNightMode(this, ThemeManager.getNightMode(this));
@@ -54,7 +67,7 @@ public class DetailActivity extends AppCompatActivity {
         itemPrice = findViewById(R.id.item_price);
         itemDescription = findViewById(R.id.item_description);
         backButton = findViewById(R.id.back_icon);
-        saveChip = findViewById(R.id.save_chip);
+        ImageView saveHeart = findViewById(R.id.save_heart);
 
         // Retrieve the FurnitureModel object from the Intent
         FurnitureModel furnitureModel = (FurnitureModel) getIntent().getSerializableExtra("FurnitureModel");
@@ -74,7 +87,18 @@ public class DetailActivity extends AppCompatActivity {
             finish();
         });
 
-        setupSaveChip(furnitureModel);
+        updateHeartIcon(saveHeart, furnitureModel);
+        FurnitureModel finalFurnitureModel = furnitureModel;
+        saveHeart.setOnClickListener(v -> {
+            if (Saved.isSaved(finalFurnitureModel)) {
+                Saved.removeItem(finalFurnitureModel);
+                saveHeart.setImageResource(R.drawable.ic_heart_outline);
+            } else {
+                Saved.addItem(finalFurnitureModel);
+                saveHeart.setImageResource(R.drawable.ic_heart_filled);
+            }
+            Toast.makeText(this, Saved.isSaved(finalFurnitureModel) ? "Added to Favorites" : "Removed from Favorites", Toast.LENGTH_SHORT).show();
+        });
 
         // Find the views for quantity selection
         TextView quantityTextView = findViewById(R.id.quantity_text_view);
@@ -180,20 +204,12 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
-    private void setupSaveChip(FurnitureModel furnitureModel) {
-        saveChip.setChecked(Saved.isSaved(furnitureModel));
-        ArrayList<FurnitureModel> savedItems = Saved.getInstance().getSavedItems();
-        saveChip.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                Saved.addItem(furnitureModel);
-                Log.d("debug", savedItems.toString());
-                Toast.makeText(DetailActivity.this, "Item saved to favorites", Toast.LENGTH_SHORT).show();
-            } else {
-                Saved.removeItem(furnitureModel);
-                Log.d("debug", savedItems.toString());
-                Toast.makeText(DetailActivity.this, "Item removed from favorites", Toast.LENGTH_SHORT).show();
-            }
-        });
+    private void updateHeartIcon(ImageView saveHeart, FurnitureModel furnitureModel) {
+        if (Saved.isSaved(furnitureModel)) {
+            saveHeart.setImageResource(R.drawable.ic_heart_filled);
+        } else {
+            saveHeart.setImageResource(R.drawable.ic_heart_outline);
+        }
     }
 
     private FurnitureModel getFurnitureItem() {
@@ -209,5 +225,29 @@ public class DetailActivity extends AppCompatActivity {
 
         ViewPagerAdapter mViewPagerAdapter = new ViewPagerAdapter(DetailActivity.this, furnitureModel.getImageResources());
         mViewPager.setAdapter(mViewPagerAdapter);
+
+        // Setup related items RecyclerView
+        setUpRelatedItemsRecyclerView(furnitureModel);
+    }
+
+    private void setUpRelatedItemsRecyclerView(FurnitureModel currentFurniture) {
+        RecyclerView recyclerViewRelatedItems = findViewById(R.id.related_items_recyclerView);
+
+        // Filter furniture models to only include items of the same category as the current item
+        ArrayList<FurnitureModel> relatedModels = new ArrayList<>();
+        for (FurnitureModel model : furnitureModels) {
+            if (model.getCategory().equalsIgnoreCase(currentFurniture.getCategory()) && !model.getFurnitureName().equals(currentFurniture.getFurnitureName())) {
+                relatedModels.add(model);
+            }
+        }
+
+        // Set up the RecyclerView with the filtered list
+        Furniture_HorizontalRecyclerViewAdapter fAdapter = new Furniture_HorizontalRecyclerViewAdapter(this, relatedModels);
+        recyclerViewRelatedItems.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewRelatedItems.setAdapter(fAdapter);
+    }
+
+    private void setUpFurnitureModels() {
+        furnitureModels = DataProvider.getInstance(this).getFurnitureModels();
     }
 }
