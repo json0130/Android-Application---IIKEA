@@ -3,7 +3,8 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        style="@style/Base.Theme.IikeaApp.">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -14,21 +15,19 @@
             android:layout_marginStart="4dp"
             app:cardCornerRadius="10dp"
             app:cardElevation="4dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/md_theme_light_inverseOnSurface">
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/view"
                     android:layout_width="103dp"
                     android:layout_height="103dp"
-
+                    android:scaleType="centerCrop"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -41,7 +40,6 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="18dp"
                     android:text="FURNITURE NAME"
-                    android:textColor="@color/black"
                     android:textSize="20dp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@+id/view"
@@ -52,7 +50,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="$0"
-                    android:textColor="@color/md_theme_light_onTertiaryContainer"
                     android:textSize="18dp"
                     android:layout_marginTop="30dp"
                     app:layout_constraintBottom_toBottomOf="@+id/view"
@@ -64,11 +61,12 @@
                     android:id="@+id/favorite_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/baseline_favorite_border_24"
-                    android:background="@color/md_theme_light_onPrimary"
+                    android:src="@drawable/baseline_favorite_24"
                     android:layout_marginEnd="10dp"
                     android:layout_marginTop="10dp"
+                    android:background="@null"
                     android:onClick="onFavoriteClick"
+                    app:itemIconTint="@drawable/item_selector"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 

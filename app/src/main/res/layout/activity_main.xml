@@ -5,7 +5,7 @@
     android:id="@+id/main_recyclerView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/ScreenBackground"
+    style="@style/Base.Theme.IikeaApp."
     tools:context=".activities.MainActivity">
 
     <RelativeLayout
@@ -24,7 +24,6 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="@string/app_name"
-                style="@style/TextColour"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display3"
                 android:scaleType="centerCrop" />
@@ -34,10 +33,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:background="@color/white"
                 android:iconifiedByDefault="false"
                 android:queryHint="Search..."
-                style="@style/TextColour"
                 android:visibility="gone" />
 
         </RelativeLayout>
@@ -67,7 +64,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginVertical="10dp"
-                    style="@style/TextColour"
                     android:text="@string/top_picks"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
@@ -93,7 +89,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="5dp"
-                    style="@style/TextColour"
                     android:text="@string/category"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
@@ -113,7 +108,6 @@
                         android:layout_margin="10dp"
                         android:layout_weight="1"
                         android:tag="LIVING"
-                        style="@style/CardBackground"
                         android:onClick="categoryClicked"
                         app:cardCornerRadius="20dp"
                         app:cardElevation="4dp">
@@ -138,7 +132,6 @@
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="10dp"
                                 android:text="@string/living_cat"
-                                style="@style/TextColour"
                                 android:textSize="20dp" />
 
                         </RelativeLayout>
@@ -152,7 +145,6 @@
                         android:layout_margin="10dp"
                         android:layout_weight="1"
                         android:tag="OFFICE"
-                        style="@style/CardBackground"
                         android:onClick="categoryClicked"
                         app:cardCornerRadius="20dp"
                         app:cardElevation="4dp">
@@ -177,7 +169,6 @@
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="10dp"
                                 android:text="@string/office_cat"
-                                style="@style/TextColour"
                                 android:textSize="20dp" />
 
                         </RelativeLayout>
@@ -199,7 +190,6 @@
                         android:layout_margin="10dp"
                         android:layout_weight="1"
                         android:tag="OUTDOOR"
-                        style="@style/CardBackground"
                         android:onClick="categoryClicked"
                         app:cardCornerRadius="20dp"
                         app:cardElevation="4dp">
@@ -224,7 +214,6 @@
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="10dp"
                                 android:text="@string/outdoor_cat"
-                                style="@style/TextColour"
                                 android:textSize="20dp" />
 
                         </RelativeLayout>
@@ -237,7 +226,6 @@
                         android:layout_margin="10dp"
                         android:layout_weight="1"
                         android:tag="LIGHTING"
-                        style="@style/CardBackground"
                         android:onClick="categoryClicked"
                         app:cardCornerRadius="20dp"
                         app:cardElevation="4dp">
@@ -262,7 +250,6 @@
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="10dp"
                                 android:text="@string/light_cat"
-                                style="@style/TextColour"
                                 android:textSize="20dp" />
 
                         </RelativeLayout>
@@ -285,7 +272,6 @@
                 android:elevation="2dp"
                 app:itemIconSize="30dp"
                 app:itemIconTint="@drawable/item_selector"
-                app:itemRippleColor="@android:color/transparent"
                 app:labelVisibilityMode="unlabeled"
                 app:menu="@menu/bottom_menu" />
 

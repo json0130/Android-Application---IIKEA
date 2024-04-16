@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".activities.SaveActivity">
+    tools:context=".activities.SaveActivity"
+    style="@style/Base.Theme.IikeaApp.">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -39,7 +40,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:background="?android:attr/colorBackground"
                 android:iconifiedByDefault="true"
                 android:visibility="gone"
                 app:queryHint="Search..." />

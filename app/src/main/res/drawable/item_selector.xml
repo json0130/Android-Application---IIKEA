@@ -2,9 +2,9 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:state_selected="true"
-        android:color="@color/white"/>
+        android:color="@color/md_theme_dark_inverseSurface"/>
     <item
         android:state_selected="false"
-        android:color="@color/grey"/>
+        android:color="@color/md_theme_dark_background"/>
 
 </selector>

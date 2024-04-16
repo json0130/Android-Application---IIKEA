@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    style="@style/Base.Theme.IikeaApp.">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -25,14 +26,13 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/md_theme_light_inverseOnSurface">
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/furniture_image"
                     android:layout_width="103dp"
                     android:layout_height="103dp"
-
+                    android:scaleType="centerCrop"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -45,7 +45,6 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="18dp"
                     android:text="FURNITURE NAME"
-                    android:textColor="@color/black"
                     android:textSize="20dp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@+id/furniture_image"
@@ -56,7 +55,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="$0"
-                    android:textColor="@color/md_theme_light_onTertiaryContainer"
                     android:textSize="18dp"
                     app:layout_constraintBottom_toBottomOf="@+id/furniture_image"
                     app:layout_constraintStart_toStartOf="@+id/furniture_item_title"
@@ -66,7 +64,7 @@
                     android:id="@+id/constraintLayout"
                     android:layout_width="100dp"
                     android:layout_height="50dp"
-                    android:layout_marginEnd="4dp"
+                    android:layout_marginEnd="10dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/remove_button">
 
@@ -101,8 +99,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
+                        android:textSize="18dp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="@id/plus_sign"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -116,6 +113,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/baseline_clear_24"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp"
                     app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
