@@ -51,7 +51,7 @@ public class DetailActivity extends AppCompatActivity {
         itemPrice = findViewById(R.id.item_price);
         itemDescription = findViewById(R.id.item_description);
         backButton = findViewById(R.id.back_icon);
-        saveChip = findViewById(R.id.save_chip);
+        ImageView saveHeart = findViewById(R.id.save_heart);
 
         // Retrieve the FurnitureModel object from the Intent
         FurnitureModel furnitureModel = (FurnitureModel) getIntent().getSerializableExtra("FurnitureModel");
@@ -71,7 +71,18 @@ public class DetailActivity extends AppCompatActivity {
             finish();
         });
 
-        setupSaveChip(furnitureModel);
+        updateHeartIcon(saveHeart, furnitureModel);
+        FurnitureModel finalFurnitureModel = furnitureModel;
+        saveHeart.setOnClickListener(v -> {
+            if (Saved.isSaved(finalFurnitureModel)) {
+                Saved.removeItem(finalFurnitureModel);
+                saveHeart.setImageResource(R.drawable.ic_heart_outline);
+            } else {
+                Saved.addItem(finalFurnitureModel);
+                saveHeart.setImageResource(R.drawable.ic_heart_filled);
+            }
+            Toast.makeText(this, Saved.isSaved(finalFurnitureModel) ? "Added to Favorites" : "Removed from Favorites", Toast.LENGTH_SHORT).show();
+        });
 
         // Find the views for quantity selection
         TextView quantityTextView = findViewById(R.id.quantity_text_view);
@@ -172,20 +183,12 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
-    private void setupSaveChip(FurnitureModel furnitureModel) {
-        saveChip.setChecked(Saved.isSaved(furnitureModel));
-        ArrayList<FurnitureModel> savedItems = Saved.getInstance().getSavedItems();
-        saveChip.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                Saved.addItem(furnitureModel);
-                Log.d("debug", savedItems.toString());
-                Toast.makeText(DetailActivity.this, "Item saved to favorites", Toast.LENGTH_SHORT).show();
-            } else {
-                Saved.removeItem(furnitureModel);
-                Log.d("debug", savedItems.toString());
-                Toast.makeText(DetailActivity.this, "Item removed from favorites", Toast.LENGTH_SHORT).show();
-            }
-        });
+    private void updateHeartIcon(ImageView saveHeart, FurnitureModel furnitureModel) {
+        if (Saved.isSaved(furnitureModel)) {
+            saveHeart.setImageResource(R.drawable.ic_heart_filled);
+        } else {
+            saveHeart.setImageResource(R.drawable.ic_heart_outline);
+        }
     }
 
     private FurnitureModel getFurnitureItem() {

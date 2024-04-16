@@ -141,22 +141,24 @@
                         app:layout_constraintTop_toTopOf="@id/increment_button" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/save_chip"
-                    android:checkable="true"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                <ImageView
+                    android:id="@+id/save_heart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_below="@+id/furniture_item_title"
                     android:layout_alignParentStart="true"
                     android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="8dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_heart_outline"
                     app:tint="@color/md_theme_light_onBackground" />
+
 
                 <TextView
                     android:id="@+id/item_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/save_chip"
+                    android:layout_below="@+id/save_heart"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginVertical="10dp"
                     android:text="FURNITURE DESCRIPTIONS"
