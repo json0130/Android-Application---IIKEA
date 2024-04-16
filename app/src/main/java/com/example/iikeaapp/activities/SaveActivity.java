@@ -16,6 +16,7 @@ import com.example.iikeaapp.R;
 import com.example.iikeaapp.adapter.FurnitureAdapter;
 import com.example.iikeaapp.adapter.SavedAdapter;
 import com.example.iikeaapp.data.FurnitureModel;
+import com.example.iikeaapp.manager.ThemeManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -33,6 +34,8 @@ public class SaveActivity extends AppCompatActivity implements SavedAdapter.OnIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved);
 
+        // Apply the current theme mode
+        ThemeManager.setNightMode(this, ThemeManager.getNightMode(this));
 
         // Initialize the RecyclerView
         recyclerViewSaved = findViewById(R.id.saved_recycler_view);

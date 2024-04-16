@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.iikeaapp.R;
 import com.example.iikeaapp.data.ShoppingCart;
 import com.example.iikeaapp.manager.CartManager;
+import com.example.iikeaapp.manager.ThemeManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -25,6 +26,9 @@ public class ThankyouActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thank_you);
+
+        // Apply the current theme mode
+        ThemeManager.setNightMode(this, ThemeManager.getNightMode(this));
 
         shoppingCart = CartManager.getInstance().getShoppingCart();
 

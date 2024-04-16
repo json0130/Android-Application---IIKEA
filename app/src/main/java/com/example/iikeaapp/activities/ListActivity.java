@@ -23,6 +23,7 @@ import com.example.iikeaapp.adapter.Furniture_VerticalRecyclerViewAdapter;
 import com.example.iikeaapp.data.FurnitureModel;
 import com.example.iikeaapp.data.ShoppingCart;
 import com.example.iikeaapp.manager.Saved;
+import com.example.iikeaapp.manager.ThemeManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
@@ -78,6 +79,8 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
+        // Apply the current theme mode
+        ThemeManager.setNightMode(this, ThemeManager.getNightMode(this));
         furnitureModels = loadFurnitureData();
 
         // Initialize necessary components and listeners

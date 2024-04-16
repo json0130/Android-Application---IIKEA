@@ -109,6 +109,7 @@
                 android:layout_below="@+id/total_cost_price" />
 
         </RelativeLayout>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/checkout_button"
             android:layout_height="wrap_content"

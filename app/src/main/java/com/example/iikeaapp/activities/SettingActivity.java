@@ -18,6 +18,9 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
+        // Apply the current theme mode
+        ThemeManager.setNightMode(this, ThemeManager.getNightMode(this));
+
         themeSwitch = findViewById(R.id.theme_switch);
         ThemeManager ThemeHelper;
         themeSwitch.setChecked(ThemeManager.getNightMode(this));

@@ -130,6 +130,11 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
                 return true;
+            } else if (item.getItemId() == R.id.bottom_setting) {
+                Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                return true;
             }
             return false;
         });

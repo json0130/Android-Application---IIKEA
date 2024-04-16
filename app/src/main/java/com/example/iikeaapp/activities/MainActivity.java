@@ -38,6 +38,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
     // top picks recycler view init
@@ -51,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     private SwitchCompat themeSwitch;
+    private Timer autoScrollTimer;
+    private boolean isAutoScrolling = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         // Apply the current theme mode
         ThemeManager.setNightMode(this, ThemeManager.getNightMode(this));
 
+        startAutoScrolling();
 
         // Get the ShoppingCart instance from the CartManager
         saved = Saved.getInstance();
@@ -231,5 +236,54 @@ public class MainActivity extends AppCompatActivity {
         // Hide the SearchView and show the title
         searchView.setVisibility(View.GONE);
         titleTextView.setVisibility(View.VISIBLE);
+
+        // Start auto-scrolling
+        startAutoScrolling();
+    }
+
+    private void startAutoScrolling() {
+        if (!isAutoScrolling) {
+            isAutoScrolling = true;
+            autoScrollTimer = new Timer();
+            autoScrollTimer.scheduleAtFixedRate(new AutoScrollTask(), 0, 1500); // Scroll every 3 seconds
+        }
+    }
+
+    private class AutoScrollTask extends TimerTask {
+        @Override
+        public void run() {
+            runOnUiThread(() -> {
+                RecyclerView recyclerViewTopPicks = findViewById(R.id.main_top_picks_recyclerView);
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerViewTopPicks.getLayoutManager();
+                int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
+                if (lastVisibleItemPosition == layoutManager.getItemCount() - 1) {
+                    recyclerViewTopPicks.smoothScrollToPosition(0);
+                } else {
+                    recyclerViewTopPicks.smoothScrollToPosition(lastVisibleItemPosition + 1);
+                }
+            });
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopAutoScrolling();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopAutoScrolling();
+    }
+
+    private void stopAutoScrolling() {
+        if (isAutoScrolling) {
+            isAutoScrolling = false;
+            if (autoScrollTimer != null) {
+                autoScrollTimer.cancel();
+                autoScrollTimer.purge();
+            }
+        }
     }
 }

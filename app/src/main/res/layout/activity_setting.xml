@@ -60,7 +60,7 @@
             android:layout_below="@+id/divider1"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="THEME"
+            android:text="THEME CHANGE"
             android:textSize="20sp" />
 
         <androidx.appcompat.widget.SwitchCompat
