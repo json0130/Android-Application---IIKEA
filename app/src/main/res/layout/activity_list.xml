@@ -75,7 +75,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/filter_icon"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/baseline_10k_24" />
+            app:srcCompat="@drawable/baseline_sort_24" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
