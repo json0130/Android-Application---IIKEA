@@ -32,15 +32,6 @@ public class ThankyouActivity extends AppCompatActivity {
 
         shoppingCart = CartManager.getInstance().getShoppingCart();
 
-        ImageView backIcon = findViewById(R.id.back_icon);
-        backIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ThankyouActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
-
         // Setup SearchView
         FloatingActionButton searchIcon = findViewById(R.id.search_icon);
         titleTextView = findViewById(R.id.title);
@@ -56,6 +47,14 @@ public class ThankyouActivity extends AppCompatActivity {
                 searchView.setVisibility(View.VISIBLE);
                 searchView.setIconified(false);
                 searchView.startAnimation(AnimationUtils.loadAnimation(ThankyouActivity.this, R.anim.search_animation));
+            }
+        });
+
+        titleTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ThankyouActivity.this, MainActivity.class);
+                startActivity(intent);
             }
         });
 

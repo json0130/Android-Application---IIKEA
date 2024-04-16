@@ -37,11 +37,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Timer;
 
 public class DetailActivity extends AppCompatActivity {
     ArrayList<FurnitureModel> furnitureModels = new ArrayList<>();
     private ShoppingCart shoppingCart;
-
     ViewPager mViewPager;
     TextView furnitureItemTitle, itemPrice, itemDescription;
     ImageView backButton;
@@ -66,7 +66,6 @@ public class DetailActivity extends AppCompatActivity {
         furnitureItemTitle = findViewById(R.id.furniture_item_title);
         itemPrice = findViewById(R.id.item_price);
         itemDescription = findViewById(R.id.item_description);
-        backButton = findViewById(R.id.back_icon);
         ImageView saveHeart = findViewById(R.id.save_heart);
 
         // Retrieve the FurnitureModel object from the Intent
@@ -82,10 +81,6 @@ public class DetailActivity extends AppCompatActivity {
                 updateUIWithFurnitureModel(furnitureModel);
             }
         }
-
-        backButton.setOnClickListener(view -> {
-            finish();
-        });
 
         updateHeartIcon(saveHeart, furnitureModel);
         FurnitureModel finalFurnitureModel = furnitureModel;
@@ -173,6 +168,15 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 return false;
+            }
+        });
+
+        titleTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Expand the search bar and hide the title with animation
+                Intent intent = new Intent(DetailActivity.this, CartActivity.class);
+                startActivity(intent);
             }
         });
 
