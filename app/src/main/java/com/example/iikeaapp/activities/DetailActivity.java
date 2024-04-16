@@ -28,6 +28,7 @@ import com.example.iikeaapp.manager.ThemeManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -64,6 +65,8 @@ public class DetailActivity extends AppCompatActivity {
         shoppingCart = CartManager.getInstance().getShoppingCart();
 
         mViewPager = findViewById(R.id.viewPager);
+        TabLayout tabLayout = findViewById(R.id.tabDots);
+        tabLayout.setupWithViewPager(mViewPager, true);
         furnitureItemTitle = findViewById(R.id.furniture_item_title);
         itemPrice = findViewById(R.id.item_price);
         itemDescription = findViewById(R.id.item_description);
