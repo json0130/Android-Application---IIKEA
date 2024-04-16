@@ -163,13 +163,13 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
             recyclerViewCart.setVisibility(View.GONE);
             cartSummaryLayout.setVisibility(View.GONE);
             placeOrderButton.setVisibility(View.GONE);
-            browseButton.setVisibility(View.GONE);
+            browseButton.setVisibility(View.VISIBLE);
         } else {
             noProductMsg.setVisibility(View.GONE);
             recyclerViewCart.setVisibility(View.VISIBLE);
             cartSummaryLayout.setVisibility(View.VISIBLE);
             placeOrderButton.setVisibility(View.VISIBLE);
-            browseButton.setVisibility(View.VISIBLE);
+            browseButton.setVisibility(View.GONE);
         }
     }
     @Override
