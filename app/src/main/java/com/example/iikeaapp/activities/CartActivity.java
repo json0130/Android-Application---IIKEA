@@ -139,6 +139,15 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
         double totalPrice = shoppingCart.getTotalCost();
         totalPriceTextView.setText(String.format("Total Price: $%.2f", totalPrice));
         // You can also update any other UI elements related to the total price here
+        // empty list msg
+        TextView noProductMsg = findViewById(R.id.emptyListText);
+        if (cartAdapter.getItemCount() == 0) {
+            noProductMsg.setVisibility(View.VISIBLE);
+            recyclerViewCart.setVisibility(View.GONE);
+        } else {
+            noProductMsg.setVisibility(View.GONE);
+            recyclerViewCart.setVisibility(View.VISIBLE);
+        }
     }
     @Override
     protected void onResume() {
