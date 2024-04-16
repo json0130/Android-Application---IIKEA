@@ -51,7 +51,7 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
     private String currentSearchQuery = "";
     private Set<String> currentCategories = new HashSet<>();
     private double currentMaxPrice = Double.MAX_VALUE;
-    private boolean sortHighestToLowest = false;
+    private boolean sortHighestToLowest = true;
     ArrayList<FurnitureModel> furnitureModels = new ArrayList<>();
     private TextView titleTextView;
     private androidx.appcompat.widget.SearchView searchView;
