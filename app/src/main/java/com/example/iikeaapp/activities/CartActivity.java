@@ -157,16 +157,19 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
         RelativeLayout cartSummaryLayout = findViewById(R.id.cart_summary_layout);
         TextView noProductMsg = findViewById(R.id.emptyListText);
         Button placeOrderButton = findViewById(R.id.checkout_button);
+        Button browseButton = findViewById(R.id.browseButton);
         if (cartAdapter.getItemCount() == 0) {
             noProductMsg.setVisibility(View.VISIBLE);
             recyclerViewCart.setVisibility(View.GONE);
             cartSummaryLayout.setVisibility(View.GONE);
             placeOrderButton.setVisibility(View.GONE);
+            browseButton.setVisibility(View.GONE);
         } else {
             noProductMsg.setVisibility(View.GONE);
             recyclerViewCart.setVisibility(View.VISIBLE);
             cartSummaryLayout.setVisibility(View.VISIBLE);
             placeOrderButton.setVisibility(View.VISIBLE);
+            browseButton.setVisibility(View.VISIBLE);
         }
     }
     @Override
