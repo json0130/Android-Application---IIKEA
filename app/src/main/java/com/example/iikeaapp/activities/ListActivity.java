@@ -53,25 +53,20 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
     private double currentMaxPrice = Double.MAX_VALUE;
     private boolean sortHighestToLowest = false;
     ArrayList<FurnitureModel> furnitureModels = new ArrayList<>();
-    private Set<String> visibleCategories = new HashSet<>();
-    private Saved saved;
-    private ShoppingCart shoppingCart;
     private TextView titleTextView;
     private androidx.appcompat.widget.SearchView searchView;
-    private ImageView searchIcon;
 
     private ImageView backIcon;
+    private ImageView filterIcon;
+    private ImageView sortIcon;
+
 
     private static class ViewHolder {
         public final RecyclerView items;
-        public final Button filterButton;
-        public final Button sortButton;
         public final SearchView searchView;
 
         public ViewHolder(Activity activity) {
             items = activity.findViewById(R.id.furniture_recycler_view);
-            filterButton = activity.findViewById(R.id.listview_filter_button);
-            sortButton = activity.findViewById(R.id.listview_sort_button);
             searchView = activity.findViewById(R.id.list_search_view);
         }
     }
@@ -201,8 +196,10 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
 
 
     private void setupButtonListeners() {
-        findViewById(R.id.listview_filter_button).setOnClickListener(this::showFilterDialog);
-        findViewById(R.id.listview_sort_button).setOnClickListener(this::showSortDialog);
+        filterIcon = findViewById(R.id.filter_icon);
+        sortIcon = findViewById(R.id.sort_icon);
+        filterIcon.setOnClickListener(this::showFilterDialog);
+        sortIcon.setOnClickListener(this::showSortDialog);
     }
 
     private void showFilterDialog(View view) {

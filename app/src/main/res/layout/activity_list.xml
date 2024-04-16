@@ -34,51 +34,10 @@
 
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/button_layout"
-        android:layout_marginTop="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/topBar">
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/listview_sort_button"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_weight="2"
-            android:text="SORT"/>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/listview_filter_button"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:text="FILTERING"/>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            />
-    </LinearLayout>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:paddingTop="5dp"
         android:id="@+id/list_label_text"
-        android:layout_below="@+id/button_layout"
+        android:layout_below="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -94,8 +53,38 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+<<<<<<< Updated upstream
         <com.google.android.material.divider.MaterialDivider
             android:id="@+id/divider2"
+=======
+
+        <ImageView
+            android:id="@+id/filter_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/baseline_filter_alt_24" />
+
+        <ImageView
+            android:id="@+id/sort_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="48dp"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/filter_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/baseline_10k_24" />
+
+        <View
+            android:id="@+id/view2"
+>>>>>>> Stashed changes
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView5"
