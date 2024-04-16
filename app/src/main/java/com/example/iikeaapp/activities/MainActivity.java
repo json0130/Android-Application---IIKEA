@@ -62,8 +62,8 @@ public class MainActivity extends AppCompatActivity {
 
         // top picks
         Furniture_HorizontalRecyclerViewAdapter fAdapter = new Furniture_HorizontalRecyclerViewAdapter(this, furnitureModels);
-        recyclerViewTopPicks.setAdapter(fAdapter);
         recyclerViewTopPicks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewTopPicks.setAdapter(fAdapter);
 
         // Setup SearchView
         setupSearchView();

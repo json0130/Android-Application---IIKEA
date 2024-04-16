@@ -10,6 +10,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="70dp"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -169,9 +170,20 @@
 
             <!-- Divider -->
             <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/divider2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/divider2"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginVertical="10dp"
+                android:text="RELATED ITEMS"
+                android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                android:textColor="@color/md_theme_light_onBackground" />
 
             <!-- RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView

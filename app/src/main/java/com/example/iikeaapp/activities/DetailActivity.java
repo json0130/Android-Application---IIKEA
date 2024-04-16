@@ -11,9 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.iikeaapp.R;
+import com.example.iikeaapp.adapter.Furniture_HorizontalRecyclerViewAdapter;
 import com.example.iikeaapp.adapter.ViewPagerAdapter;
 import com.example.iikeaapp.data.FurnitureModel;
 import com.example.iikeaapp.manager.CartManager;
@@ -24,9 +27,17 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class DetailActivity extends AppCompatActivity {
+    ArrayList<FurnitureModel> furnitureModels = new ArrayList<>();
     private ShoppingCart shoppingCart;
 
     ViewPager mViewPager;
@@ -42,6 +53,7 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        setUpFurnitureModels();
 
         // Get the ShoppingCart instance from the CartManager
         shoppingCart = CartManager.getInstance().getShoppingCart();
@@ -204,5 +216,66 @@ public class DetailActivity extends AppCompatActivity {
 
         ViewPagerAdapter mViewPagerAdapter = new ViewPagerAdapter(DetailActivity.this, furnitureModel.getImageResources());
         mViewPager.setAdapter(mViewPagerAdapter);
+
+        // Setup related items RecyclerView
+        setUpRelatedItemsRecyclerView(furnitureModel);
+    }
+
+    private void setUpRelatedItemsRecyclerView(FurnitureModel currentFurniture) {
+        RecyclerView recyclerViewRelatedItems = findViewById(R.id.related_items_recyclerView);
+
+        // Filter furniture models to only include items of the same category as the current item
+        ArrayList<FurnitureModel> relatedModels = new ArrayList<>();
+        for (FurnitureModel model : furnitureModels) {
+            if (model.getCategory().equalsIgnoreCase(currentFurniture.getCategory()) && !model.getFurnitureName().equals(currentFurniture.getFurnitureName())) {
+                relatedModels.add(model);
+            }
+        }
+
+        // Set up the RecyclerView with the filtered list
+        Furniture_HorizontalRecyclerViewAdapter fAdapter = new Furniture_HorizontalRecyclerViewAdapter(this, relatedModels);
+        recyclerViewRelatedItems.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewRelatedItems.setAdapter(fAdapter);
+    }
+
+    private void setUpFurnitureModels() {
+        furnitureModels = loadFurnitureData();
+    }
+
+    private ArrayList<FurnitureModel> loadFurnitureData() {
+        ArrayList<FurnitureModel> models = new ArrayList<>();
+        try {
+            JSONArray productArray = new JSONObject(loadJSONfromAssets()).getJSONArray("products");
+            for (int i = 0; i < productArray.length(); i++) {
+                JSONObject productDetail = productArray.getJSONObject(i);
+                models.add(new FurnitureModel(
+                        productDetail.getString("name"),
+                        productDetail.getString("category"),
+                        productDetail.getDouble("price"),
+                        productDetail.getString("description"),
+                        new String[]{
+                                productDetail.getJSONObject("imageResources").getString("image1"),
+                                productDetail.getJSONObject("imageResources").getString("image2"),
+                                productDetail.getJSONObject("imageResources").getString("image3")
+                        }
+                ));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return models;
+    }
+
+    private String loadJSONfromAssets() {
+        try {
+            InputStream is = getAssets().open("catalogue.json");
+            byte[] buffer = new byte[is.available()];
+            is.read(buffer);
+            is.close();
+            return new String(buffer, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
