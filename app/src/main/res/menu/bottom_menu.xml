@@ -19,9 +19,9 @@
             android:title="CART" />
 
         <item
-            android:id="@+id/bottom_company"
+            android:id="@+id/bottom_setting"
             android:icon="@drawable/baseline_settings_24"
-            android:title="COMPANY" />
+            android:title="SETTING" />
 
 </menu>
 

@@ -15,6 +15,9 @@
         android:theme="@style/Base.Theme.IikeaApp."
         tools:targetApi="31">
         <activity
+            android:name=".activities.SettingActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.CheckoutActivity"
             android:exported="false" />
         <activity
