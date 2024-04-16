@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.iikeaapp.R;
@@ -112,6 +114,15 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
             }
         });
 
+        Button shopMoreButton = findViewById(R.id.browseButton);
+        shopMoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CartActivity.this, ListActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         // Set up the bottom navigation bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
@@ -140,13 +151,19 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
         totalPriceTextView.setText(String.format("Total Price: $%.2f", totalPrice));
         // You can also update any other UI elements related to the total price here
         // empty list msg
+        RelativeLayout cartSummaryLayout = findViewById(R.id.cart_summary_layout);
         TextView noProductMsg = findViewById(R.id.emptyListText);
+        Button placeOrderButton = findViewById(R.id.checkout_button);
         if (cartAdapter.getItemCount() == 0) {
             noProductMsg.setVisibility(View.VISIBLE);
             recyclerViewCart.setVisibility(View.GONE);
+            cartSummaryLayout.setVisibility(View.GONE);
+            placeOrderButton.setVisibility(View.GONE);
         } else {
             noProductMsg.setVisibility(View.GONE);
             recyclerViewCart.setVisibility(View.VISIBLE);
+            cartSummaryLayout.setVisibility(View.VISIBLE);
+            placeOrderButton.setVisibility(View.VISIBLE);
         }
     }
     @Override
