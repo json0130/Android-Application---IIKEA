@@ -65,9 +65,11 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     private void setupSearchView() {
+
+
         // Setup SearchView
         FloatingActionButton searchIcon = findViewById(R.id.search_icon);
-        titleTextView = findViewById(R.id.textView);
+        titleTextView = findViewById(R.id.title);
         searchView = findViewById(R.id.list_search_view);
 
         searchIcon.setOnClickListener(v -> {
@@ -83,21 +85,34 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
 
-        searchView.setOnCloseListener(() -> {
-            // Collapse the search bar and show the title with animation
-            searchView.setVisibility(View.GONE);
-            titleTextView.setVisibility(View.VISIBLE);
-            searchView.startAnimation(AnimationUtils.loadAnimation(SettingActivity.this, R.anim.search_animation));
-            return false;
+        titleTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Expand the search bar and hide the title with animation
+                Intent intent = new Intent(SettingActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        searchView.setOnCloseListener(new androidx.appcompat.widget.SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                // Collapse the search bar and show the title with animation
+                searchView.setVisibility(View.GONE);
+                titleTextView.setVisibility(View.VISIBLE);
+                searchView.startAnimation(AnimationUtils.loadAnimation(SettingActivity.this, R.anim.search_animation));
+                return false;
+            }
         });
 
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                // Start ListActivity with the search query
                 Intent intent = new Intent(SettingActivity.this, ListActivity.class);
                 intent.putExtra("searchQuery", query);
                 startActivity(intent);
-                return true;
+                return false;
             }
 
             @Override
@@ -105,5 +120,13 @@ public class SettingActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Hide the SearchView and show the title
+        searchView.setVisibility(View.GONE);
+        titleTextView.setVisibility(View.VISIBLE);
     }
 }

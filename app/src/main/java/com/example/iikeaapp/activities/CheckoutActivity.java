@@ -46,16 +46,6 @@ public class CheckoutActivity extends AppCompatActivity {
             }
         });
 
-        backIcon = findViewById(R.id.back_icon);
-        backIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Expand the search bar and hide the title with animation
-                Intent intent = new Intent(CheckoutActivity.this, CartActivity.class);
-                startActivity(intent);
-            }
-        });
-
         // Setup SearchView
         FloatingActionButton searchIcon = findViewById(R.id.search_icon);
         titleTextView = findViewById(R.id.title);
@@ -71,6 +61,15 @@ public class CheckoutActivity extends AppCompatActivity {
                 searchView.setVisibility(View.VISIBLE);
                 searchView.setIconified(false);
                 searchView.startAnimation(AnimationUtils.loadAnimation(CheckoutActivity.this, R.anim.search_animation));
+            }
+        });
+
+        titleTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Expand the search bar and hide the title with animation
+                Intent intent = new Intent(CheckoutActivity.this, CartActivity.class);
+                startActivity(intent);
             }
         });
 

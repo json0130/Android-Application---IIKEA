@@ -43,10 +43,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_marginTop="18dp"
                     android:text="FURNITURE NAME"
                     android:textSize="20dp"
                     android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/remove_button"
                     app:layout_constraintStart_toEndOf="@+id/furniture_image"
                     app:layout_constraintTop_toTopOf="@+id/furniture_image" />
 

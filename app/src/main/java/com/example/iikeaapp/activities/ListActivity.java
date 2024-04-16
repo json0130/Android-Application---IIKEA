@@ -103,16 +103,7 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
 
     private void setupSearchView() {
         // Setup SearchView
-        backIcon = findViewById(R.id.back_icon);
 
-        backIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Expand the search bar and hide the title with animation
-                Intent intent = new Intent(ListActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
         // Setup SearchView
         FloatingActionButton searchIcon = findViewById(R.id.search_icon);
         titleTextView = findViewById(R.id.title);
@@ -128,6 +119,15 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
                 searchView.setVisibility(View.VISIBLE);
                 searchView.setIconified(false);
                 searchView.startAnimation(AnimationUtils.loadAnimation(ListActivity.this, R.anim.search_animation));
+            }
+        });
+
+        titleTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Expand the search bar and hide the title with animation
+                Intent intent = new Intent(ListActivity.this, MainActivity.class);
+                startActivity(intent);
             }
         });
 

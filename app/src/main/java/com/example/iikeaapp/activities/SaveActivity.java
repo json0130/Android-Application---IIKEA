@@ -53,17 +53,6 @@ public class SaveActivity extends AppCompatActivity implements SavedAdapter.OnIt
             noProductMsg.setVisibility(View.INVISIBLE);
         }
 
-        backIcon = findViewById(R.id.back_icon);
-
-        backIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Expand the search bar and hide the title with animation
-                Intent intent = new Intent(SaveActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
-
         // Setup SearchView
         FloatingActionButton searchIcon = findViewById(R.id.search_icon);
         titleTextView = findViewById(R.id.title);
@@ -81,6 +70,16 @@ public class SaveActivity extends AppCompatActivity implements SavedAdapter.OnIt
                 searchView.startAnimation(AnimationUtils.loadAnimation(SaveActivity.this, R.anim.search_animation));
             }
         });
+
+        titleTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Expand the search bar and hide the title with animation
+                Intent intent = new Intent(SaveActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         searchView.setOnCloseListener(new androidx.appcompat.widget.SearchView.OnCloseListener() {
             @Override
