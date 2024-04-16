@@ -16,6 +16,7 @@ import com.example.iikeaapp.R;
 import com.example.iikeaapp.adapter.FurnitureAdapter;
 import com.example.iikeaapp.adapter.SavedAdapter;
 import com.example.iikeaapp.data.FurnitureModel;
+import com.example.iikeaapp.manager.ThemeManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -33,6 +34,8 @@ public class SaveActivity extends AppCompatActivity implements SavedAdapter.OnIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved);
 
+        // Apply the current theme mode
+        ThemeManager.setNightMode(this, ThemeManager.getNightMode(this));
 
         // Initialize the RecyclerView
         recyclerViewSaved = findViewById(R.id.saved_recycler_view);
@@ -108,18 +111,22 @@ public class SaveActivity extends AppCompatActivity implements SavedAdapter.OnIt
 
         // nav bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
-        bottomNavigationView.setSelectedItemId(R.id.bottom_save);
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.bottom_save) {
-                return true;
-            } else if (item.getItemId() == R.id.bottom_home) {
+            if (item.getItemId() == R.id.bottom_home) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
                 return true;
             } else if (item.getItemId() == R.id.bottom_cart) {
                 Intent intent = new Intent(getApplicationContext(), CartActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                return true;
+            } else if (item.getItemId() == R.id.bottom_save) {
+                return true;
+            }else if (item.getItemId() == R.id.bottom_setting) {
+                Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
                 return true;

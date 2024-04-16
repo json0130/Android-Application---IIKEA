@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".activities.SaveActivity"
+    tools:context=".activities.CartActivity"
     style="@style/Base.Theme.IikeaApp.">
 
     <RelativeLayout
@@ -12,19 +12,9 @@
         android:layout_height="match_parent">
 
         <RelativeLayout
-            android:id="@+id/topBar"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/back_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:padding="16dp"
-                android:layout_marginStart="10dp"
-                android:src="@drawable/baseline_arrow_back_ios_24" />
 
             <TextView
                 android:id="@+id/title"
@@ -47,40 +37,54 @@
         </RelativeLayout>
 
         <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/divider1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_below="@+id/topBar" />
+            android:layout_below="@+id/toolbar"
+            android:layout_marginHorizontal="16dp" />
+
+        <RelativeLayout
+            android:id="@+id/theme_switch_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/divider1">
+            <TextView
+                android:id="@+id/setting_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="THEME SWITCHER"
+                android:textSize="20sp" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/theme_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:thumb="@drawable/thumb"
+                android:track="@drawable/track"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="25dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"/>
+        </RelativeLayout>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/theme_switch_layout"
+            android:layout_marginHorizontal="16dp" />
 
         <TextView
-            android:id="@+id/saved_text"
+            android:id="@+id/company_text"
+            android:layout_below="@+id/divider2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="FAVOURITE ITEMS"
-            android:textSize="20dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_below="@+id/topBar"/>
-
-        <TextView
-            android:id="@+id/emptyListText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/saved_text"
-            android:paddingTop="20dp"
-            android:alpha="0.3"
-            android:text="No saved products :("
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display3" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/saved_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/saved_text"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginVertical="10dp"/>
-
+            android:text="We are team"
+            android:textSize="20sp" />
         <FrameLayout
             android:id="@+id/bottomNavigation_group"
             android:layout_width="match_parent"

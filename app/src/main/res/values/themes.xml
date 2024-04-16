@@ -33,5 +33,11 @@
         <item name="android:activityOpenEnterAnimation">@anim/slide_in</item>
         <item name="android:activityOpenExitAnimation">@anim/slide_out</item>
     </style>
+    
+    <style name="ScreenBackground"><item name="android:background">@color/md_theme_light_onPrimary</item></style>
+    <style name="CardBackground"><item name="android:background">@color/md_theme_light_onPrimary</item></style>
+    <style name="TextColour"><item name="android:textColor">@color/md_theme_light_onBackground</item></style>
+    <style name="menuColour"><item name="android:background">@color/md_theme_light_primary</item></style>
+    <style name="dividerColour"><item name="android:background">@color/md_theme_light_onBackground</item></style>
 
 </resources>

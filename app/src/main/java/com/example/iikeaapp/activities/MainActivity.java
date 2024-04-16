@@ -1,6 +1,8 @@
 package com.example.iikeaapp.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +11,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -23,6 +27,7 @@ import com.example.iikeaapp.data.FurnitureModel;
 import com.example.iikeaapp.manager.Saved;
 import com.example.iikeaapp.data.ShoppingCart;
 import com.example.iikeaapp.manager.CartManager;
+import com.example.iikeaapp.manager.ThemeManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -34,6 +39,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
     // top picks recycler view init
@@ -43,6 +50,13 @@ public class MainActivity extends AppCompatActivity {
     private ShoppingCart shoppingCart;
     private TextView titleTextView;
     private androidx.appcompat.widget.SearchView searchView;
+    SwitchCompat switchMode;
+    boolean nightmode;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    private SwitchCompat themeSwitch;
+    private Timer autoScrollTimer;
+    private boolean isAutoScrolling = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +67,11 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // Apply the current theme mode
+        ThemeManager.setNightMode(this, ThemeManager.getNightMode(this));
+
+        startAutoScrolling();
 
         // Get the ShoppingCart instance from the CartManager
         saved = Saved.getInstance();
@@ -66,8 +85,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Set up the bottom navigation bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
-        bottomNavigationView.setSelectedItemId(R.id.bottom_home);
-
         bottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.bottom_home) {
                 return true;
@@ -78,6 +95,11 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             } else if (item.getItemId() == R.id.bottom_save) {
                 Intent intent = new Intent(getApplicationContext(), SaveActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                return true;
+            }else if (item.getItemId() == R.id.bottom_setting) {
+                Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
                 return true;
@@ -175,5 +197,54 @@ public class MainActivity extends AppCompatActivity {
         // Hide the SearchView and show the title
         searchView.setVisibility(View.GONE);
         titleTextView.setVisibility(View.VISIBLE);
+
+        // Start auto-scrolling
+        startAutoScrolling();
+    }
+
+    private void startAutoScrolling() {
+        if (!isAutoScrolling) {
+            isAutoScrolling = true;
+            autoScrollTimer = new Timer();
+            autoScrollTimer.scheduleAtFixedRate(new AutoScrollTask(), 0, 1500); // Scroll every 3 seconds
+        }
+    }
+
+    private class AutoScrollTask extends TimerTask {
+        @Override
+        public void run() {
+            runOnUiThread(() -> {
+                RecyclerView recyclerViewTopPicks = findViewById(R.id.main_top_picks_recyclerView);
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerViewTopPicks.getLayoutManager();
+                int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
+                if (lastVisibleItemPosition == layoutManager.getItemCount() - 1) {
+                    recyclerViewTopPicks.smoothScrollToPosition(0);
+                } else {
+                    recyclerViewTopPicks.smoothScrollToPosition(lastVisibleItemPosition + 1);
+                }
+            });
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopAutoScrolling();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopAutoScrolling();
+    }
+
+    private void stopAutoScrolling() {
+        if (isAutoScrolling) {
+            isAutoScrolling = false;
+            if (autoScrollTimer != null) {
+                autoScrollTimer.cancel();
+                autoScrollTimer.purge();
+            }
+        }
     }
 }

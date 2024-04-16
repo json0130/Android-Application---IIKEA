@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.IIKEAPP.NIGHT" parent="Theme.Material3.Dark.NoActionBar">
+    <style name="Base.Theme.IikeaApp." parent="Theme.Material3.Dark.NoActionBar">
         <item name="colorPrimary">@color/md_theme_dark_primary</item>
         <item name="colorOnPrimary">@color/md_theme_dark_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_dark_primaryContainer</item>
@@ -28,4 +28,10 @@
         <item name="colorSurfaceInverse">@color/md_theme_dark_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/md_theme_dark_inversePrimary</item>
     </style>
+
+    <style name="ScreenBackground"><item name="android:background">@color/md_theme_dark_background</item></style>
+    <style name="CardBackground"><item name="android:background">@color/md_theme_dark_onPrimary</item></style>
+    <style name="TextColour"><item name="android:textColor">@color/md_theme_dark_onBackground</item></style>
+    <style name="menuColour"><item name="android:textColor">@color/md_theme_dark_inverseSurface</item></style>
+    <style name="dividerColour"><item name="android:background">@color/md_theme_dark_onBackground</item></style>
 </resources>

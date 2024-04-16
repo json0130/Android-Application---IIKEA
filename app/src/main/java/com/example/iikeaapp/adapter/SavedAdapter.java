@@ -97,9 +97,9 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SavedViewHol
 
         public SavedViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.furniture_item_image);
+            imageView = itemView.findViewById(R.id.view);
             furnitureNameTextView = itemView.findViewById(R.id.furniture_item_title);
-            furniturePriceTextView = itemView.findViewById(R.id.furniture_item_price);
+            furniturePriceTextView = itemView.findViewById(R.id.furniture_total_price);
             savedButton = itemView.findViewById(R.id.favorite_button);
 
             itemView.setOnClickListener(new View.OnClickListener() {

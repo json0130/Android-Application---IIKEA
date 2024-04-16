@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.CartActivity">
+    tools:context=".activities.CartActivity"
+    style="@style/Base.Theme.IikeaApp.">
 
     <RelativeLayout
         android:id="@+id/topBar"
@@ -35,13 +36,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:background="?android:attr/colorBackground"
             android:iconifiedByDefault="true"
             android:visibility="gone"
             app:queryHint="Search..." />
 
     </RelativeLayout>
-
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/divider1"
         android:layout_width="match_parent"
@@ -96,6 +95,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cart_text" />
 
@@ -105,47 +105,49 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/furniture_recycler_view">
 
-        <com.google.android.material.divider.MaterialDivider
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp" />
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp" />
 
-        <TextView
-            android:id="@+id/total_cost_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="16dp"
-            android:layout_marginLeft="16dp"
-            android:text="TOTAL COST:"
-            android:textSize="20dp" />
+            <TextView
+                android:id="@+id/total_cost_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="16dp"
+                android:layout_marginLeft="16dp"
+                android:text="TOTAL COST:"
+                android:textSize="20dp" />
 
-        <TextView
-            android:id="@+id/total_cost_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginVertical="16dp"
-            android:layout_marginRight="16dp"
-            android:text="$2.00"
-            android:textSize="20dp" />
+            <TextView
+                android:id="@+id/total_cost_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginVertical="16dp"
+                android:layout_marginRight="16dp"
+                android:text="$2.00"
+                android:textSize="20dp" />
 
-        <com.google.android.material.divider.MaterialDivider
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/total_cost_price"
-            android:layout_marginHorizontal="16dp" />
-
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/total_cost_price"
+                android:layout_marginHorizontal="16dp" />
     </RelativeLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/checkout_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/bottomNavigation_group"
         android:layout_centerHorizontal="true"
         android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="5dp"
         android:text="PLACE ORDER"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigation_group"
-        tools:layout_editor_absoluteX="16dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <FrameLayout
         android:id="@+id/bottomNavigation_group"
@@ -176,6 +178,5 @@
             app:elevation="20dp"
             app:fabSize="normal"
             app:tint="@color/md_theme_dark_inversePrimary" />
-
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
