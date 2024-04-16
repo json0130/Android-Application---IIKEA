@@ -298,7 +298,7 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
             Collections.sort(filteredModels, (a, b) -> Double.compare(a.getPrice(), b.getPrice()));
         }
 
-        // empty list popup
+        // empty list msg
         TextView noProductMsg = findViewById(R.id.emptyListText);
         if (filteredModels.isEmpty()) {
             noProductMsg.setVisibility(View.VISIBLE);

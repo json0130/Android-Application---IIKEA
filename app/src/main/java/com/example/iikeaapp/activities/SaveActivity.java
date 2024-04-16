@@ -42,6 +42,14 @@ public class SaveActivity extends AppCompatActivity implements SavedAdapter.OnIt
         savedAdapter = new SavedAdapter(this, this);
         recyclerViewSaved.setAdapter(savedAdapter);
 
+        // empty list msg
+        TextView noProductMsg = findViewById(R.id.emptyListText);
+        if (savedAdapter.getItemCount() == 0) {
+            noProductMsg.setVisibility(View.VISIBLE);
+        } else {
+            noProductMsg.setVisibility(View.INVISIBLE);
+        }
+
         backIcon = findViewById(R.id.back_icon);
 
         backIcon.setOnClickListener(new View.OnClickListener() {
