@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.iikeaapp.R;
 import com.example.iikeaapp.adapter.Furniture_HorizontalRecyclerViewAdapter;
 import com.example.iikeaapp.adapter.Furniture_VerticalRecyclerViewAdapter;
+import com.example.iikeaapp.data.DataProvider;
 import com.example.iikeaapp.data.FurnitureModel;
 import com.example.iikeaapp.manager.Saved;
 import com.example.iikeaapp.data.ShoppingCart;
@@ -36,6 +37,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     // top picks recycler view init
+    private RecyclerView recyclerViewTopPicks;
     ArrayList<FurnitureModel> furnitureModels = new ArrayList<>();
     private Saved saved;
     private ShoppingCart shoppingCart;
@@ -57,13 +59,7 @@ public class MainActivity extends AppCompatActivity {
         shoppingCart = CartManager.getInstance().getShoppingCart();
 
         // init recycler views
-        RecyclerView recyclerViewTopPicks = findViewById(R.id.main_top_picks_recyclerView);
-        setUpFurnitureModels();
-
-        // top picks
-        Furniture_HorizontalRecyclerViewAdapter fAdapter = new Furniture_HorizontalRecyclerViewAdapter(this, furnitureModels);
-        recyclerViewTopPicks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        recyclerViewTopPicks.setAdapter(fAdapter);
+        initRecyclerView();
 
         // Setup SearchView
         setupSearchView();
@@ -90,45 +86,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void setUpFurnitureModels() {
-        furnitureModels = loadFurnitureData();
-    }
-
-    private ArrayList<FurnitureModel> loadFurnitureData() {
-        ArrayList<FurnitureModel> models = new ArrayList<>();
-        try {
-            JSONArray productArray = new JSONObject(loadJSONfromAssets()).getJSONArray("products");
-            for (int i = 0; i < productArray.length(); i++) {
-                JSONObject productDetail = productArray.getJSONObject(i);
-                models.add(new FurnitureModel(
-                        productDetail.getString("name"),
-                        productDetail.getString("category"),
-                        productDetail.getDouble("price"),
-                        productDetail.getString("description"),
-                        new String[]{
-                                productDetail.getJSONObject("imageResources").getString("image1"),
-                                productDetail.getJSONObject("imageResources").getString("image2"),
-                                productDetail.getJSONObject("imageResources").getString("image3")
-                        }
-                ));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return models;
-    }
-
-    private String loadJSONfromAssets() {
-        try {
-            InputStream is = getAssets().open("catalogue.json");
-            byte[] buffer = new byte[is.available()];
-            is.read(buffer);
-            is.close();
-            return new String(buffer, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+    private void initRecyclerView() {
+        recyclerViewTopPicks = findViewById(R.id.main_top_picks_recyclerView);
+        ArrayList<FurnitureModel> furnitureModels = DataProvider.getInstance(this).getFurnitureModels();
+        Furniture_HorizontalRecyclerViewAdapter adapter = new Furniture_HorizontalRecyclerViewAdapter(this, furnitureModels);
+        recyclerViewTopPicks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewTopPicks.setAdapter(adapter);
     }
 
     public void categoryClicked(View v) {
