@@ -3,13 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:context=".activities.CartActivity"
     style="@style/Base.Theme.IikeaApp.">
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigation_group"
+        app:layout_constraintTop_toTopOf="parent">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <RelativeLayout
             android:id="@+id/toolbar"
@@ -116,11 +122,14 @@
             android:text="Version: Beta 1.0\nBy: Joey &amp; Jay @ YouSee Soft\nsupport@youseesoft.com"
             android:textAlignment="center"
             android:textSize="16dp" />
+    </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+
         <FrameLayout
             android:id="@+id/bottomNavigation_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true">
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottomNavigation"
@@ -147,5 +156,4 @@
                 app:fabSize="normal" />
 
         </FrameLayout>
-    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
