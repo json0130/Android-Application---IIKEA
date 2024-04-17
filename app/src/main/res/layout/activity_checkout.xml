@@ -111,36 +111,45 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="270dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:hint="CARD NUMBER"
-            android:id="@+id/card_text"
-            android:layout_marginHorizontal="16dp"
-            android:layout_below="@+id/phone_text">
+            android:id="@+id/card_group"
+            android:layout_below="@+id/phone_text"
+            android:orientation="horizontal"
+            android:weightSum="10">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editText3"
-                android:layout_width="270dp"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/card_text"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:hint="CARD NUMBER"
+                android:layout_weight="6.5">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:hint="CCV"
-            android:id="@+id/ccv_text"
-            android:layout_alignParentRight="true"
-            android:layout_marginHorizontal="16dp"
-            android:layout_below="@+id/phone_text">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editText3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/ccv_edit"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:hint="CCV"
+                android:id="@+id/ccv_text"
+                android:layout_marginHorizontal="16dp"
+                android:layout_weight="3.5">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ccv_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -150,7 +159,7 @@
             android:id="@+id/address_text"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="10dp"
-            android:layout_below="@+id/card_text">
+            android:layout_below="@+id/card_group">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
