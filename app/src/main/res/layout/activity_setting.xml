@@ -76,14 +76,34 @@
             android:layout_below="@+id/theme_switch_layout"
             android:layout_marginHorizontal="16dp" />
 
-        <TextView
-            android:id="@+id/company_text"
+        <ImageView
+            android:id="@+id/company_image"
             android:layout_below="@+id/divider2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_height="200dp"
+            android:src="@drawable/indoor"
+            android:layout_marginHorizontal="16dp"
             android:layout_marginTop="16dp"
-            android:text="We are team"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/company_text"
+            android:layout_below="@+id/company_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Welcome to IIKEA, \n revolutionizing furniture shopping on your mobile. Discover curated categories, trending picks, and personalized recommendations for your dream space. Welcome to convenience and inspiration in one place"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/Developer_text"
+            android:layout_below="@+id/company_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:text="DEVELOPER: JOEY BACK, JAY SONG"
             android:textSize="20sp" />
         <FrameLayout
             android:id="@+id/bottomNavigation_group"
