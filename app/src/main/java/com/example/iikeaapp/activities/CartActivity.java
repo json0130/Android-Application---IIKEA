@@ -113,15 +113,24 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
             }
         });
 
-        Button shopMoreButton = findViewById(R.id.browseButton);
-        shopMoreButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(CartActivity.this, ListActivity.class);
-                startActivity(intent);
-            }
-        });
-
+        // empty list msg
+        RelativeLayout cartSummaryLayout = findViewById(R.id.cart_summary_layout);
+        TextView noProductMsg = findViewById(R.id.emptyListText);
+        Button placeOrderButton = findViewById(R.id.checkout_button);
+        ImageView productWatermark = findViewById(R.id.furnitureWatermark);
+        if (cartAdapter.getItemCount() == 0) {
+            noProductMsg.setVisibility(View.VISIBLE);
+            productWatermark.setVisibility(View.VISIBLE);
+            recyclerViewCart.setVisibility(View.GONE);
+            cartSummaryLayout.setVisibility(View.GONE);
+            placeOrderButton.setVisibility(View.GONE);
+        } else {
+            noProductMsg.setVisibility(View.GONE);
+            productWatermark.setVisibility(View.GONE);
+            recyclerViewCart.setVisibility(View.VISIBLE);
+            cartSummaryLayout.setVisibility(View.VISIBLE);
+            placeOrderButton.setVisibility(View.VISIBLE);
+        }
 
         // Set up the bottom navigation bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
@@ -153,24 +162,6 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
         double totalPrice = shoppingCart.getTotalCost();
         totalPriceTextView.setText(String.format("$%.2f", totalPrice));
         // You can also update any other UI elements related to the total price here
-        // empty list msg
-        RelativeLayout cartSummaryLayout = findViewById(R.id.cart_summary_layout);
-        TextView noProductMsg = findViewById(R.id.emptyListText);
-        Button placeOrderButton = findViewById(R.id.checkout_button);
-        Button browseButton = findViewById(R.id.browseButton);
-        if (cartAdapter.getItemCount() == 0) {
-            noProductMsg.setVisibility(View.VISIBLE);
-            recyclerViewCart.setVisibility(View.GONE);
-            cartSummaryLayout.setVisibility(View.GONE);
-            placeOrderButton.setVisibility(View.GONE);
-            browseButton.setVisibility(View.VISIBLE);
-        } else {
-            noProductMsg.setVisibility(View.GONE);
-            recyclerViewCart.setVisibility(View.VISIBLE);
-            cartSummaryLayout.setVisibility(View.VISIBLE);
-            placeOrderButton.setVisibility(View.VISIBLE);
-            browseButton.setVisibility(View.GONE);
-        }
     }
     @Override
     protected void onResume() {

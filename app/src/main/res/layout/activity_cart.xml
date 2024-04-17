@@ -65,16 +65,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cart_text" />
 
-    <Button
-        android:id="@+id/browseButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:alpha="1"
-        android:text="BROWSE CATALOGUE"
-        app:layout_constraintEnd_toEndOf="parent"
+    <ImageView
+        android:id="@+id/furnitureWatermark"
+        android:layout_width="132dp"
+        android:layout_height="132dp"
+        android:layout_centerHorizontal="true"
+        android:alpha="0.3"
+        android:paddingTop="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/furniture_recycler_view"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/emptyListText" />
+        app:layout_constraintTop_toBottomOf="@id/emptyListText"
+        app:srcCompat="@drawable/sofa"
+        app:tint="@color/black" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/furniture_recycler_view"

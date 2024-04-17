@@ -67,17 +67,16 @@
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-        <Button
-            android:id="@+id/browseButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:alpha="1"
+        <ImageView
+            android:id="@+id/furnitureWatermark"
+            app:tint="@color/black"
+            android:paddingTop="10dp"
+            android:layout_below="@+id/emptyListText"
             android:layout_centerHorizontal="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginEnd="0dp"
-            android:text="BROWSE CATALOGUE"
-            android:layout_below="@+id/emptyListText" />
+            android:alpha="0.3"
+            android:layout_width="132dp"
+            android:layout_height="132dp"
+            app:srcCompat="@drawable/sofa" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/saved_recycler_view"

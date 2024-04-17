@@ -46,25 +46,15 @@ public class SaveActivity extends AppCompatActivity implements SavedAdapter.OnIt
         savedAdapter = new SavedAdapter(this, this);
         recyclerViewSaved.setAdapter(savedAdapter);
 
-
-        // shop more button init
-        Button shopMoreButton = findViewById(R.id.browseButton);
-        shopMoreButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SaveActivity.this, ListActivity.class);
-                startActivity(intent);
-            }
-        });
-
         // empty list msg
         TextView noProductMsg = findViewById(R.id.emptyListText);
+        ImageView productWatermark = findViewById(R.id.furnitureWatermark);
         if (savedAdapter.getItemCount() == 0) {
+            productWatermark.setVisibility(View.VISIBLE);
             noProductMsg.setVisibility(View.VISIBLE);
-            shopMoreButton.setVisibility(View.VISIBLE);
         } else {
+            productWatermark.setVisibility(View.GONE);
             noProductMsg.setVisibility(View.GONE);
-            shopMoreButton.setVisibility(View.GONE);
         }
 
         // Setup SearchView
