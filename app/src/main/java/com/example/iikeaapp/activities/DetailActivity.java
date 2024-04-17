@@ -10,7 +10,9 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -28,6 +30,7 @@ import com.example.iikeaapp.manager.ThemeManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONArray;
@@ -129,6 +132,7 @@ public class DetailActivity extends AppCompatActivity {
             if (finalFurnitureModel1 != null) {
                 shoppingCart.addItem(finalFurnitureModel1, this.quantity);
                 Toast.makeText(DetailActivity.this, "Item added to cart", Toast.LENGTH_SHORT).show();
+                setResult(RESULT_OK);
             }
         });
 

@@ -1,6 +1,8 @@
 package com.example.iikeaapp.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,10 +20,14 @@ import com.example.iikeaapp.adapter.CartAdapter;
 import com.example.iikeaapp.data.FurnitureModel;
 import com.example.iikeaapp.data.ShoppingCart;
 import com.example.iikeaapp.manager.CartManager;
-import com.example.iikeaapp.manager.Saved;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class CartActivity extends AppCompatActivity implements CartAdapter.OnItemClickListener {
     private RecyclerView recyclerViewCart;
@@ -30,8 +36,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
     private TextView totalPriceTextView;
     private TextView titleTextView;
     private androidx.appcompat.widget.SearchView searchView;
-    private ImageView backIcon;
-
+    private static final int DETAIL_ACTIVITY_REQUEST_CODE = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +51,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
         recyclerViewCart.setLayoutManager(new LinearLayoutManager(this));
 
         // Create and set the CartAdapter
-        cartAdapter = new CartAdapter(this, this);
+        cartAdapter = new CartAdapter(this, new ArrayList<>(shoppingCart.getItems().entrySet()), this);
         recyclerViewCart.setAdapter(cartAdapter);
 
         // Set up the checkout button click listener
@@ -113,25 +118,6 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
             }
         });
 
-        // empty list msg
-        RelativeLayout cartSummaryLayout = findViewById(R.id.cart_summary_layout);
-        TextView noProductMsg = findViewById(R.id.emptyListText);
-        Button placeOrderButton = findViewById(R.id.checkout_button);
-        ImageView productWatermark = findViewById(R.id.furnitureWatermark);
-        if (cartAdapter.getItemCount() == 0) {
-            noProductMsg.setVisibility(View.VISIBLE);
-            productWatermark.setVisibility(View.VISIBLE);
-            recyclerViewCart.setVisibility(View.GONE);
-            cartSummaryLayout.setVisibility(View.GONE);
-            placeOrderButton.setVisibility(View.GONE);
-        } else {
-            noProductMsg.setVisibility(View.GONE);
-            productWatermark.setVisibility(View.GONE);
-            recyclerViewCart.setVisibility(View.VISIBLE);
-            cartSummaryLayout.setVisibility(View.VISIBLE);
-            placeOrderButton.setVisibility(View.VISIBLE);
-        }
-
         // Set up the bottom navigation bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
         bottomNavigationView.setSelectedItemId(R.id.bottom_cart);
@@ -156,18 +142,69 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
             }
             return false;
         });
+
+        // Set up ItemTouchHelper for swipe-to-delete
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                Map.Entry<FurnitureModel, Integer> entry = cartAdapter.getCartItems().get(position);
+                FurnitureModel deletedItem = entry.getKey();
+                int deletedQuantity = entry.getValue();
+                shoppingCart.removeItem(deletedItem);
+                cartAdapter.getCartItems().remove(position);
+                cartAdapter.notifyItemRemoved(position);
+                updateTotalPrice();
+
+                Snackbar.make(recyclerViewCart, "Item removed from cart", Snackbar.LENGTH_LONG)
+                        .setAction("Undo", v -> {
+                            shoppingCart.addItem(deletedItem, deletedQuantity);
+                            cartAdapter.getCartItems().add(position, new AbstractMap.SimpleEntry<>(deletedItem, deletedQuantity));
+                            cartAdapter.notifyItemInserted(position);
+                            updateTotalPrice();
+                        })
+                        .show();
+            }
+        };
+
+        new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerViewCart);
     }
 
     public void updateTotalPrice() {
         double totalPrice = shoppingCart.getTotalCost();
         totalPriceTextView.setText(String.format("$%.2f", totalPrice));
-        // You can also update any other UI elements related to the total price here
+        updateCartUI();
     }
+
+    private void updateCartUI() {
+        RelativeLayout cartSummaryLayout = findViewById(R.id.cart_summary_layout);
+        TextView noProductMsg = findViewById(R.id.emptyListText);
+        Button placeOrderButton = findViewById(R.id.checkout_button);
+        ImageView productWatermark = findViewById(R.id.furnitureWatermark);
+        if (cartAdapter.getItemCount() == 0) {
+            noProductMsg.setVisibility(View.VISIBLE);
+            productWatermark.setVisibility(View.VISIBLE);
+            recyclerViewCart.setVisibility(View.GONE);
+            cartSummaryLayout.setVisibility(View.GONE);
+            placeOrderButton.setVisibility(View.GONE);
+        } else {
+            noProductMsg.setVisibility(View.GONE);
+            productWatermark.setVisibility(View.GONE);
+            recyclerViewCart.setVisibility(View.VISIBLE);
+            cartSummaryLayout.setVisibility(View.VISIBLE);
+            placeOrderButton.setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        cartAdapter.notifyDataSetChanged();
-        updateTotalPrice();
+        refreshCartData();
 
         // Hide the SearchView and show the title
         searchView.setVisibility(View.GONE);
@@ -178,6 +215,20 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
     public void onItemClick(FurnitureModel furniture) {
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra("furnitureName", furniture.getFurnitureName());
-        startActivity(intent);
+        startActivityForResult(intent, DETAIL_ACTIVITY_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == DETAIL_ACTIVITY_REQUEST_CODE) {
+            refreshCartData();
+        }
+    }
+
+    private void refreshCartData() {
+        cartAdapter.cartItems = new ArrayList<>(shoppingCart.getItems().entrySet());
+        cartAdapter.notifyDataSetChanged();
+        updateTotalPrice();
     }
 }

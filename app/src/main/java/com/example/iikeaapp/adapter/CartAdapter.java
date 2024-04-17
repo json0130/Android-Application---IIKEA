@@ -20,6 +20,8 @@ import com.example.iikeaapp.data.FurnitureModel;
 import com.example.iikeaapp.data.ShoppingCart;
 import com.example.iikeaapp.manager.CartManager;
 import com.bumptech.glide.Glide;
+
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,16 +32,15 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         void onItemClick(FurnitureModel item);
     }
 
-    private List<Map.Entry<FurnitureModel, Integer>> cartItems;
+    public List<Map.Entry<FurnitureModel, Integer>> cartItems;
     private Context context;
     private ShoppingCart shoppingCart;
     private OnItemClickListener listener;
 
-
-    public CartAdapter(Context context, OnItemClickListener listener) {
+    public CartAdapter(Context context, List<Map.Entry<FurnitureModel, Integer>> cartItems, OnItemClickListener listener) {
         this.shoppingCart = CartManager.getInstance().getShoppingCart();
-        this.cartItems = new ArrayList<>(shoppingCart.getItems().entrySet());
         this.context = context;
+        this.cartItems = cartItems;
         this.listener = listener;
     }
 
@@ -59,7 +60,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         holder.furnitureNameTextView.setText(furniture.getFurnitureName());
         holder.quantityTextView.setText(String.valueOf(quantity));
         holder.totalPriceTextView.setText(String.format("$%.2f", furniture.getPrice() * quantity));
-        holder.quantityTextView.setText(String.valueOf(quantity));
+
         // Load the furniture image if available
         Log.d("debug", context.toString());
         Log.d("debug", Arrays.toString(furniture.getImageResources()));
@@ -69,53 +70,44 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                 .into(holder.furnitureImageView);
 
         holder.plusButton.setOnClickListener(v -> {
-            if (containsItem(furniture)) {
-                shoppingCart.updateQuantity(furniture, quantity + 1);
-                notifyItemChanged(position);
-            } else {
-                shoppingCart.addItem(furniture, 1);
-                notifyDataSetChanged();
-            }
+            int newQuantity = quantity + 1;
+            shoppingCart.updateQuantity(furniture, newQuantity);
+            cartItems.set(position, new AbstractMap.SimpleEntry<>(furniture, newQuantity));
+            notifyItemChanged(position);
             updateTotalPrice();
         });
 
         holder.minusButton.setOnClickListener(v -> {
             if (quantity > 1) {
-                shoppingCart.updateQuantity(furniture, quantity - 1);
+                int newQuantity = quantity - 1;
+                shoppingCart.updateQuantity(furniture, newQuantity);
+                cartItems.set(position, new AbstractMap.SimpleEntry<>(furniture, newQuantity));
                 notifyItemChanged(position);
                 updateTotalPrice();
             } else {
-                Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_out_right);
-                holder.itemView.startAnimation(animation);
-
-                // Remove the item from the list after the animation ends
-                Handler handler = new Handler();
-                handler.postDelayed(() -> {
-                    shoppingCart.removeItem(furniture);
-                    cartItems.remove(position);
-                    notifyItemRemoved(position);
-                    notifyItemRangeChanged(position, cartItems.size());
-                    updateTotalPrice();
-                }, animation.getDuration());
-
+                removeItem(holder, position);
             }
         });
 
         holder.removeButton.setOnClickListener(v -> {
-            // Start the slide-out animation
-            Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_out_right);
-            holder.itemView.startAnimation(animation);
-
-            // Remove the item from the list after the animation ends
-            Handler handler = new Handler();
-            handler.postDelayed(() -> {
-                shoppingCart.removeItem(furniture);
-                cartItems.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, cartItems.size());
-                updateTotalPrice();
-            }, animation.getDuration());
+            removeItem(holder, position);
         });
+    }
+
+    private void removeItem(CartViewHolder holder, int position) {
+        // Start the slide-out animation
+        Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_out_right);
+        holder.itemView.startAnimation(animation);
+
+        // Remove the item from the list after the animation ends
+        Handler handler = new Handler();
+        handler.postDelayed(() -> {
+            FurnitureModel furniture = cartItems.get(position).getKey();
+            shoppingCart.removeItem(furniture);
+            cartItems.remove(position);
+            notifyItemRemoved(position);
+            updateTotalPrice();
+        }, animation.getDuration());
     }
 
     @Override
@@ -123,14 +115,14 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         return cartItems.size();
     }
 
+    public List<Map.Entry<FurnitureModel, Integer>> getCartItems() {
+        return cartItems;
+    }
+
     private void updateTotalPrice() {
         if (context instanceof CartActivity) {
             ((CartActivity) context).updateTotalPrice();
         }
-    }
-
-    private boolean containsItem(FurnitureModel item) {
-        return shoppingCart.getItems().containsKey(item);
     }
 
     public class CartViewHolder extends RecyclerView.ViewHolder {
@@ -142,7 +134,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         TextView plusButton;
         TextView minusButton;
         ImageView removeButton;
-
 
         public CartViewHolder(@NonNull View itemView) {
             super(itemView);
