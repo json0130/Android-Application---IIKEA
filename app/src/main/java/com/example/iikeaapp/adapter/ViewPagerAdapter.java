@@ -1,9 +1,11 @@
 package com.example.iikeaapp.adapter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
@@ -44,9 +46,26 @@ public class ViewPagerAdapter extends PagerAdapter {
                 .load(imageUrls[position])
                 .into(imageView);
 
+        imageView.setOnClickListener(v -> {
+            // expand image
+            showImageDialog(imageUrls[position]);
+        });
+
         container.addView(itemView);
 
         return itemView;
+    }
+
+    private void showImageDialog(String imageUrl) {
+        Dialog dialog = new Dialog(context, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.image_fullscreen);
+
+        ImageView image = dialog.findViewById(R.id.fullscreen_image);
+        Glide.with(context).load(imageUrl).into(image);
+
+        dialog.show();
     }
 
     @Override
