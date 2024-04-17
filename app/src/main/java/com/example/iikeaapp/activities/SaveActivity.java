@@ -144,7 +144,7 @@ public class SaveActivity extends AppCompatActivity implements SavedAdapter.OnIt
     @Override
     public void onItemClick(FurnitureModel furniture) {
         Intent intent = new Intent(this, DetailActivity.class);
-        intent.putExtra("FurnitureModel", furniture);
+        intent.putExtra("furnitureName", furniture.getFurnitureName());
         startActivity(intent);
     }
 
