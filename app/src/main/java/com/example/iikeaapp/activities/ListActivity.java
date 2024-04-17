@@ -308,10 +308,13 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
 
         // empty list msg
         TextView noProductMsg = findViewById(R.id.emptyListText);
+        ImageView noProductImg = findViewById(R.id.furnitureWatermark);
         if (filteredModels.isEmpty()) {
             noProductMsg.setVisibility(View.VISIBLE);
+            noProductImg.setVisibility(View.VISIBLE);
         } else {
-            noProductMsg.setVisibility(View.INVISIBLE);
+            noProductMsg.setVisibility(View.GONE);
+            noProductImg.setVisibility(View.GONE);
         }
 
         // Set the adapter with the filtered and sorted list

@@ -88,14 +88,25 @@
 
     <TextView
         android:id="@+id/emptyListText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/list_label_text"
-        android:paddingTop="20dp"
         android:alpha="0.3"
-        android:text="No product match"
+        android:paddingTop="20dp"
+        android:text="NO PRODUCT MATCH"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display3" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+    <ImageView
+        android:id="@+id/furnitureWatermark"
+        app:tint="@color/black"
+        android:paddingTop="10dp"
+        android:layout_below="@+id/emptyListText"
+        android:layout_centerHorizontal="true"
+        android:alpha="0.3"
+        android:layout_width="132dp"
+        android:layout_height="132dp"
+        app:srcCompat="@drawable/sofa" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/furniture_recycler_view"
