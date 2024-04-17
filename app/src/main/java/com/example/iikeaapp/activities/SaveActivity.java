@@ -1,6 +1,9 @@
 package com.example.iikeaapp.activities;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,9 +20,11 @@ import com.example.iikeaapp.R;
 import com.example.iikeaapp.adapter.FurnitureAdapter;
 import com.example.iikeaapp.adapter.SavedAdapter;
 import com.example.iikeaapp.data.FurnitureModel;
+import com.example.iikeaapp.manager.Saved;
 import com.example.iikeaapp.manager.ThemeManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 public class SaveActivity extends AppCompatActivity implements SavedAdapter.OnItemClickListener {
     private RecyclerView recyclerViewSaved;
@@ -136,6 +141,35 @@ public class SaveActivity extends AppCompatActivity implements SavedAdapter.OnIt
             }
             return false;
         });
+
+        // Set up ItemTouchHelper for swipe-to-delete
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                FurnitureModel deletedItem = savedAdapter.savedItems.get(position);
+                Saved.removeItem(deletedItem);
+                savedAdapter.savedItems.remove(position);
+                savedAdapter.notifyItemRemoved(position);
+                updateEmptyView();
+
+                Snackbar.make(recyclerViewSaved, "Item removed from saved", Snackbar.LENGTH_LONG)
+                        .setAction("Undo", v -> {
+                            Saved.addItem(deletedItem);
+                            savedAdapter.savedItems.add(position, deletedItem);
+                            savedAdapter.notifyItemInserted(position);
+                            updateEmptyView();
+                        })
+                        .show();
+            }
+        };
+
+        new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerViewSaved);
     }
 
     // Update the savedAdapter when the activity is resumed
@@ -150,6 +184,27 @@ public class SaveActivity extends AppCompatActivity implements SavedAdapter.OnIt
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra("furnitureName", furniture.getFurnitureName());
         startActivity(intent);
+    }
+
+    private void updateEmptyView() {
+        TextView noProductMsg = findViewById(R.id.emptyListText);
+        ImageView productWatermark = findViewById(R.id.furnitureWatermark);
+        if (savedAdapter.getItemCount() == 0) {
+            productWatermark.setVisibility(View.VISIBLE);
+            noProductMsg.setVisibility(View.VISIBLE);
+        } else {
+            productWatermark.setVisibility(View.GONE);
+            noProductMsg.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_DETAIL_ACTIVITY && resultCode == Activity.RESULT_OK) {
+            updateAdapterData();
+            updateEmptyView();
+        }
     }
 
     private void updateAdapterData() {
