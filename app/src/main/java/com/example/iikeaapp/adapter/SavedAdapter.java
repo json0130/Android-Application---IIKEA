@@ -30,7 +30,7 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SavedViewHol
     }
 
 
-    private ArrayList<FurnitureModel> savedItems;
+    public ArrayList<FurnitureModel> savedItems;
     private Context context;
 
     private OnItemClickListener listener;
@@ -61,22 +61,31 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SavedViewHol
                 .load(furniture.getImageResources()[0])
                 .into(holder.imageView);
 
+//        holder.savedButton.setOnClickListener(v -> {
+//            // Start the slide-out animation
+//            Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_out_right);
+//            holder.itemView.startAnimation(animation);
+//
+//            // Remove the item from the list after the animation ends
+//            Handler handler = new Handler();
+//            handler.postDelayed(() -> {
+//                Saved.removeItem(furniture);
+//                savedItems.remove(position);
+//                notifyItemRemoved(position);
+//
+//                Intent resultIntent = new Intent();
+//                resultIntent.putExtra("removedItem", furniture);
+//                ((Activity) context).setResult(Activity.RESULT_OK, resultIntent);
+//            }, animation.getDuration());
+//        });
         holder.savedButton.setOnClickListener(v -> {
-            // Start the slide-out animation
-            Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_out_right);
-            holder.itemView.startAnimation(animation);
+            Saved.removeItem(furniture);
+            savedItems.remove(position);
+            notifyItemRemoved(position);
 
-            // Remove the item from the list after the animation ends
-            Handler handler = new Handler();
-            handler.postDelayed(() -> {
-                Saved.removeItem(furniture);
-                savedItems.remove(position);
-                notifyItemRemoved(position);
-
-                Intent resultIntent = new Intent();
-                resultIntent.putExtra("removedItem", furniture);
-                ((Activity) context).setResult(Activity.RESULT_OK, resultIntent);
-            }, animation.getDuration());
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("removedItem", furniture);
+            ((Activity) context).setResult(Activity.RESULT_OK, resultIntent);
         });
     }
 
