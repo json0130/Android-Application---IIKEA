@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.iikeaapp.R;
+import com.example.iikeaapp.activities.CartActivity;
+import com.example.iikeaapp.activities.SaveActivity;
 import com.example.iikeaapp.data.FurnitureModel;
 import com.example.iikeaapp.manager.Saved;
 
@@ -62,32 +64,33 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SavedViewHol
                 .placeholder(R.drawable.image_placeholder)
                 .into(holder.imageView);
 
-//        holder.savedButton.setOnClickListener(v -> {
-//            // Start the slide-out animation
-//            Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_out_right);
-//            holder.itemView.startAnimation(animation);
-//
-//            // Remove the item from the list after the animation ends
-//            Handler handler = new Handler();
-//            handler.postDelayed(() -> {
-//                Saved.removeItem(furniture);
-//                savedItems.remove(position);
-//                notifyItemRemoved(position);
-//
-//                Intent resultIntent = new Intent();
-//                resultIntent.putExtra("removedItem", furniture);
-//                ((Activity) context).setResult(Activity.RESULT_OK, resultIntent);
-//            }, animation.getDuration());
-//        });
         holder.savedButton.setOnClickListener(v -> {
-            Saved.removeItem(furniture);
-            savedItems.remove(position);
-            notifyItemRemoved(position);
+            // Start the slide-out animation
+            Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_out_right);
+            holder.itemView.startAnimation(animation);
 
-            Intent resultIntent = new Intent();
-            resultIntent.putExtra("removedItem", furniture);
-            ((Activity) context).setResult(Activity.RESULT_OK, resultIntent);
+            // Remove the item from the list after the animation ends
+            Handler handler = new Handler();
+            handler.postDelayed(() -> {
+                Saved.removeItem(furniture);
+                savedItems.remove(position);
+                notifyItemRemoved(position);
+
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("removedItem", furniture);
+                ((Activity) context).setResult(Activity.RESULT_OK, resultIntent);
+                updateEmptyView();
+            }, animation.getDuration());
         });
+//        holder.savedButton.setOnClickListener(v -> {
+//            Saved.removeItem(furniture);
+//            savedItems.remove(position);
+//            notifyItemRemoved(position);
+//
+//            Intent resultIntent = new Intent();
+//            resultIntent.putExtra("removedItem", furniture);
+//            ((Activity) context).setResult(Activity.RESULT_OK, resultIntent);
+//        });
     }
 
     @Override
@@ -98,7 +101,11 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SavedViewHol
     public void updateData() {
         savedItems = new ArrayList<>(Saved.getInstance().getSavedItems());
     }
-
+    private void updateEmptyView() {
+        if (context instanceof SaveActivity) {
+            ((SaveActivity) context).updateEmptyView();
+        }
+    }
     public class SavedViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView furnitureNameTextView;
