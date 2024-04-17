@@ -67,6 +67,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         Log.d("debug", holder.furnitureImageView.toString());
         Glide.with(context)
                 .load(furniture.getImageResources()[0])
+                .placeholder(R.drawable.image_placeholder)
                 .into(holder.furnitureImageView);
 
         holder.plusButton.setOnClickListener(v -> {

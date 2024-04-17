@@ -59,6 +59,7 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SavedViewHol
 
         Glide.with(context)
                 .load(furniture.getImageResources()[0])
+                .placeholder(R.drawable.image_placeholder)
                 .into(holder.imageView);
 
 //        holder.savedButton.setOnClickListener(v -> {

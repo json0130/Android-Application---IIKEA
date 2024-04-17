@@ -44,6 +44,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 
         Glide.with(context)
                 .load(imageUrls[position])
+                .placeholder(R.drawable.image_placeholder)
                 .into(imageView);
 
         imageView.setOnClickListener(v -> {

@@ -44,6 +44,7 @@ public class Furniture_HorizontalRecyclerViewAdapter extends RecyclerView.Adapte
 
         Glide.with(context)
                 .load(model.getImageResources()[0])
+                .placeholder(R.drawable.image_placeholder)
                 .into(holder.imageView);
 
         // Set click listener
