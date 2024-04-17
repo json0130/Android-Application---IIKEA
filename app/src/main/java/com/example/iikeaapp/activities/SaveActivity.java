@@ -51,16 +51,7 @@ public class SaveActivity extends AppCompatActivity implements SavedAdapter.OnIt
         savedAdapter = new SavedAdapter(this, this);
         recyclerViewSaved.setAdapter(savedAdapter);
 
-        // empty list msg
-        TextView noProductMsg = findViewById(R.id.emptyListText);
-        ImageView productWatermark = findViewById(R.id.furnitureWatermark);
-        if (savedAdapter.getItemCount() == 0) {
-            productWatermark.setVisibility(View.VISIBLE);
-            noProductMsg.setVisibility(View.VISIBLE);
-        } else {
-            productWatermark.setVisibility(View.GONE);
-            noProductMsg.setVisibility(View.GONE);
-        }
+        updateEmptyView();
 
         // Setup SearchView
         FloatingActionButton searchIcon = findViewById(R.id.search_icon);
@@ -177,6 +168,7 @@ public class SaveActivity extends AppCompatActivity implements SavedAdapter.OnIt
     protected void onResume() {
         super.onResume();
         updateAdapterData();
+        updateEmptyView();
     }
 
     @Override
@@ -186,10 +178,10 @@ public class SaveActivity extends AppCompatActivity implements SavedAdapter.OnIt
         startActivity(intent);
     }
 
-    private void updateEmptyView() {
+    public void updateEmptyView() {
         TextView noProductMsg = findViewById(R.id.emptyListText);
         ImageView productWatermark = findViewById(R.id.furnitureWatermark);
-        if (savedAdapter.getItemCount() == 0) {
+        if (savedAdapter.savedItems.isEmpty()) {
             productWatermark.setVisibility(View.VISIBLE);
             noProductMsg.setVisibility(View.VISIBLE);
         } else {
