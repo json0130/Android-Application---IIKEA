@@ -170,7 +170,8 @@
                 app:itemIconTint="@drawable/item_selector"
                 app:itemRippleColor="@android:color/transparent"
                 app:labelVisibilityMode="unlabeled"
-                app:menu="@menu/bottom_menu" />
+                app:menu="@menu/bottom_menu"
+                app:itemActiveIndicatorStyle="@android:color/transparent"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/search_icon"

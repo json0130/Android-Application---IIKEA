@@ -87,7 +87,7 @@ public class ThankyouActivity extends AppCompatActivity {
 
         // nav bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
-
+        bottomNavigationView.setSelectedItemId(0);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.bottom_home) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);

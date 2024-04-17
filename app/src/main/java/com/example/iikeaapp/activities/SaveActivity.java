@@ -110,7 +110,7 @@ public class SaveActivity extends AppCompatActivity implements SavedAdapter.OnIt
 
         // nav bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
-
+        bottomNavigationView.setSelectedItemId(R.id.bottom_save);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.bottom_home) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);

@@ -181,13 +181,14 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Expand the search bar and hide the title with animation
-                Intent intent = new Intent(DetailActivity.this, CartActivity.class);
+                Intent intent = new Intent(DetailActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
 
         // nav bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
+        bottomNavigationView.setSelectedItemId(0);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.bottom_home) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);

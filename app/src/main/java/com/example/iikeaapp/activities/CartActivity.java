@@ -125,7 +125,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
 
         // Set up the bottom navigation bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
-
+        bottomNavigationView.setSelectedItemId(R.id.bottom_cart);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.bottom_cart) {
                 return true;
@@ -151,7 +151,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
 
     public void updateTotalPrice() {
         double totalPrice = shoppingCart.getTotalCost();
-        totalPriceTextView.setText(String.format("Total Price: $%.2f", totalPrice));
+        totalPriceTextView.setText(String.format("$%.2f", totalPrice));
         // You can also update any other UI elements related to the total price here
         // empty list msg
         RelativeLayout cartSummaryLayout = findViewById(R.id.cart_summary_layout);

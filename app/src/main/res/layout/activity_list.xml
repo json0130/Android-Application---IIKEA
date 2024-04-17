@@ -33,11 +33,19 @@
             app:queryHint="Search..." />
 
     </RelativeLayout>
+    <!-- Divider -->
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/topBar"
+        android:layout_marginVertical="10dp"
+        android:layout_marginHorizontal="16dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:paddingTop="5dp"
         android:id="@+id/list_label_text"
-        android:layout_below="@+id/topBar"
+        android:layout_below="@+id/divider2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -113,7 +121,8 @@
             app:itemIconSize="30dp"
             app:itemIconTint="@drawable/item_selector"
             app:labelVisibilityMode="unlabeled"
-            app:menu="@menu/bottom_menu" />
+            app:menu="@menu/bottom_menu"
+            app:itemActiveIndicatorStyle="@android:color/transparent"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/search_icon"

@@ -40,7 +40,7 @@ public class SettingActivity extends AppCompatActivity {
 
         // Set up the bottom navigation bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
-
+        bottomNavigationView.setSelectedItemId(R.id.bottom_setting);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.bottom_setting) {
                 return true;

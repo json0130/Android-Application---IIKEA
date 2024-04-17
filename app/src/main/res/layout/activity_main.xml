@@ -301,7 +301,8 @@
                 app:itemIconSize="30dp"
                 app:itemIconTint="@drawable/item_selector"
                 app:labelVisibilityMode="unlabeled"
-                app:menu="@menu/bottom_menu" />
+                app:menu="@menu/bottom_menu"
+                app:itemActiveIndicatorStyle="@android:color/transparent"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/search_icon"
