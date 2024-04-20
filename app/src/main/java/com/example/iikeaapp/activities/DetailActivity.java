@@ -28,6 +28,7 @@ import com.example.iikeaapp.data.ShoppingCart;
 
 import com.example.iikeaapp.manager.ThemeManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -96,10 +97,10 @@ public class DetailActivity extends AppCompatActivity {
         saveHeart.setOnClickListener(v -> {
             if (Saved.isSaved(finalFurnitureModel)) {
                 Saved.removeItem(finalFurnitureModel);
-                saveHeart.setImageResource(R.drawable.ic_heart_outline);
+                saveHeart.setImageResource(R.drawable.heart_background);
             } else {
                 Saved.addItem(finalFurnitureModel);
-                saveHeart.setImageResource(R.drawable.ic_heart_filled);
+                saveHeart.setImageResource(R.drawable.heart_red_fill);
             }
             Toast.makeText(this, Saved.isSaved(finalFurnitureModel) ? "Added to Favorites" : "Removed from Favorites", Toast.LENGTH_SHORT).show();
         });
@@ -126,7 +127,7 @@ public class DetailActivity extends AppCompatActivity {
         });
 
         // Add to shopping cart
-        FloatingActionButton addToCartButton = findViewById(R.id.add_to_shopping_cart_btn);
+        MaterialButton addToCartButton = findViewById(R.id.add_to_cart_btn);
         FurnitureModel finalFurnitureModel1 = furnitureModel;
         addToCartButton.setOnClickListener(v -> {
             if (finalFurnitureModel1 != null) {
@@ -221,9 +222,9 @@ public class DetailActivity extends AppCompatActivity {
 
     private void updateHeartIcon(ImageView saveHeart, FurnitureModel furnitureModel) {
         if (Saved.isSaved(furnitureModel)) {
-            saveHeart.setImageResource(R.drawable.ic_heart_filled);
+            saveHeart.setImageResource(R.drawable.heart_red_fill);
         } else {
-            saveHeart.setImageResource(R.drawable.ic_heart_outline);
+            saveHeart.setImageResource(R.drawable.heart_background);
         }
     }
 
