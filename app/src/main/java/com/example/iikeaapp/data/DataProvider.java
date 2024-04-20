@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class DataProvider {
     private static DataProvider instance;
-    private ArrayList<FurnitureModel> furnitureModels;
+    private ArrayList<FurnitureModel> furnitureModels;  // simulted database
     private Context context;
 
     private DataProvider(Context context) {
