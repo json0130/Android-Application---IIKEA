@@ -168,9 +168,7 @@
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="8dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_heart_outline"
-                    app:tint="@color/md_theme_light_onBackground" />
-
+                    android:src="@drawable/ic_heart_outline" />
 
                 <TextView
                     android:id="@+id/item_description"
