@@ -69,14 +69,13 @@
 
         <ImageView
             android:id="@+id/furnitureWatermark"
-            app:tint="@color/black"
             android:paddingTop="10dp"
             android:layout_below="@+id/emptyListText"
             android:layout_centerHorizontal="true"
             android:alpha="0.3"
             android:layout_width="132dp"
             android:layout_height="132dp"
-            app:srcCompat="@drawable/sofa" />
+            android:src="@drawable/sofa" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/saved_recycler_view"
