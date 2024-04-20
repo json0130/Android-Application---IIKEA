@@ -3,8 +3,6 @@ package com.example.iikeaapp.Helper;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback;
 
 import com.example.iikeaapp.adapter.ItemTouchHelperAdapter;
 

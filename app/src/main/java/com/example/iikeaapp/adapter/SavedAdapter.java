@@ -3,6 +3,7 @@ package com.example.iikeaapp.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +12,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import android.os.Handler;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.iikeaapp.R;
-import com.example.iikeaapp.activities.CartActivity;
 import com.example.iikeaapp.activities.SaveActivity;
 import com.example.iikeaapp.data.FurnitureModel;
 import com.example.iikeaapp.manager.Saved;

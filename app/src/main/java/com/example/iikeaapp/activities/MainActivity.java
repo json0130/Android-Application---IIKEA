@@ -1,6 +1,5 @@
 package com.example.iikeaapp.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -21,23 +19,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.iikeaapp.R;
 import com.example.iikeaapp.adapter.Furniture_HorizontalRecyclerViewAdapter;
-import com.example.iikeaapp.adapter.Furniture_VerticalRecyclerViewAdapter;
 import com.example.iikeaapp.data.DataProvider;
 import com.example.iikeaapp.data.FurnitureModel;
-import com.example.iikeaapp.manager.Saved;
 import com.example.iikeaapp.data.ShoppingCart;
 import com.example.iikeaapp.manager.CartManager;
+import com.example.iikeaapp.manager.Saved;
 import com.example.iikeaapp.manager.ThemeManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Timer;

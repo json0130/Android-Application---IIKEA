@@ -1,5 +1,13 @@
 package com.example.iikeaapp.activities;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,17 +15,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import com.example.iikeaapp.R;
-import com.example.iikeaapp.adapter.FurnitureAdapter;
 import com.example.iikeaapp.adapter.SavedAdapter;
 import com.example.iikeaapp.data.FurnitureModel;
 import com.example.iikeaapp.manager.Saved;
