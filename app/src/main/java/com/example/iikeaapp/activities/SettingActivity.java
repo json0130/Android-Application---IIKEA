@@ -15,7 +15,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class SettingActivity extends AppCompatActivity {
-    private SwitchCompat themeSwitch;
     private TextView titleTextView;
     private androidx.appcompat.widget.SearchView searchView;
 
@@ -27,13 +26,10 @@ public class SettingActivity extends AppCompatActivity {
         // Apply the current theme mode
         ThemeManager.setNightMode(this, ThemeManager.getNightMode(this));
 
-        themeSwitch = findViewById(R.id.theme_switch);
-        ThemeManager ThemeHelper;
+        SwitchCompat themeSwitch = findViewById(R.id.theme_switch);
         themeSwitch.setChecked(ThemeManager.getNightMode(this));
 
-        themeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            ThemeManager.setNightMode(this, isChecked);
-        });
+        themeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> ThemeManager.setNightMode(this, isChecked));
 
         // Setup SearchView
         setupSearchView();
@@ -85,24 +81,18 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
 
-        titleTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Expand the search bar and hide the title with animation
-                Intent intent = new Intent(SettingActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
+        titleTextView.setOnClickListener(v -> {
+            // Expand the search bar and hide the title with animation
+            Intent intent = new Intent(SettingActivity.this, MainActivity.class);
+            startActivity(intent);
         });
 
-        searchView.setOnCloseListener(new androidx.appcompat.widget.SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                // Collapse the search bar and show the title with animation
-                searchView.setVisibility(View.GONE);
-                titleTextView.setVisibility(View.VISIBLE);
-                searchView.startAnimation(AnimationUtils.loadAnimation(SettingActivity.this, R.anim.search_animation));
-                return false;
-            }
+        searchView.setOnCloseListener(() -> {
+            // Collapse the search bar and show the title with animation
+            searchView.setVisibility(View.GONE);
+            titleTextView.setVisibility(View.VISIBLE);
+            searchView.startAnimation(AnimationUtils.loadAnimation(SettingActivity.this, R.anim.search_animation));
+            return false;
         });
 
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {

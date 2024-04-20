@@ -29,7 +29,6 @@ public class SaveActivity extends AppCompatActivity implements SavedAdapter.OnIt
     private SavedAdapter savedAdapter;
     private TextView titleTextView;
     private androidx.appcompat.widget.SearchView searchView;
-    private ImageView backIcon;
 
     private static final int REQUEST_CODE_DETAIL_ACTIVITY = 100;
 
@@ -69,25 +68,19 @@ public class SaveActivity extends AppCompatActivity implements SavedAdapter.OnIt
             }
         });
 
-        titleTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Expand the search bar and hide the title with animation
-                Intent intent = new Intent(SaveActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
+        titleTextView.setOnClickListener(v -> {
+            // Expand the search bar and hide the title with animation
+            Intent intent = new Intent(SaveActivity.this, MainActivity.class);
+            startActivity(intent);
         });
 
 
-        searchView.setOnCloseListener(new androidx.appcompat.widget.SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                // Collapse the search bar and show the title with animation
-                searchView.setVisibility(View.GONE);
-                titleTextView.setVisibility(View.VISIBLE);
-                searchView.startAnimation(AnimationUtils.loadAnimation(SaveActivity.this, R.anim.search_animation));
-                return false;
-            }
+        searchView.setOnCloseListener(() -> {
+            // Collapse the search bar and show the title with animation
+            searchView.setVisibility(View.GONE);
+            titleTextView.setVisibility(View.VISIBLE);
+            searchView.startAnimation(AnimationUtils.loadAnimation(SaveActivity.this, R.anim.search_animation));
+            return false;
         });
 
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {

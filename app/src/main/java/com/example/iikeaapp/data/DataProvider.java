@@ -13,8 +13,8 @@ import java.util.ArrayList;
 
 public class DataProvider {
     private static DataProvider instance;
-    private ArrayList<FurnitureModel> furnitureModels;  // simulted database
-    private Context context;
+    private final ArrayList<FurnitureModel> furnitureModels;  // simulated database
+    private final Context context;
 
     private DataProvider(Context context) {
         this.context = context;
@@ -36,23 +36,28 @@ public class DataProvider {
         ArrayList<FurnitureModel> models = new ArrayList<>();
         try {
             String json = loadJSONfromAssets();
-            JSONArray productArray = new JSONObject(json).getJSONArray("products");
-            for (int i = 0; i < productArray.length(); i++) {
-                JSONObject productDetail = productArray.getJSONObject(i);
-                models.add(new FurnitureModel(
-                        productDetail.getString("name"),
-                        productDetail.getString("category"),
-                        productDetail.getDouble("price"),
-                        productDetail.getString("description"),
-                        new String[]{
-                                productDetail.getJSONObject("imageResources").getString("image1"),
-                                productDetail.getJSONObject("imageResources").getString("image2"),
-                                productDetail.getJSONObject("imageResources").getString("image3")
-                        }
-                ));
+            JSONArray productArray = null;
+            if (json != null) {
+                productArray = new JSONObject(json).getJSONArray("products");
+            }
+            if (productArray != null) {
+                for (int i = 0; i < productArray.length(); i++) {
+                    JSONObject productDetail = productArray.getJSONObject(i);
+                    models.add(new FurnitureModel(
+                            productDetail.getString("name"),
+                            productDetail.getString("category"),
+                            productDetail.getDouble("price"),
+                            productDetail.getString("description"),
+                            new String[]{
+                                    productDetail.getJSONObject("imageResources").getString("image1"),
+                                    productDetail.getJSONObject("imageResources").getString("image2"),
+                                    productDetail.getJSONObject("imageResources").getString("image3")
+                            }
+                    ));
+                }
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            return null;
         }
         return models;
     }
@@ -65,7 +70,6 @@ public class DataProvider {
             is.close();
             return new String(buffer, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            e.printStackTrace();
             return null;
         }
     }

@@ -44,10 +44,6 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
     private TextView titleTextView;
     private androidx.appcompat.widget.SearchView searchView;
 
-    private ImageView backIcon;
-    private ImageView filterIcon;
-    private ImageView sortIcon;
-
 
     private static class ViewHolder {
         public final RecyclerView items;
@@ -105,24 +101,18 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
             }
         });
 
-        titleTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Expand the search bar and hide the title with animation
-                Intent intent = new Intent(ListActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
+        titleTextView.setOnClickListener(v -> {
+            // Expand the search bar and hide the title with animation
+            Intent intent = new Intent(ListActivity.this, MainActivity.class);
+            startActivity(intent);
         });
 
-        searchView.setOnCloseListener(new androidx.appcompat.widget.SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                // Collapse the search bar and show the title with animation
-                searchView.setVisibility(View.GONE);
-                titleTextView.setVisibility(View.VISIBLE);
-                searchView.startAnimation(AnimationUtils.loadAnimation(ListActivity.this, R.anim.search_animation));
-                return false;
-            }
+        searchView.setOnCloseListener(() -> {
+            // Collapse the search bar and show the title with animation
+            searchView.setVisibility(View.GONE);
+            titleTextView.setVisibility(View.VISIBLE);
+            searchView.startAnimation(AnimationUtils.loadAnimation(ListActivity.this, R.anim.search_animation));
+            return false;
         });
 
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
@@ -185,8 +175,8 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
 
 
     private void setupButtonListeners() {
-        filterIcon = findViewById(R.id.filter_icon);
-        sortIcon = findViewById(R.id.sort_icon);
+        ImageView filterIcon = findViewById(R.id.filter_icon);
+        ImageView sortIcon = findViewById(R.id.sort_icon);
         filterIcon.setOnClickListener(this::showFilterDialog);
         sortIcon.setOnClickListener(this::showSortDialog);
     }

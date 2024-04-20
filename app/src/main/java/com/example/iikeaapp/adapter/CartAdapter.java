@@ -89,9 +89,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             }
         });
 
-        holder.removeButton.setOnClickListener(v -> {
-            removeItem(holder, position);
-        });
+        holder.removeButton.setOnClickListener(v -> removeItem(holder, position));
     }
 
     private void removeItem(CartViewHolder holder, int position) {
@@ -127,7 +125,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
     public class CartViewHolder extends RecyclerView.ViewHolder {
         TextView furnitureNameTextView;
-        TextView furniturePriceTextView;
         TextView quantityTextView;
         TextView totalPriceTextView;
         ImageView furnitureImageView;
@@ -145,13 +142,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             minusButton = itemView.findViewById(R.id.minus_sign);
             removeButton = itemView.findViewById(R.id.remove_button);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION && listener != null) {
-                        listener.onItemClick(cartItems.get(position).getKey());
-                    }
+            itemView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION && listener != null) {
+                    listener.onItemClick(cartItems.get(position).getKey());
                 }
             });
         }

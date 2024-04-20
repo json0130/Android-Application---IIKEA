@@ -34,8 +34,6 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SavedViewHol
 
     private OnItemClickListener listener;
 
-    private static final int REQUEST_CODE_SAVE_ACTIVITY = 100;
-
     public SavedAdapter(Context context, OnItemClickListener listener) {
         this.savedItems = new ArrayList<>(Saved.getInstance().getSavedItems());
         this.context = context;
@@ -79,15 +77,6 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SavedViewHol
                 updateEmptyView();
             }, animation.getDuration());
         });
-//        holder.savedButton.setOnClickListener(v -> {
-//            Saved.removeItem(furniture);
-//            savedItems.remove(position);
-//            notifyItemRemoved(position);
-//
-//            Intent resultIntent = new Intent();
-//            resultIntent.putExtra("removedItem", furniture);
-//            ((Activity) context).setResult(Activity.RESULT_OK, resultIntent);
-//        });
     }
 
     @Override
@@ -116,13 +105,10 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SavedViewHol
             furniturePriceTextView = itemView.findViewById(R.id.furniture_total_price);
             savedButton = itemView.findViewById(R.id.favorite_button);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION && listener != null) {
-                        listener.onItemClick(savedItems.get(position));
-                    }
+            itemView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION && listener != null) {
+                    listener.onItemClick(savedItems.get(position));
                 }
             });
         }

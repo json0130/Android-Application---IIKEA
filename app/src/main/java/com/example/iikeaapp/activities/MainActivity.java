@@ -1,7 +1,6 @@
 package com.example.iikeaapp.activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -21,9 +19,6 @@ import com.example.iikeaapp.R;
 import com.example.iikeaapp.adapter.Furniture_HorizontalRecyclerViewAdapter;
 import com.example.iikeaapp.data.DataProvider;
 import com.example.iikeaapp.data.FurnitureModel;
-import com.example.iikeaapp.data.ShoppingCart;
-import com.example.iikeaapp.manager.CartManager;
-import com.example.iikeaapp.manager.Saved;
 import com.example.iikeaapp.manager.ThemeManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -35,17 +30,8 @@ import java.util.TimerTask;
 
 
 public class MainActivity extends AppCompatActivity {
-    // top picks recycler view init
-    private RecyclerView recyclerViewTopPicks;
-    private Saved saved;
-    private ShoppingCart shoppingCart;
     private TextView titleTextView;
     private androidx.appcompat.widget.SearchView searchView;
-    SwitchCompat switchMode;
-    boolean nightmode;
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
-    private SwitchCompat themeSwitch;
     private Timer autoScrollTimer;
     private boolean isAutoScrolling = false;
 
@@ -63,10 +49,6 @@ public class MainActivity extends AppCompatActivity {
         ThemeManager.setNightMode(this, ThemeManager.getNightMode(this));
 
         startAutoScrolling();
-
-        // Get the ShoppingCart instance from the CartManager
-        saved = Saved.getInstance();
-        shoppingCart = CartManager.getInstance().getShoppingCart();
 
         // init recycler views
         initRecyclerView();
@@ -101,7 +83,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initRecyclerView() {
-        recyclerViewTopPicks = findViewById(R.id.main_top_picks_recyclerView);
+        // top picks recycler view init
+        RecyclerView recyclerViewTopPicks = findViewById(R.id.main_top_picks_recyclerView);
         ArrayList<FurnitureModel> furnitureModels = DataProvider.getInstance(this).getFurnitureModels();
         Collections.sort(furnitureModels, (a, b) -> Integer.compare(b.getViewCount(), a.getViewCount()));
         Furniture_HorizontalRecyclerViewAdapter adapter = new Furniture_HorizontalRecyclerViewAdapter(this, furnitureModels);
@@ -211,11 +194,12 @@ public class MainActivity extends AppCompatActivity {
             runOnUiThread(() -> {
                 RecyclerView recyclerViewTopPicks = findViewById(R.id.main_top_picks_recyclerView);
                 LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerViewTopPicks.getLayoutManager();
-                int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
-                if (lastVisibleItemPosition == layoutManager.getItemCount() - 1) {
+                int lastVisibleItemPosition = 0;
+                if (layoutManager != null) {
+                    lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
+                }
+                if (layoutManager != null && lastVisibleItemPosition == layoutManager.getItemCount() - 1) {
                     recyclerViewTopPicks.smoothScrollToPosition(0);
-                } else {
-                    recyclerViewTopPicks.smoothScrollToPosition(lastVisibleItemPosition + 1);
                 }
             });
         }

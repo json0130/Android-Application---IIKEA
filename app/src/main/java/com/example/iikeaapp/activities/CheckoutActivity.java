@@ -6,7 +6,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +22,6 @@ public class CheckoutActivity extends AppCompatActivity {
     private ShoppingCart shoppingCart;
     private TextView titleTextView;
     private androidx.appcompat.widget.SearchView searchView;
-    private ImageView backIcon;
 
     private TextView totalPriceTextView;
 
@@ -50,7 +48,7 @@ public class CheckoutActivity extends AppCompatActivity {
         shoppingCart = CartManager.getInstance().getShoppingCart();
         checkOutButton.setOnClickListener(v -> {
             if (areRequiredFieldsFilled()) {
-                Intent intent = new Intent(CheckoutActivity.this, ThankyouActivity.class);
+                Intent intent = new Intent(CheckoutActivity.this, ThankYouActivity.class);
                 startActivity(intent);
 
                 // Clear the shopping cart

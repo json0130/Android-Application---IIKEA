@@ -4,24 +4,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.iikeaapp.R;
-import com.example.iikeaapp.data.ShoppingCart;
-import com.example.iikeaapp.manager.CartManager;
 import com.example.iikeaapp.manager.ThemeManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class ThankyouActivity extends AppCompatActivity {
-    private ShoppingCart shoppingCart;
+public class ThankYouActivity extends AppCompatActivity {
 
     private TextView titleTextView;
     private androidx.appcompat.widget.SearchView searchView;
-    private ImageView backIcon;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,8 +25,6 @@ public class ThankyouActivity extends AppCompatActivity {
 
         // Apply the current theme mode
         ThemeManager.setNightMode(this, ThemeManager.getNightMode(this));
-
-        shoppingCart = CartManager.getInstance().getShoppingCart();
 
         // Setup SearchView
         FloatingActionButton searchIcon = findViewById(R.id.search_icon);
@@ -46,34 +40,28 @@ public class ThankyouActivity extends AppCompatActivity {
                 titleTextView.setVisibility(View.GONE);
                 searchView.setVisibility(View.VISIBLE);
                 searchView.setIconified(false);
-                searchView.startAnimation(AnimationUtils.loadAnimation(ThankyouActivity.this, R.anim.search_animation));
+                searchView.startAnimation(AnimationUtils.loadAnimation(ThankYouActivity.this, R.anim.search_animation));
             }
         });
 
-        titleTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ThankyouActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
+        titleTextView.setOnClickListener(v -> {
+            Intent intent = new Intent(ThankYouActivity.this, MainActivity.class);
+            startActivity(intent);
         });
 
-        searchView.setOnCloseListener(new androidx.appcompat.widget.SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                // Collapse the search bar and show the title with animation
-                searchView.setVisibility(View.GONE);
-                titleTextView.setVisibility(View.VISIBLE);
-                searchView.startAnimation(AnimationUtils.loadAnimation(ThankyouActivity.this, R.anim.search_animation));
-                return false;
-            }
+        searchView.setOnCloseListener(() -> {
+            // Collapse the search bar and show the title with animation
+            searchView.setVisibility(View.GONE);
+            titleTextView.setVisibility(View.VISIBLE);
+            searchView.startAnimation(AnimationUtils.loadAnimation(ThankYouActivity.this, R.anim.search_animation));
+            return false;
         });
 
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 // Start ListActivity with the search query
-                Intent intent = new Intent(ThankyouActivity.this, ListActivity.class);
+                Intent intent = new Intent(ThankYouActivity.this, ListActivity.class);
                 intent.putExtra("searchQuery", query);
                 startActivity(intent);
                 return false;

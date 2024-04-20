@@ -24,7 +24,6 @@ import com.example.iikeaapp.manager.CartManager;
 import com.example.iikeaapp.manager.Saved;
 import com.example.iikeaapp.manager.ThemeManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
@@ -35,12 +34,9 @@ public class DetailActivity extends AppCompatActivity {
     private ShoppingCart shoppingCart;
     ViewPager mViewPager;
     TextView furnitureItemTitle, itemPrice, itemDescription;
-    ImageView backButton;
-    Chip saveChip;
     private TextView titleTextView;
     private androidx.appcompat.widget.SearchView searchView;
     private int quantity = 1;
-    private static final int REQUEST_CODE_SAVE_ACTIVITY = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,15 +137,12 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
-        searchView.setOnCloseListener(new androidx.appcompat.widget.SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                // Collapse the search bar and show the title with animation
-                searchView.setVisibility(View.GONE);
-                titleTextView.setVisibility(View.VISIBLE);
-                searchView.startAnimation(AnimationUtils.loadAnimation(DetailActivity.this, R.anim.search_animation));
-                return false;
-            }
+        searchView.setOnCloseListener(() -> {
+            // Collapse the search bar and show the title with animation
+            searchView.setVisibility(View.GONE);
+            titleTextView.setVisibility(View.VISIBLE);
+            searchView.startAnimation(AnimationUtils.loadAnimation(DetailActivity.this, R.anim.search_animation));
+            return false;
         });
 
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
@@ -168,13 +161,10 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
-        titleTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Expand the search bar and hide the title with animation
-                Intent intent = new Intent(DetailActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
+        titleTextView.setOnClickListener(v -> {
+            // Expand the search bar and hide the title with animation
+            Intent intent = new Intent(DetailActivity.this, MainActivity.class);
+            startActivity(intent);
         });
 
         // nav bar
