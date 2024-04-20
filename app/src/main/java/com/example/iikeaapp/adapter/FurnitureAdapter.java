@@ -104,6 +104,6 @@ public class FurnitureAdapter extends RecyclerView.Adapter<FurnitureAdapter.Furn
     }
 
     public interface OnItemClickListener {
-        void onItemClick(FurnitureModel funiture);
+        void onItemClick(FurnitureModel furniture);
     }
 }

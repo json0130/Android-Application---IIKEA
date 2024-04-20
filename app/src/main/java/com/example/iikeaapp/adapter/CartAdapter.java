@@ -1,6 +1,7 @@
 package com.example.iikeaapp.adapter;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,20 +10,18 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.os.Handler;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.iikeaapp.R;
 import com.example.iikeaapp.activities.CartActivity;
 import com.example.iikeaapp.data.FurnitureModel;
 import com.example.iikeaapp.data.ShoppingCart;
 import com.example.iikeaapp.manager.CartManager;
-import com.bumptech.glide.Glide;
 
 import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -90,9 +89,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             }
         });
 
-        holder.removeButton.setOnClickListener(v -> {
-            removeItem(holder, position);
-        });
+        holder.removeButton.setOnClickListener(v -> removeItem(holder, position));
     }
 
     private void removeItem(CartViewHolder holder, int position) {
@@ -128,7 +125,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
     public class CartViewHolder extends RecyclerView.ViewHolder {
         TextView furnitureNameTextView;
-        TextView furniturePriceTextView;
         TextView quantityTextView;
         TextView totalPriceTextView;
         ImageView furnitureImageView;
@@ -146,13 +142,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             minusButton = itemView.findViewById(R.id.minus_sign);
             removeButton = itemView.findViewById(R.id.remove_button);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION && listener != null) {
-                        listener.onItemClick(cartItems.get(position).getKey());
-                    }
+            itemView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION && listener != null) {
+                    listener.onItemClick(cartItems.get(position).getKey());
                 }
             });
         }

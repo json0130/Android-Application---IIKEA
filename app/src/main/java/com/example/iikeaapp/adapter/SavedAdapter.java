@@ -3,6 +3,7 @@ package com.example.iikeaapp.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +12,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import android.os.Handler;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.iikeaapp.R;
-import com.example.iikeaapp.activities.CartActivity;
 import com.example.iikeaapp.activities.SaveActivity;
 import com.example.iikeaapp.data.FurnitureModel;
 import com.example.iikeaapp.manager.Saved;
@@ -36,8 +33,6 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SavedViewHol
     private Context context;
 
     private OnItemClickListener listener;
-
-    private static final int REQUEST_CODE_SAVE_ACTIVITY = 100;
 
     public SavedAdapter(Context context, OnItemClickListener listener) {
         this.savedItems = new ArrayList<>(Saved.getInstance().getSavedItems());
@@ -82,15 +77,6 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SavedViewHol
                 updateEmptyView();
             }, animation.getDuration());
         });
-//        holder.savedButton.setOnClickListener(v -> {
-//            Saved.removeItem(furniture);
-//            savedItems.remove(position);
-//            notifyItemRemoved(position);
-//
-//            Intent resultIntent = new Intent();
-//            resultIntent.putExtra("removedItem", furniture);
-//            ((Activity) context).setResult(Activity.RESULT_OK, resultIntent);
-//        });
     }
 
     @Override
@@ -119,13 +105,10 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SavedViewHol
             furniturePriceTextView = itemView.findViewById(R.id.furniture_total_price);
             savedButton = itemView.findViewById(R.id.favorite_button);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION && listener != null) {
-                        listener.onItemClick(savedItems.get(position));
-                    }
+            itemView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION && listener != null) {
+                    listener.onItemClick(savedItems.get(position));
                 }
             });
         }

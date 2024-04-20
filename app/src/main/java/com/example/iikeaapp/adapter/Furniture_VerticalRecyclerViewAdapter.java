@@ -48,13 +48,10 @@ public class Furniture_VerticalRecyclerViewAdapter extends RecyclerView.Adapter<
                 .into(holder.imageView);
 
         // Set click listener
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, DetailActivity.class);
-                intent.putExtra("furnitureName", model.getFurnitureName());
-                context.startActivity(intent);
-            }
+        holder.itemView.setOnClickListener(view -> {
+            Intent intent = new Intent(context, DetailActivity.class);
+            intent.putExtra("furnitureName", model.getFurnitureName());
+            context.startActivity(intent);
         });
     }
 

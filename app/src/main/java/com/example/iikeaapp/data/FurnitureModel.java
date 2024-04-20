@@ -1,7 +1,5 @@
 package com.example.iikeaapp.data;
 
-import android.util.Log;
-
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;

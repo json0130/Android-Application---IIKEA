@@ -31,14 +31,6 @@ public class Saved {
         return false;
     }
 
-    public static void toggleSaved(FurnitureModel item) {
-        if(isSaved(item)) {
-            removeItem(item);
-        } else {
-            addItem(item);
-        }
-    }
-
     public ArrayList<FurnitureModel> getSavedItems() {
         return savedItems;
     }

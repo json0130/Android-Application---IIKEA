@@ -8,10 +8,11 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
-import com.bumptech.glide.Glide;
 
+import com.bumptech.glide.Glide;
 import com.example.iikeaapp.R;
 
 
@@ -70,7 +71,7 @@ public class ViewPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
+    public void destroyItem(ViewGroup container, int position, @NonNull Object object) {
         container.removeView((LinearLayout) object);
     }
 }

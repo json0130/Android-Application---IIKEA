@@ -3,16 +3,13 @@ package com.example.iikeaapp.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,23 +20,14 @@ import com.example.iikeaapp.adapter.FurnitureAdapter;
 import com.example.iikeaapp.adapter.Furniture_VerticalRecyclerViewAdapter;
 import com.example.iikeaapp.data.DataProvider;
 import com.example.iikeaapp.data.FurnitureModel;
-import com.example.iikeaapp.data.ShoppingCart;
-import com.example.iikeaapp.manager.Saved;
 import com.example.iikeaapp.manager.ThemeManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-import com.google.android.material.slider.RangeSlider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.slider.RangeSlider;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -55,10 +43,6 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
     ArrayList<FurnitureModel> furnitureModels = new ArrayList<>();
     private TextView titleTextView;
     private androidx.appcompat.widget.SearchView searchView;
-
-    private ImageView backIcon;
-    private ImageView filterIcon;
-    private ImageView sortIcon;
 
 
     private static class ViewHolder {
@@ -117,24 +101,18 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
             }
         });
 
-        titleTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Expand the search bar and hide the title with animation
-                Intent intent = new Intent(ListActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
+        titleTextView.setOnClickListener(v -> {
+            // Expand the search bar and hide the title with animation
+            Intent intent = new Intent(ListActivity.this, MainActivity.class);
+            startActivity(intent);
         });
 
-        searchView.setOnCloseListener(new androidx.appcompat.widget.SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                // Collapse the search bar and show the title with animation
-                searchView.setVisibility(View.GONE);
-                titleTextView.setVisibility(View.VISIBLE);
-                searchView.startAnimation(AnimationUtils.loadAnimation(ListActivity.this, R.anim.search_animation));
-                return false;
-            }
+        searchView.setOnCloseListener(() -> {
+            // Collapse the search bar and show the title with animation
+            searchView.setVisibility(View.GONE);
+            titleTextView.setVisibility(View.VISIBLE);
+            searchView.startAnimation(AnimationUtils.loadAnimation(ListActivity.this, R.anim.search_animation));
+            return false;
         });
 
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
@@ -197,8 +175,8 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
 
 
     private void setupButtonListeners() {
-        filterIcon = findViewById(R.id.filter_icon);
-        sortIcon = findViewById(R.id.sort_icon);
+        ImageView filterIcon = findViewById(R.id.filter_icon);
+        ImageView sortIcon = findViewById(R.id.sort_icon);
         filterIcon.setOnClickListener(this::showFilterDialog);
         sortIcon.setOnClickListener(this::showSortDialog);
     }

@@ -75,8 +75,7 @@
         app:layout_constraintEnd_toEndOf="@+id/furniture_recycler_view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/emptyListText"
-        app:srcCompat="@drawable/sofa"
-        app:tint="@color/black" />
+        app:srcCompat="@drawable/sofa" />
 
 
     <androidx.recyclerview.widget.RecyclerView
