@@ -57,7 +57,10 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:clipChildren="false"
+                android:clipToPadding="false">
+
                 <!-- ViewPager -->
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/viewPager"
@@ -73,12 +76,13 @@
                     android:id="@+id/tabDots"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
                     app:tabBackground="@drawable/tab_selector"
                     app:tabGravity="center"
                     app:tabIndicatorHeight="0dp"
                     app:tabPaddingStart="28dp"
                     app:tabMode="fixed"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@id/viewPager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
