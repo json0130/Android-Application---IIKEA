@@ -10,9 +10,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:text="MAX PRICE"
-        android:textSize="20dp"/>
+        android:layout_marginStart="16dp"
+        android:text="@string/furniture_price_max"
+        android:textSize="20sp"/>
 
     <com.google.android.material.slider.RangeSlider
         android:id="@+id/max_price_slider"
@@ -27,13 +27,13 @@
         android:layout_marginHorizontal="16dp"/>
 
     <TextView
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CATEGORY / TAG"
-        android:textSize="20dp"/>
+        android:text="@string/furniture_category"
+        android:textSize="20sp"/>
 
-    n<com.google.android.material.chip.ChipGroup
+    <com.google.android.material.chip.ChipGroup
         android:id="@+id/filter_tag_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,14 +47,14 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:checked="true"
-            android:text="LIGHTING"
+            android:text="@string/light_cat"
             app:checkedIconVisible="true"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/filter_chip_outdoor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="OUTDOOR"
+            android:text="@string/outdoor_cat"
             android:checkable="true"
             android:checked="true"
             app:checkedIconVisible="true"/>
@@ -63,7 +63,7 @@
             android:id="@+id/filter_chip_office"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="OFFICE"
+            android:text="@string/office_cat"
             android:checkable="true"
             android:checked="true"
             app:checkedIconVisible="true"/>
@@ -72,7 +72,7 @@
             android:id="@+id/filter_chip_living"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="LIVING"
+            android:text="@string/living_cat"
             android:checkable="true"
             android:checked="true"
             app:checkedIconVisible="true"/>
