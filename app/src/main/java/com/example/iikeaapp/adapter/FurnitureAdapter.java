@@ -28,44 +28,25 @@ public class FurnitureAdapter extends RecyclerView.Adapter<FurnitureAdapter.Furn
         this.listener = listener;
     }
 
-    public class FurnitureViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public ImageView furnitureImage;
-        public TextView furnitureName;
-        public TextView furniturePrice;
-        private OnItemClickListener listener;
-
-        public FurnitureViewHolder(@NonNull View itemView, OnItemClickListener listener) {
-            super(itemView);
-            furnitureImage = itemView.findViewById(R.id.furniture_image);
-            furnitureName = itemView.findViewById(R.id.furniture_name);
-            furniturePrice = itemView.findViewById(R.id.furniture_price);
-            this.listener = listener;
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            int position = getAdapterPosition();
-            if (position != RecyclerView.NO_POSITION) {
-                listener.onItemClick(furnitureListFiltered.get(position));
-            }
-        }
-    }
-
     @NonNull
     @Override
     public FurnitureViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.furniture_listview_layout, parent, false);
-        return new FurnitureViewHolder(view, listener);
+        return new FurnitureViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull FurnitureViewHolder holder, int position) {
         FurnitureModel furnitureItem = furnitureListFiltered.get(position);
-        //holder.furnitureImage.setImageResource(furnitureItem.getImageResources());
         holder.furnitureName.setText(furnitureItem.getFurnitureName());
-        holder.furniturePrice.setText("Price: $" + furnitureItem.getPrice());
+        holder.furniturePrice.setText(String.format("Price: $%.2f", furnitureItem.getPrice()));
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(furnitureItem);
+            }
+        });
     }
 
     @Override
@@ -101,6 +82,19 @@ public class FurnitureAdapter extends RecyclerView.Adapter<FurnitureAdapter.Furn
                 notifyDataSetChanged();
             }
         };
+    }
+
+    public static class FurnitureViewHolder extends RecyclerView.ViewHolder {
+        ImageView furnitureImage;
+        TextView furnitureName;
+        TextView furniturePrice;
+
+        FurnitureViewHolder(@NonNull View itemView) {
+            super(itemView);
+            furnitureImage = itemView.findViewById(R.id.furniture_image);
+            furnitureName = itemView.findViewById(R.id.furniture_name);
+            furniturePrice = itemView.findViewById(R.id.furniture_price);
+        }
     }
 
     public interface OnItemClickListener {

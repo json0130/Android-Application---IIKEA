@@ -28,10 +28,8 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SavedViewHol
         void onItemClick(FurnitureModel item);
     }
 
-
     public ArrayList<FurnitureModel> savedItems;
     private Context context;
-
     private OnItemClickListener listener;
 
     public SavedAdapter(Context context, OnItemClickListener listener) {
@@ -77,6 +75,12 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SavedViewHol
                 updateEmptyView();
             }, animation.getDuration());
         });
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(furniture);
+            }
+        });
     }
 
     @Override
@@ -87,12 +91,14 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SavedViewHol
     public void updateData() {
         savedItems = new ArrayList<>(Saved.getInstance().getSavedItems());
     }
+
     private void updateEmptyView() {
         if (context instanceof SaveActivity) {
             ((SaveActivity) context).updateEmptyView();
         }
     }
-    public class SavedViewHolder extends RecyclerView.ViewHolder {
+
+    public static class SavedViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView furnitureNameTextView;
         TextView furniturePriceTextView;
@@ -104,13 +110,6 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SavedViewHol
             furnitureNameTextView = itemView.findViewById(R.id.furniture_item_title);
             furniturePriceTextView = itemView.findViewById(R.id.furniture_total_price);
             savedButton = itemView.findViewById(R.id.favorite_button);
-
-            itemView.setOnClickListener(v -> {
-                int position = getAdapterPosition();
-                if (position != RecyclerView.NO_POSITION && listener != null) {
-                    listener.onItemClick(savedItems.get(position));
-                }
-            });
         }
     }
 }

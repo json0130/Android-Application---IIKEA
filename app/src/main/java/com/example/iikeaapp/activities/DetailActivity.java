@@ -214,7 +214,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private void updateUIWithFurnitureModel(FurnitureModel furnitureModel) {
         furnitureItemTitle.setText(furnitureModel.getFurnitureName());
-        itemPrice.setText("$" + furnitureModel.getPrice());
+        itemPrice.setText(String.format("$%.2f", furnitureModel.getPrice()));
         itemDescription.setText(furnitureModel.getDescription());
 
         ViewPagerAdapter mViewPagerAdapter = new ViewPagerAdapter(DetailActivity.this, furnitureModel.getImageResources());

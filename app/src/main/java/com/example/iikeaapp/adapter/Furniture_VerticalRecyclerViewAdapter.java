@@ -40,7 +40,7 @@ public class Furniture_VerticalRecyclerViewAdapter extends RecyclerView.Adapter<
     public void onBindViewHolder(@NonNull Furniture_VerticalRecyclerViewAdapter.MyViewHolder holder, int position) {
         FurnitureModel model = furnitureModels.get(position);
         holder.textViewTitle.setText(model.getFurnitureName());
-        holder.textViewPrice.setText("$" + model.getPrice());
+        holder.textViewPrice.setText(String.format("$%.2f", model.getPrice()));
 
         Glide.with(context)
                 .load(model.getImageResources()[0])
