@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,10 +26,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 public class SaveActivity extends AppCompatActivity implements SavedAdapter.OnItemClickListener {
-    private RecyclerView recyclerViewSaved;
+    private ViewHolder viewHolder;
     private SavedAdapter savedAdapter;
-    private TextView titleTextView;
-    private androidx.appcompat.widget.SearchView searchView;
 
     private static final int REQUEST_CODE_DETAIL_ACTIVITY = 100;
 
@@ -40,56 +39,41 @@ public class SaveActivity extends AppCompatActivity implements SavedAdapter.OnIt
         // Apply the current theme mode
         ThemeManager.setNightMode(this, ThemeManager.getNightMode(this));
 
+        viewHolder = new ViewHolder();
+
         // Initialize the RecyclerView
-        recyclerViewSaved = findViewById(R.id.saved_recycler_view);
-        recyclerViewSaved.setLayoutManager(new LinearLayoutManager(this));
+        viewHolder.recyclerViewSaved.setLayoutManager(new LinearLayoutManager(this));
 
         // Create and set the SavedAdapter
         savedAdapter = new SavedAdapter(this, this);
-        recyclerViewSaved.setAdapter(savedAdapter);
+        viewHolder.recyclerViewSaved.setAdapter(savedAdapter);
 
         updateEmptyView();
 
-        // Setup SearchView
-        FloatingActionButton searchIcon = findViewById(R.id.search_icon);
-        titleTextView = findViewById(R.id.title);
-        searchView = findViewById(R.id.list_search_view);
+        setupSearchView();
+        setupBottomNavigation();
+        setupItemTouchHelper();
+    }
 
-        searchIcon.setOnClickListener(v -> {
-            // Toggle the visibility of the SearchView and title
-            if (searchView.getVisibility() == View.VISIBLE) {
-                searchView.setVisibility(View.GONE);
-                titleTextView.setVisibility(View.VISIBLE);
-            } else {
-                titleTextView.setVisibility(View.GONE);
-                searchView.setVisibility(View.VISIBLE);
-                searchView.setIconified(false);
-                searchView.startAnimation(AnimationUtils.loadAnimation(SaveActivity.this, R.anim.search_animation));
-            }
-        });
+    private void setupSearchView() {
+        viewHolder.searchIcon.setOnClickListener(v -> toggleSearchViewVisibility());
 
-        titleTextView.setOnClickListener(v -> {
-            // Expand the search bar and hide the title with animation
+        viewHolder.titleTextView.setOnClickListener(v -> {
             Intent intent = new Intent(SaveActivity.this, MainActivity.class);
             startActivity(intent);
         });
 
-
-        searchView.setOnCloseListener(() -> {
-            // Collapse the search bar and show the title with animation
-            searchView.setVisibility(View.GONE);
-            titleTextView.setVisibility(View.VISIBLE);
-            searchView.startAnimation(AnimationUtils.loadAnimation(SaveActivity.this, R.anim.search_animation));
+        viewHolder.searchView.setOnCloseListener(() -> {
+            viewHolder.searchView.setVisibility(View.GONE);
+            viewHolder.titleTextView.setVisibility(View.VISIBLE);
+            viewHolder.searchView.startAnimation(AnimationUtils.loadAnimation(SaveActivity.this, R.anim.search_animation));
             return false;
         });
 
-        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+        viewHolder.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // Start ListActivity with the search query
-                Intent intent = new Intent(SaveActivity.this, ListActivity.class);
-                intent.putExtra("searchQuery", query);
-                startActivity(intent);
+                startListActivity(query);
                 return false;
             }
 
@@ -98,11 +82,29 @@ public class SaveActivity extends AppCompatActivity implements SavedAdapter.OnIt
                 return false;
             }
         });
+    }
 
-        // nav bar
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
-        bottomNavigationView.setSelectedItemId(R.id.bottom_save);
-        bottomNavigationView.setOnItemSelectedListener(item -> {
+    private void toggleSearchViewVisibility() {
+        if (viewHolder.searchView.getVisibility() == View.VISIBLE) {
+            viewHolder.searchView.setVisibility(View.GONE);
+            viewHolder.titleTextView.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.titleTextView.setVisibility(View.GONE);
+            viewHolder.searchView.setVisibility(View.VISIBLE);
+            viewHolder.searchView.setIconified(false);
+            viewHolder.searchView.startAnimation(AnimationUtils.loadAnimation(SaveActivity.this, R.anim.search_animation));
+        }
+    }
+
+    private void startListActivity(String query) {
+        Intent intent = new Intent(SaveActivity.this, ListActivity.class);
+        intent.putExtra("searchQuery", query);
+        startActivity(intent);
+    }
+
+    private void setupBottomNavigation() {
+        viewHolder.bottomNavigationView.setSelectedItemId(R.id.bottom_save);
+        viewHolder.bottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.bottom_home) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -115,7 +117,7 @@ public class SaveActivity extends AppCompatActivity implements SavedAdapter.OnIt
                 return true;
             } else if (item.getItemId() == R.id.bottom_save) {
                 return true;
-            }else if (item.getItemId() == R.id.bottom_setting) {
+            } else if (item.getItemId() == R.id.bottom_setting) {
                 Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
@@ -123,8 +125,9 @@ public class SaveActivity extends AppCompatActivity implements SavedAdapter.OnIt
             }
             return false;
         });
+    }
 
-        // Set up ItemTouchHelper for swipe-to-delete
+    private void setupItemTouchHelper() {
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -140,7 +143,7 @@ public class SaveActivity extends AppCompatActivity implements SavedAdapter.OnIt
                 savedAdapter.notifyItemRemoved(position);
                 updateEmptyView();
 
-                Snackbar.make(recyclerViewSaved, "Item removed from saved", Snackbar.LENGTH_LONG)
+                Snackbar.make(viewHolder.itemView, "Item removed from saved", Snackbar.LENGTH_LONG)
                         .setAction("Undo", v -> {
                             Saved.addItem(deletedItem);
                             savedAdapter.savedItems.add(position, deletedItem);
@@ -151,7 +154,7 @@ public class SaveActivity extends AppCompatActivity implements SavedAdapter.OnIt
             }
         };
 
-        new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerViewSaved);
+        new ItemTouchHelper(simpleCallback).attachToRecyclerView(viewHolder.recyclerViewSaved);
     }
 
     // Update the savedAdapter when the activity is resumed
@@ -170,14 +173,12 @@ public class SaveActivity extends AppCompatActivity implements SavedAdapter.OnIt
     }
 
     public void updateEmptyView() {
-        TextView noProductMsg = findViewById(R.id.emptyListText);
-        ImageView productWatermark = findViewById(R.id.furnitureWatermark);
         if (savedAdapter.savedItems.isEmpty()) {
-            productWatermark.setVisibility(View.VISIBLE);
-            noProductMsg.setVisibility(View.VISIBLE);
+            viewHolder.productWatermark.setVisibility(View.VISIBLE);
+            viewHolder.noProductMsg.setVisibility(View.VISIBLE);
         } else {
-            productWatermark.setVisibility(View.GONE);
-            noProductMsg.setVisibility(View.GONE);
+            viewHolder.productWatermark.setVisibility(View.GONE);
+            viewHolder.noProductMsg.setVisibility(View.GONE);
         }
     }
 
@@ -195,7 +196,27 @@ public class SaveActivity extends AppCompatActivity implements SavedAdapter.OnIt
         savedAdapter.notifyDataSetChanged();
 
         // Hide the SearchView and show the title
-        searchView.setVisibility(View.GONE);
-        titleTextView.setVisibility(View.VISIBLE);
+        viewHolder.searchView.setVisibility(View.GONE);
+        viewHolder.titleTextView.setVisibility(View.VISIBLE);
+    }
+
+    private class ViewHolder {
+        RecyclerView recyclerViewSaved;
+        TextView titleTextView;
+        SearchView searchView;
+        FloatingActionButton searchIcon;
+        BottomNavigationView bottomNavigationView;
+        TextView noProductMsg;
+        ImageView productWatermark;
+
+        ViewHolder() {
+            recyclerViewSaved = findViewById(R.id.saved_recycler_view);
+            titleTextView = findViewById(R.id.title);
+            searchView = findViewById(R.id.list_search_view);
+            searchIcon = findViewById(R.id.search_icon);
+            bottomNavigationView = findViewById(R.id.bottomNavigation);
+            noProductMsg = findViewById(R.id.emptyListText);
+            productWatermark = findViewById(R.id.furnitureWatermark);
+        }
     }
 }
