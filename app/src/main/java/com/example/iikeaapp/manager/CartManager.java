@@ -11,6 +11,7 @@ public class CartManager {
     }
 
     public static CartManager getInstance() {
+        // singleton pattern
         if (instance == null) {
             instance = new CartManager();
         }

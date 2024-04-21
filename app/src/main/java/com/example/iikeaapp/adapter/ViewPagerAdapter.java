@@ -42,6 +42,7 @@ public class ViewPagerAdapter extends PagerAdapter {
         View itemView = mLayoutInflater.inflate(R.layout.furniture_item, container, false);
         ViewHolder viewHolder = new ViewHolder(itemView);
 
+        // populate fields
         Glide.with(context)
                 .load(imageUrls[position])
                 .placeholder(R.drawable.image_placeholder)

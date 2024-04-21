@@ -33,6 +33,8 @@ public class Furniture_HorizontalRecyclerViewAdapter extends RecyclerView.Adapte
     @Override
     public void onBindViewHolder(@NonNull Furniture_HorizontalRecyclerViewAdapter.MyViewHolder holder, int position) {
         FurnitureModel model = furnitureModels.get(position);
+
+        // populate fields
         holder.textView.setText(model.getFurnitureName());
         Glide.with(context)
                 .load(model.getImageResources()[0])

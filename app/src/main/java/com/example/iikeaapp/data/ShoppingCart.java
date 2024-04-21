@@ -8,6 +8,7 @@ public class ShoppingCart implements Serializable {
     private Map<FurnitureModel, Integer> items = new HashMap<>();
 
     public void addItem(FurnitureModel item, int quantity) {
+        // add to cart
         if (items.containsKey(item)) {
             int currentQuantity = items.get(item);
             items.put(item, currentQuantity + quantity);

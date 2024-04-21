@@ -9,6 +9,7 @@ public class Saved {
     private static ArrayList<FurnitureModel> savedItems = new ArrayList<>();
 
     public static Saved getInstance() {
+        // singleton pattern
         if (instance == null) {
             instance = new Saved();
         }

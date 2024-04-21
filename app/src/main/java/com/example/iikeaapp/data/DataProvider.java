@@ -22,6 +22,7 @@ public class DataProvider {
     }
 
     public static synchronized DataProvider getInstance(Context context) {
+        // singleton pattern
         if (instance == null) {
             instance = new DataProvider(context.getApplicationContext());
         }
@@ -75,6 +76,7 @@ public class DataProvider {
     }
 
     public FurnitureModel getFurnitureByName(String name) {
+        // return furniture model via unique name
         for (FurnitureModel model : furnitureModels) {
             if (model.getFurnitureName().equals(name)) {
                 return model;

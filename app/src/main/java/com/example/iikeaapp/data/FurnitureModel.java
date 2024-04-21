@@ -68,6 +68,7 @@ public class FurnitureModel implements Serializable{
     }
 
     public void incrementViewCount() {
+        // for ranking top trends
         this.viewCount++;
     }
 }

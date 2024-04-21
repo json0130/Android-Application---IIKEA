@@ -56,6 +56,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         FurnitureModel furniture = entry.getKey();
         int quantity = entry.getValue();
 
+        // populate fields
         holder.furnitureNameTextView.setText(furniture.getFurnitureName());
         holder.quantityTextView.setText(String.valueOf(quantity));
         holder.totalPriceTextView.setText(String.format("$%.2f", furniture.getPrice() * quantity));
@@ -69,6 +70,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                 .placeholder(R.drawable.image_placeholder)
                 .into(holder.furnitureImageView);
 
+        // qty button +
         holder.plusButton.setOnClickListener(v -> {
             int newQuantity = quantity + 1;
             shoppingCart.updateQuantity(furniture, newQuantity);
@@ -77,6 +79,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             updateTotalPrice();
         });
 
+        // qty button -
         holder.minusButton.setOnClickListener(v -> {
             if (quantity > 1) {
                 int newQuantity = quantity - 1;

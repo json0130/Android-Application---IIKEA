@@ -39,6 +39,8 @@ public class FurnitureAdapter extends RecyclerView.Adapter<FurnitureAdapter.Furn
     @Override
     public void onBindViewHolder(@NonNull FurnitureViewHolder holder, int position) {
         FurnitureModel furnitureItem = furnitureListFiltered.get(position);
+
+        // populate fields
         holder.furnitureName.setText(furnitureItem.getFurnitureName());
         holder.furniturePrice.setText(String.format("Price: $%.2f", furnitureItem.getPrice()));
 

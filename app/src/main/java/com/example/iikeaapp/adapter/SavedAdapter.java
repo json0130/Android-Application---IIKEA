@@ -49,6 +49,7 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SavedViewHol
     public void onBindViewHolder(@NonNull SavedViewHolder holder, int position) {
         FurnitureModel furniture = savedItems.get(position);
 
+        // populate fields
         holder.furnitureNameTextView.setText(furniture.getFurnitureName());
         holder.furniturePriceTextView.setText(String.format("$%.2f", furniture.getPrice()));
 
