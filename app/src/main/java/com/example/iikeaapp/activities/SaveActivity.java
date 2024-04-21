@@ -48,8 +48,8 @@ public class SaveActivity extends AppCompatActivity implements SavedAdapter.OnIt
         savedAdapter = new SavedAdapter(this, this);
         viewHolder.recyclerViewSaved.setAdapter(savedAdapter);
 
+        // initialising
         updateEmptyView();
-
         setupSearchView();
         setupBottomNavigation();
         setupItemTouchHelper();
