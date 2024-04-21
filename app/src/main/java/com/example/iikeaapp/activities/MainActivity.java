@@ -75,28 +75,7 @@ public class MainActivity extends AppCompatActivity {
         setupSearchView();
 
         // Set up the bottom navigation bar
-        vh.bottomNavigationView.setSelectedItemId(R.id.bottom_home);
-        vh.bottomNavigationView.setOnItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.bottom_home) {
-                return true;
-            } else if (item.getItemId() == R.id.bottom_cart) {
-                Intent intent = new Intent(getApplicationContext(), CartActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
-                return true;
-            } else if (item.getItemId() == R.id.bottom_save) {
-                Intent intent = new Intent(getApplicationContext(), SaveActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
-                return true;
-            }else if (item.getItemId() == R.id.bottom_setting) {
-                Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
-                return true;
-            }
-            return false;
-        });
+        setupBottomNavigation();
     }
 
     private void initRecyclerView() {
@@ -178,6 +157,32 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void setupBottomNavigation(){
+        // Set up the bottom navigation bar
+        vh.bottomNavigationView.setSelectedItemId(R.id.bottom_home);
+        vh.bottomNavigationView.setOnItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.bottom_home) {
+                return true;
+            } else if (item.getItemId() == R.id.bottom_cart) {
+                Intent intent = new Intent(getApplicationContext(), CartActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                return true;
+            } else if (item.getItemId() == R.id.bottom_save) {
+                Intent intent = new Intent(getApplicationContext(), SaveActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                return true;
+            }else if (item.getItemId() == R.id.bottom_setting) {
+                Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                return true;
+            }
+            return false;
+        });
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -189,14 +194,23 @@ public class MainActivity extends AppCompatActivity {
         vh.titleTextView.setVisibility(View.VISIBLE);
 
         // Start auto-scrolling
-        startAutoScrolling();
+        if (!isAutoScrolling) {
+            startAutoScrolling();
+        }
     }
 
     private void startAutoScrolling() {
         if (!isAutoScrolling) {
             isAutoScrolling = true;
             autoScrollTimer = new Timer();
-            autoScrollTimer.scheduleAtFixedRate(new AutoScrollTask(), 0, 4000); // Scroll every 3 seconds
+            autoScrollTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    runOnUiThread(() -> {
+                        autoScrollTimer.scheduleAtFixedRate(new AutoScrollTask(), 0, 4000); // Scroll every 4 seconds
+                    });
+                }
+            }, 4000); // Delay of 4 seconds before starting the auto-scrolling
         }
     }
 
@@ -205,12 +219,13 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             runOnUiThread(() -> {
                 LinearLayoutManager layoutManager = (LinearLayoutManager) vh.recyclerViewTopPicks.getLayoutManager();
-                int lastVisibleItemPosition = 0;
                 if (layoutManager != null) {
-                    lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
-                }
-                if (layoutManager != null && lastVisibleItemPosition == layoutManager.getItemCount() - 1) {
-                    vh.recyclerViewTopPicks.smoothScrollToPosition(0);
+                    int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
+                    if (lastVisibleItemPosition == layoutManager.getItemCount() - 1) {
+                        vh.recyclerViewTopPicks.smoothScrollToPosition(0);
+                    } else {
+                        vh.recyclerViewTopPicks.smoothScrollToPosition(lastVisibleItemPosition + 1);
+                    }
                 }
             });
         }
