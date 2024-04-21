@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,17 +40,26 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
     private double currentMaxPrice = Double.MAX_VALUE;
     private boolean sortHighestToLowest = true;
     ArrayList<FurnitureModel> furnitureModels = new ArrayList<>();
-    private TextView titleTextView;
-    private androidx.appcompat.widget.SearchView searchView;
-
+    private ViewHolder vh;
 
     private static class ViewHolder {
-        public final RecyclerView items;
-        public final SearchView searchView;
-
+        RecyclerView recyclerView;
+        FloatingActionButton searchIcon;
+        TextView titleTextView, noProductMsg;
+        androidx.appcompat.widget.SearchView searchView;
+        BottomNavigationView bottomNavigationView;
+        ImageView filterIcon, sortIcon, noProductImg;
         public ViewHolder(Activity activity) {
-            items = activity.findViewById(R.id.furniture_recycler_view);
+            recyclerView = activity.findViewById(R.id.furniture_recycler_view);
+            searchIcon = activity.findViewById(R.id.search_icon);
+            titleTextView = activity.findViewById(R.id.title);
             searchView = activity.findViewById(R.id.list_search_view);
+            bottomNavigationView = activity.findViewById(R.id.bottomNavigation);
+            filterIcon = activity.findViewById(R.id.filter_icon);
+            sortIcon = activity.findViewById(R.id.sort_icon);
+            noProductMsg = activity.findViewById(R.id.emptyListText);
+            noProductImg = activity.findViewById(R.id.furnitureWatermark);
+            recyclerView = activity.findViewById(R.id.furniture_recycler_view);
         }
     }
 
@@ -59,6 +67,8 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+
+        vh = new ViewHolder(this);
 
         // Apply the current theme mode
         ThemeManager.setNightMode(this, ThemeManager.getNightMode(this));
@@ -75,8 +85,7 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
     }
 
     private void initRecyclerView() {
-        RecyclerView recyclerView = findViewById(R.id.furniture_recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        vh.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         updateAdapter();
     }
 
@@ -84,42 +93,40 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
         // Setup SearchView
 
         // Setup SearchView
-        FloatingActionButton searchIcon = findViewById(R.id.search_icon);
-        titleTextView = findViewById(R.id.title);
-        searchView = findViewById(R.id.list_search_view);
 
-        searchIcon.setOnClickListener(v -> {
+
+        vh.searchIcon.setOnClickListener(v -> {
             // Toggle the visibility of the SearchView and title
-            if (searchView.getVisibility() == View.VISIBLE) {
-                searchView.setVisibility(View.GONE);
-                titleTextView.setVisibility(View.VISIBLE);
+            if (vh.searchView.getVisibility() == View.VISIBLE) {
+                vh.searchView.setVisibility(View.GONE);
+                vh.titleTextView.setVisibility(View.VISIBLE);
             } else {
-                titleTextView.setVisibility(View.GONE);
-                searchView.setVisibility(View.VISIBLE);
-                searchView.setIconified(false);
-                searchView.startAnimation(AnimationUtils.loadAnimation(ListActivity.this, R.anim.search_animation));
+                vh.titleTextView.setVisibility(View.GONE);
+                vh.searchView.setVisibility(View.VISIBLE);
+                vh.searchView.setIconified(false);
+                vh.searchView.startAnimation(AnimationUtils.loadAnimation(ListActivity.this, R.anim.search_animation));
             }
         });
 
-        titleTextView.setOnClickListener(v -> {
+        vh.titleTextView.setOnClickListener(v -> {
             // Expand the search bar and hide the title with animation
             Intent intent = new Intent(ListActivity.this, MainActivity.class);
             startActivity(intent);
         });
 
-        searchView.setOnCloseListener(() -> {
+        vh.searchView.setOnCloseListener(() -> {
             // Collapse the search bar and show the title with animation
-            searchView.setVisibility(View.GONE);
-            titleTextView.setVisibility(View.VISIBLE);
-            searchView.startAnimation(AnimationUtils.loadAnimation(ListActivity.this, R.anim.search_animation));
+            vh.searchView.setVisibility(View.GONE);
+            vh.titleTextView.setVisibility(View.VISIBLE);
+            vh.searchView.startAnimation(AnimationUtils.loadAnimation(ListActivity.this, R.anim.search_animation));
             return false;
         });
 
-        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+        vh.searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 filterFurnitureBySearchQuery(query);
-                searchView.clearFocus();
+                vh.searchView.clearFocus();
                 return true;
             }
 
@@ -145,9 +152,8 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
     private void setupNavigation() {
         // nav bar
         // Set up the bottom navigation bar
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
-        bottomNavigationView.setSelectedItemId(0);
-        bottomNavigationView.setOnItemSelectedListener(item -> {
+        vh.bottomNavigationView.setSelectedItemId(0);
+        vh.bottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.bottom_home) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -175,10 +181,8 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
 
 
     private void setupButtonListeners() {
-        ImageView filterIcon = findViewById(R.id.filter_icon);
-        ImageView sortIcon = findViewById(R.id.sort_icon);
-        filterIcon.setOnClickListener(this::showFilterDialog);
-        sortIcon.setOnClickListener(this::showSortDialog);
+        vh.filterIcon.setOnClickListener(this::showFilterDialog);
+        vh.sortIcon.setOnClickListener(this::showSortDialog);
     }
 
     private void showFilterDialog(View view) {
@@ -285,20 +289,17 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
         }
 
         // empty list msg
-        TextView noProductMsg = findViewById(R.id.emptyListText);
-        ImageView noProductImg = findViewById(R.id.furnitureWatermark);
         if (filteredModels.isEmpty()) {
-            noProductMsg.setVisibility(View.VISIBLE);
-            noProductImg.setVisibility(View.VISIBLE);
+            vh.noProductMsg.setVisibility(View.VISIBLE);
+            vh.noProductImg.setVisibility(View.VISIBLE);
         } else {
-            noProductMsg.setVisibility(View.GONE);
-            noProductImg.setVisibility(View.GONE);
+            vh.noProductMsg.setVisibility(View.GONE);
+            vh.noProductImg.setVisibility(View.GONE);
         }
 
         // Set the adapter with the filtered and sorted list
         Furniture_VerticalRecyclerViewAdapter adapter = new Furniture_VerticalRecyclerViewAdapter(this, filteredModels);
-        RecyclerView recyclerView = findViewById(R.id.furniture_recycler_view);
-        recyclerView.setAdapter(adapter);
+        vh.recyclerView.setAdapter(adapter);
     }
 
     private void filterFurnitureBySearchQuery(String query) {
@@ -318,7 +319,7 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
         super.onResume();
 
         // Hide the SearchView and show the title
-        searchView.setVisibility(View.GONE);
-        titleTextView.setVisibility(View.VISIBLE);
+        vh.searchView.setVisibility(View.GONE);
+        vh.titleTextView.setVisibility(View.VISIBLE);
     }
 }

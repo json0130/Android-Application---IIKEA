@@ -148,11 +148,11 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     private boolean areRequiredFieldsFilled() {
-        String email = ((TextView) findViewById(R.id.editText1)).getText().toString().trim();
-        String phone = ((TextView) findViewById(R.id.editText2)).getText().toString().trim();
-        String cardNumber = ((TextView) findViewById(R.id.editText3)).getText().toString().trim();
-        String ccv = ((TextView) findViewById(R.id.ccv_edit)).getText().toString().trim();
-        String address = ((TextView) findViewById(R.id.editText4)).getText().toString().trim();
+        String email = viewHolder.emailField.getText().toString().trim();
+        String phone = viewHolder.phoneField.getText().toString().trim();
+        String cardNumber = viewHolder.cardField.getText().toString().trim();
+        String ccv = viewHolder.ccvField.getText().toString().trim();
+        String address = viewHolder.addressField.getText().toString().trim();
 
         return !email.isEmpty() && !phone.isEmpty() && !cardNumber.isEmpty() && !ccv.isEmpty() && !address.isEmpty();
     }
@@ -184,6 +184,7 @@ public class CheckoutActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView;
         MaterialButton checkOutButton;
         TextView totalPriceTextView;
+        TextView emailField, phoneField, cardField, ccvField, addressField;
 
         ViewHolder() {
             searchIcon = findViewById(R.id.search_icon);
@@ -192,6 +193,11 @@ public class CheckoutActivity extends AppCompatActivity {
             bottomNavigationView = findViewById(R.id.bottomNavigation);
             checkOutButton = findViewById(R.id.checkout_button);
             totalPriceTextView = findViewById(R.id.total_cost_price);
+            emailField = findViewById(R.id.editText1);
+            phoneField = findViewById(R.id.editText2);
+            cardField = findViewById(R.id.editText3);
+            ccvField = findViewById(R.id.ccv_edit);
+            addressField = findViewById(R.id.editText4);
         }
     }
 }

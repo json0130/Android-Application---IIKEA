@@ -1,5 +1,6 @@
 package com.example.iikeaapp.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,12 +33,31 @@ public class MainActivity extends AppCompatActivity {
     private ViewHolder viewHolder;
     private Timer autoScrollTimer;
     private boolean isAutoScrolling = false;
+    private ViewHolder vh;
+
+    private static class ViewHolder {
+        RecyclerView recyclerViewTopPicks;
+        BottomNavigationView bottomNavigationView;
+        FloatingActionButton searchIcon;
+        TextView titleTextView;
+        androidx.appcompat.widget.SearchView searchView;
+        public ViewHolder(Activity activity) {
+            recyclerViewTopPicks = activity.findViewById(R.id.main_top_picks_recyclerView);
+            bottomNavigationView = activity.findViewById(R.id.bottomNavigation);
+            searchIcon = activity.findViewById(R.id.search_icon);
+            titleTextView = activity.findViewById(R.id.textView);
+            searchView = activity.findViewById(R.id.list_search_view);
+
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_top_picks_recyclerView), (v, insets) -> {
+        vh = new ViewHolder(this);
+
+        ViewCompat.setOnApplyWindowInsetsListener(vh.recyclerViewTopPicks, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -64,8 +84,9 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<FurnitureModel> furnitureModels = DataProvider.getInstance(this).getFurnitureModels();
         Collections.sort(furnitureModels, (a, b) -> Integer.compare(b.getViewCount(), a.getViewCount()));
         Furniture_HorizontalRecyclerViewAdapter adapter = new Furniture_HorizontalRecyclerViewAdapter(this, furnitureModels);
-        viewHolder.recyclerViewTopPicks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        viewHolder.recyclerViewTopPicks.setAdapter(adapter);
+        vh.recyclerViewTopPicks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        vh.recyclerViewTopPicks.setAdapter(adapter);
+
     }
 
     public void categoryClicked(View v) {
@@ -100,28 +121,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupSearchView() {
-        viewHolder.searchIcon.setOnClickListener(v -> {
+        // Setup SearchView
+        vh.searchIcon.setOnClickListener(v -> {
             // Toggle the visibility of the SearchView and title
-            if (viewHolder.searchView.getVisibility() == View.VISIBLE) {
-                viewHolder.searchView.setVisibility(View.GONE);
-                viewHolder.titleTextView.setVisibility(View.VISIBLE);
+            if (vh.searchView.getVisibility() == View.VISIBLE) {
+                vh.searchView.setVisibility(View.GONE);
+                vh.titleTextView.setVisibility(View.VISIBLE);
             } else {
-                viewHolder.titleTextView.setVisibility(View.GONE);
-                viewHolder.searchView.setVisibility(View.VISIBLE);
-                viewHolder.searchView.setIconified(false);
-                viewHolder.searchView.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.search_animation));
+                vh.titleTextView.setVisibility(View.GONE);
+                vh.searchView.setVisibility(View.VISIBLE);
+                vh.searchView.setIconified(false);
+                vh.searchView.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.search_animation));
             }
         });
 
-        viewHolder.searchView.setOnCloseListener(() -> {
+        vh.searchView.setOnCloseListener(() -> {
             // Collapse the search bar and show the title with animation
-            viewHolder.searchView.setVisibility(View.GONE);
-            viewHolder.titleTextView.setVisibility(View.VISIBLE);
-            viewHolder.searchView.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.search_animation));
+            vh.searchView.setVisibility(View.GONE);
+            vh.titleTextView.setVisibility(View.VISIBLE);
+            vh.searchView.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.search_animation));
             return false;
         });
 
-        viewHolder.searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+        vh.searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 Intent intent = new Intent(MainActivity.this, ListActivity.class);
@@ -137,9 +159,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void setupBottomNavigation() {
-        viewHolder.bottomNavigationView.setSelectedItemId(R.id.bottom_home);
-        viewHolder.bottomNavigationView.setOnItemSelectedListener(item -> {
+    private void setupBottomNavigation(){
+        // Set up the bottom navigation bar
+        vh.bottomNavigationView.setSelectedItemId(R.id.bottom_home);
+        vh.bottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.bottom_home) {
                 return true;
             } else if (item.getItemId() == R.id.bottom_cart) {
@@ -169,8 +192,8 @@ public class MainActivity extends AppCompatActivity {
         initRecyclerView();
 
         // Hide the SearchView and show the title
-        viewHolder.searchView.setVisibility(View.GONE);
-        viewHolder.titleTextView.setVisibility(View.VISIBLE);
+        vh.searchView.setVisibility(View.GONE);
+        vh.titleTextView.setVisibility(View.VISIBLE);
 
         // Start auto-scrolling
         if (!isAutoScrolling) {
@@ -182,7 +205,11 @@ public class MainActivity extends AppCompatActivity {
         if (!isAutoScrolling) {
             isAutoScrolling = true;
             autoScrollTimer = new Timer();
-            autoScrollTimer.scheduleAtFixedRate(new AutoScrollTask(), 0, 4000); // Scroll every 4 seconds
+            autoScrollTimer.schedule(() -> {
+                    runOnUiThread(() -> {
+                        autoScrollTimer.scheduleAtFixedRate(new AutoScrollTask(), 0, 4000); // Scroll every 4 seconds
+                    });
+            }, 4000);
         }
     }
 
@@ -190,12 +217,14 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             runOnUiThread(() -> {
-                LinearLayoutManager layoutManager = (LinearLayoutManager) viewHolder.recyclerViewTopPicks.getLayoutManager();
-                int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
-                if (lastVisibleItemPosition == layoutManager.getItemCount() - 1) {
-                    viewHolder.recyclerViewTopPicks.smoothScrollToPosition(0);
-                } else {
-                    viewHolder.recyclerViewTopPicks.smoothScrollToPosition(lastVisibleItemPosition + 1);
+                LinearLayoutManager layoutManager = (LinearLayoutManager) vh.recyclerViewTopPicks.getLayoutManager();
+                if (layoutManager != null) {
+                    int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
+                    if (lastVisibleItemPosition == layoutManager.getItemCount() - 1) {
+                        vh.recyclerViewTopPicks.smoothScrollToPosition(0);
+                    } else {
+                        vh.recyclerViewTopPicks.smoothScrollToPosition(lastVisibleItemPosition + 1);
+                    }
                 }
             });
         }
