@@ -46,10 +46,10 @@
             android:id="@+id/saved_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="FAVOURITE ITEMS"
-            android:textSize="20dp"
+            android:text="@string/favourite_item"
+            android:textSize="20sp"
             android:layout_marginTop="16dp"
-            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:layout_below="@+id/topBar"/>
 
         <TextView
@@ -63,7 +63,7 @@
             android:layout_marginEnd="0dp"
             android:alpha="0.3"
             android:paddingTop="20dp"
-            android:text="NO SAVED PRODUCTS"
+            android:text="@string/NO_item"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
@@ -75,7 +75,8 @@
             android:alpha="0.3"
             android:layout_width="132dp"
             android:layout_height="132dp"
-            android:src="@drawable/sofa" />
+            android:src="@drawable/sofa"
+            android:contentDescription="@string/NO_item_img" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/saved_recycler_view"
@@ -113,7 +114,8 @@
                 app:backgroundTint="@color/md_theme_light_onPrimary"
                 app:tint="@color/md_theme_dark_inversePrimary"
                 app:elevation="20dp"
-                app:fabSize="normal" />
+                app:fabSize="normal"
+                android:contentDescription="@string/search" />
 
         </FrameLayout>
     </RelativeLayout>

@@ -50,8 +50,8 @@
                 android:id="@+id/thank_you_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="THANK YOU \nFOR \nSHOPPING AT \nIIKEA"
-                android:textSize="35dp"
+                android:text="@string/thankyou"
+                android:textSize="35sp"
                 android:singleLine="false"
                 android:gravity="center"
                 android:layout_centerInParent="true"/>
@@ -62,7 +62,8 @@
                 android:src="@drawable/baseline_check_24"
                 android:layout_marginTop="5dp"
                 android:layout_below="@+id/thank_you_text"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+                android:contentDescription="@string/check" />
         </RelativeLayout>
 
         <FrameLayout
@@ -93,7 +94,8 @@
                 app:backgroundTint="@color/md_theme_light_onPrimary"
                 app:tint="@color/md_theme_dark_inversePrimary"
                 app:elevation="20dp"
-                app:fabSize="normal" />
+                app:fabSize="normal"
+                android:contentDescription="@string/search" />
 
         </FrameLayout>
     </RelativeLayout>

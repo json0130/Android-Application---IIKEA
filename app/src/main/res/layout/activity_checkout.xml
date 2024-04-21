@@ -52,22 +52,21 @@
                 android:id="@+id/total_cost_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TOTAL PRICE:"
-                android:textSize="20dp"
+                android:text="@string/total_price"
+                android:textSize="20sp"
                 android:layout_marginVertical="16dp"
-                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 />
 
             <TextView
                 android:id="@+id/total_cost_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="$2.00"
-                android:textSize="20dp"
+                android:text="@string/total_price_no"
+                android:textSize="20sp"
                 android:layout_marginVertical="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_alignParentRight="true"
-                />
+                android:layout_marginEnd="16dp"
+                android:layout_alignParentEnd="true" />
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
@@ -81,7 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:hint="EMAIL ADDRESS"
+            android:hint="@string/email"
             android:id="@+id/email_text"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="10dp"
@@ -98,7 +97,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:hint="PHONE NUMBER"
+            android:hint="@string/phone"
             android:id="@+id/phone_text"
             android:layout_margin="16dp"
             android:layout_marginTop="10dp"
@@ -117,7 +116,8 @@
             android:id="@+id/card_group"
             android:layout_below="@+id/phone_text"
             android:orientation="horizontal"
-            android:weightSum="10">
+            android:weightSum="10"
+            android:baselineAligned="false">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/card_text"
@@ -125,7 +125,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                android:hint="CARD NUMBER"
+                android:hint="@string/card"
                 android:layout_weight="6.5">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -138,7 +138,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                android:hint="CCV"
+                android:hint="@string/ccv"
                 android:id="@+id/ccv_text"
                 android:layout_marginHorizontal="16dp"
                 android:layout_weight="3.5">
@@ -155,7 +155,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:hint="SHIPPING ADDRESS"
+            android:hint="@string/shipping"
             android:id="@+id/address_text"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="10dp"
@@ -177,7 +177,7 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:text="PLACE ORDER" />
+            android:text="@string/place_order" />
 
         <FrameLayout
             android:id="@+id/bottomNavigation_group"
@@ -207,7 +207,8 @@
                 app:backgroundTint="@color/md_theme_light_onPrimary"
                 app:tint="@color/md_theme_dark_inversePrimary"
                 app:elevation="20dp"
-                app:fabSize="normal" />
+                app:fabSize="normal"
+                android:contentDescription="@string/search" />
 
         </FrameLayout>
     </RelativeLayout>

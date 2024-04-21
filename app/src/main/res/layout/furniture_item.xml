@@ -5,11 +5,11 @@
     android:layout_height="match_parent"
     style="@style/Base.Theme.IikeaApp.">
 
-    <!-- image viwer to view the images -->
     <ImageView
         android:id="@+id/pagerImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/furniture_img" />
 
 </LinearLayout>

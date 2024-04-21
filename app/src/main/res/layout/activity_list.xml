@@ -33,7 +33,7 @@
             app:queryHint="Search..." />
 
     </RelativeLayout>
-    <!-- Divider -->
+
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/divider2"
         android:layout_width="match_parent"
@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="FURNITURE"
+            android:text="@string/furniture"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -71,7 +71,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/baseline_filter_alt_24" />
+            app:srcCompat="@drawable/baseline_filter_alt_24"
+            android:contentDescription="@string/filter" />
 
         <ImageView
             android:id="@+id/sort_icon"
@@ -83,7 +84,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/filter_icon"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/baseline_sort_24" />
+            app:srcCompat="@drawable/baseline_sort_24"
+            android:contentDescription="@string/sort" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
@@ -93,7 +95,7 @@
         android:layout_below="@+id/list_label_text"
         android:alpha="0.3"
         android:paddingTop="20dp"
-        android:text="NO PRODUCT MATCH"
+        android:text="@string/NO_ITEM_SEARCH"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
@@ -105,7 +107,8 @@
         android:alpha="0.3"
         android:layout_width="132dp"
         android:layout_height="132dp"
-        android:src="@drawable/sofa" />
+        android:src="@drawable/sofa"
+        android:contentDescription="@string/NO_item_img" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/furniture_recycler_view"
@@ -143,7 +146,8 @@
             app:backgroundTint="@color/md_theme_light_onPrimary"
             app:tint="@color/md_theme_dark_inversePrimary"
             app:elevation="20dp"
-            app:fabSize="normal" />
+            app:fabSize="normal"
+            android:contentDescription="@string/search" />
 
     </FrameLayout>
 
