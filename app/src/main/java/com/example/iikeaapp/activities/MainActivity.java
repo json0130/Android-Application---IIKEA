@@ -29,8 +29,8 @@ import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
 public class MainActivity extends AppCompatActivity {
+    private ViewHolder viewHolder;
     private Timer autoScrollTimer;
     private boolean isAutoScrolling = false;
     private ViewHolder vh;
@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         // Apply the current theme mode
         ThemeManager.setNightMode(this, ThemeManager.getNightMode(this));
 
+        viewHolder = new ViewHolder();
         startAutoScrolling();
 
         // init recycler views
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         Furniture_HorizontalRecyclerViewAdapter adapter = new Furniture_HorizontalRecyclerViewAdapter(this, furnitureModels);
         vh.recyclerViewTopPicks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         vh.recyclerViewTopPicks.setAdapter(adapter);
+
     }
 
     public void categoryClicked(View v) {
@@ -173,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
                 return true;
-            }else if (item.getItemId() == R.id.bottom_setting) {
+            } else if (item.getItemId() == R.id.bottom_setting) {
                 Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
@@ -203,14 +205,11 @@ public class MainActivity extends AppCompatActivity {
         if (!isAutoScrolling) {
             isAutoScrolling = true;
             autoScrollTimer = new Timer();
-            autoScrollTimer.schedule(new TimerTask() {
-                @Override
-                public void run() {
+            autoScrollTimer.schedule(() -> {
                     runOnUiThread(() -> {
                         autoScrollTimer.scheduleAtFixedRate(new AutoScrollTask(), 0, 4000); // Scroll every 4 seconds
                     });
-                }
-            }, 4000); // Delay of 4 seconds before starting the auto-scrolling
+            }, 4000);
         }
     }
 
@@ -253,4 +252,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private class ViewHolder {
+        RecyclerView recyclerViewTopPicks;
+        TextView titleTextView;
+        androidx.appcompat.widget.SearchView searchView;
+        FloatingActionButton searchIcon;
+        BottomNavigationView bottomNavigationView;
+
+        ViewHolder() {
+            recyclerViewTopPicks = findViewById(R.id.main_top_picks_recyclerView);
+            titleTextView = findViewById(R.id.textView);
+            searchView = findViewById(R.id.list_search_view);
+            searchIcon = findViewById(R.id.search_icon);
+            bottomNavigationView = findViewById(R.id.bottomNavigation);
+        }
+    }
 }
