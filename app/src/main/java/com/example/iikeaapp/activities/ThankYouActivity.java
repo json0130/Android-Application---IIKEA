@@ -7,6 +7,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 
 import com.example.iikeaapp.R;
 import com.example.iikeaapp.manager.ThemeManager;
@@ -15,8 +16,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class ThankYouActivity extends AppCompatActivity {
 
-    private TextView titleTextView;
-    private androidx.appcompat.widget.SearchView searchView;
+    private ViewHolder viewHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,44 +26,30 @@ public class ThankYouActivity extends AppCompatActivity {
         // Apply the current theme mode
         ThemeManager.setNightMode(this, ThemeManager.getNightMode(this));
 
-        // Setup SearchView
-        FloatingActionButton searchIcon = findViewById(R.id.search_icon);
-        titleTextView = findViewById(R.id.title);
-        searchView = findViewById(R.id.list_search_view);
+        viewHolder = new ViewHolder();
+        setupSearchView();
+        setupBottomNavigation();
+    }
 
-        searchIcon.setOnClickListener(v -> {
-            // Toggle the visibility of the SearchView and title
-            if (searchView.getVisibility() == View.VISIBLE) {
-                searchView.setVisibility(View.GONE);
-                titleTextView.setVisibility(View.VISIBLE);
-            } else {
-                titleTextView.setVisibility(View.GONE);
-                searchView.setVisibility(View.VISIBLE);
-                searchView.setIconified(false);
-                searchView.startAnimation(AnimationUtils.loadAnimation(ThankYouActivity.this, R.anim.search_animation));
-            }
-        });
+    private void setupSearchView() {
+        viewHolder.searchIcon.setOnClickListener(v -> toggleSearchViewVisibility());
 
-        titleTextView.setOnClickListener(v -> {
+        viewHolder.titleTextView.setOnClickListener(v -> {
             Intent intent = new Intent(ThankYouActivity.this, MainActivity.class);
             startActivity(intent);
         });
 
-        searchView.setOnCloseListener(() -> {
-            // Collapse the search bar and show the title with animation
-            searchView.setVisibility(View.GONE);
-            titleTextView.setVisibility(View.VISIBLE);
-            searchView.startAnimation(AnimationUtils.loadAnimation(ThankYouActivity.this, R.anim.search_animation));
+        viewHolder.searchView.setOnCloseListener(() -> {
+            viewHolder.searchView.setVisibility(View.GONE);
+            viewHolder.titleTextView.setVisibility(View.VISIBLE);
+            viewHolder.searchView.startAnimation(AnimationUtils.loadAnimation(ThankYouActivity.this, R.anim.search_animation));
             return false;
         });
 
-        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+        viewHolder.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // Start ListActivity with the search query
-                Intent intent = new Intent(ThankYouActivity.this, ListActivity.class);
-                intent.putExtra("searchQuery", query);
-                startActivity(intent);
+                startListActivity(query);
                 return false;
             }
 
@@ -72,11 +58,29 @@ public class ThankYouActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
 
-        // nav bar
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
-        bottomNavigationView.setSelectedItemId(0);
-        bottomNavigationView.setOnItemSelectedListener(item -> {
+    private void toggleSearchViewVisibility() {
+        if (viewHolder.searchView.getVisibility() == View.VISIBLE) {
+            viewHolder.searchView.setVisibility(View.GONE);
+            viewHolder.titleTextView.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.titleTextView.setVisibility(View.GONE);
+            viewHolder.searchView.setVisibility(View.VISIBLE);
+            viewHolder.searchView.setIconified(false);
+            viewHolder.searchView.startAnimation(AnimationUtils.loadAnimation(ThankYouActivity.this, R.anim.search_animation));
+        }
+    }
+
+    private void startListActivity(String query) {
+        Intent intent = new Intent(ThankYouActivity.this, ListActivity.class);
+        intent.putExtra("searchQuery", query);
+        startActivity(intent);
+    }
+
+    private void setupBottomNavigation() {
+        viewHolder.bottomNavigationView.setSelectedItemId(0);
+        viewHolder.bottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.bottom_home) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -92,7 +96,7 @@ public class ThankYouActivity extends AppCompatActivity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
                 return true;
-            }else if (item.getItemId() == R.id.bottom_setting) {
+            } else if (item.getItemId() == R.id.bottom_setting) {
                 Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
@@ -100,5 +104,19 @@ public class ThankYouActivity extends AppCompatActivity {
             }
             return false;
         });
+    }
+
+    private class ViewHolder {
+        TextView titleTextView;
+        SearchView searchView;
+        FloatingActionButton searchIcon;
+        BottomNavigationView bottomNavigationView;
+
+        ViewHolder() {
+            searchIcon = findViewById(R.id.search_icon);
+            titleTextView = findViewById(R.id.title);
+            searchView = findViewById(R.id.list_search_view);
+            bottomNavigationView = findViewById(R.id.bottomNavigation);
+        }
     }
 }
