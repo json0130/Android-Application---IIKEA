@@ -1,8 +1,8 @@
 package com.example.iikeaapp.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -25,7 +25,6 @@ import com.example.iikeaapp.manager.Saved;
 import com.example.iikeaapp.manager.ThemeManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
@@ -34,31 +33,59 @@ import java.util.ArrayList;
 public class DetailActivity extends AppCompatActivity {
     ArrayList<FurnitureModel> furnitureModels = new ArrayList<>();
     private ShoppingCart shoppingCart;
-    ViewPager mViewPager;
-    TextView furnitureItemTitle, itemPrice, itemDescription;
-    private TextView titleTextView;
-    private androidx.appcompat.widget.SearchView searchView;
     private int quantity = 1;
+    private ViewHolder vh;
+
+
+    private static class ViewHolder {
+        public final ViewPager mViewPager;
+        public final TextView furnitureItemTitle, itemPrice, itemDescription, quantityTextView,
+                decrementButton, incrementButton, titleTextView;
+        public final androidx.appcompat.widget.SearchView searchView;
+        public final TabLayout tabLayout;
+        public final ImageView saveHeart;
+        MaterialButton addToCartButton;
+        FloatingActionButton searchIcon;
+        BottomNavigationView bottomNavigationView;
+        RecyclerView recyclerViewRelatedItems;
+
+
+        public ViewHolder(Activity activity) {
+            searchView = activity.findViewById(R.id.list_search_view);
+            titleTextView = activity.findViewById(R.id.title);
+            mViewPager = activity.findViewById(R.id.viewPager);
+            tabLayout = activity.findViewById(R.id.tabDots);
+            furnitureItemTitle = activity.findViewById(R.id.furniture_item_title);
+            itemPrice = activity.findViewById(R.id.item_price);
+            itemDescription = activity.findViewById(R.id.item_description);
+            saveHeart = activity.findViewById(R.id.save_heart);
+            quantityTextView = activity.findViewById(R.id.quantity_text_view);
+            decrementButton = activity.findViewById(R.id.decrement_button);
+            incrementButton = activity.findViewById(R.id.increment_button);
+            addToCartButton = activity.findViewById(R.id.add_to_cart_btn);
+            searchIcon = activity.findViewById(R.id.search_icon);
+            bottomNavigationView = activity.findViewById(R.id.bottomNavigation);
+            recyclerViewRelatedItems = activity.findViewById(R.id.related_items_recyclerView);
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        vh = new ViewHolder(this);
+
         furnitureModels = DataProvider.getInstance(this).getFurnitureModels();
-        Log.d("debug", furnitureModels.toString());
 
         // Apply the current theme mode
         ThemeManager.setNightMode(this, ThemeManager.getNightMode(this));
         // Get the ShoppingCart instance from the CartManager
         shoppingCart = CartManager.getInstance().getShoppingCart();
 
-        mViewPager = findViewById(R.id.viewPager);
-        TabLayout tabLayout = findViewById(R.id.tabDots);
-        tabLayout.setupWithViewPager(mViewPager, true);
-        furnitureItemTitle = findViewById(R.id.furniture_item_title);
-        itemPrice = findViewById(R.id.item_price);
-        itemDescription = findViewById(R.id.item_description);
-        ImageView saveHeart = findViewById(R.id.save_heart);
+        // took out find by id's into the vh here
+        vh.tabLayout.setupWithViewPager(vh.mViewPager, true);
 
         // Retrieve the FurnitureModel object from the Intent
         String furnitureName = getIntent().getStringExtra("furnitureName");
@@ -76,44 +103,41 @@ public class DetailActivity extends AppCompatActivity {
             }
         }
 
-        updateHeartIcon(saveHeart, furnitureModel);
+        updateHeartIcon(vh.saveHeart, furnitureModel);
         FurnitureModel finalFurnitureModel = furnitureModel;
-        saveHeart.setOnClickListener(v -> {
+        vh.saveHeart.setOnClickListener(v -> {
             if (Saved.isSaved(finalFurnitureModel)) {
                 Saved.removeItem(finalFurnitureModel);
-                saveHeart.setImageResource(R.drawable.heart_background);
+                vh.saveHeart.setImageResource(R.drawable.heart_background);
             } else {
                 Saved.addItem(finalFurnitureModel);
-                saveHeart.setImageResource(R.drawable.heart_red_fill);
+                vh.saveHeart.setImageResource(R.drawable.heart_red_fill);
             }
             Toast.makeText(this, Saved.isSaved(finalFurnitureModel) ? "Added to Favorites" : "Removed from Favorites", Toast.LENGTH_SHORT).show();
         });
 
         // Find the views for quantity selection
-        TextView quantityTextView = findViewById(R.id.quantity_text_view);
-        TextView decrementButton = findViewById(R.id.decrement_button);
-        TextView incrementButton = findViewById(R.id.increment_button);
+
 
         // Set the initial quantity text
-        quantityTextView.setText(String.valueOf(this.quantity));
+        vh.quantityTextView.setText(String.valueOf(this.quantity));
 
         // Set click listeners for increment and decrement buttons
-        decrementButton.setOnClickListener(v -> {
+        vh.decrementButton.setOnClickListener(v -> {
             if (this.quantity > 1) {
                 this.quantity--;
-                quantityTextView.setText(String.valueOf(this.quantity));
+                vh.quantityTextView.setText(String.valueOf(this.quantity));
             }
         });
 
-        incrementButton.setOnClickListener(v -> {
+        vh.incrementButton.setOnClickListener(v -> {
             this.quantity++;
-            quantityTextView.setText(String.valueOf(this.quantity));
+            vh.quantityTextView.setText(String.valueOf(this.quantity));
         });
 
         // Add to shopping cart
-        MaterialButton addToCartButton = findViewById(R.id.add_to_cart_btn);
         FurnitureModel finalFurnitureModel1 = furnitureModel;
-        addToCartButton.setOnClickListener(v -> {
+        vh.addToCartButton.setOnClickListener(v -> {
             if (finalFurnitureModel1 != null) {
                 shoppingCart.addItem(finalFurnitureModel1, this.quantity);
                 Toast.makeText(DetailActivity.this, "Item added to cart", Toast.LENGTH_SHORT).show();
@@ -122,32 +146,29 @@ public class DetailActivity extends AppCompatActivity {
         });
 
         // Setup SearchView
-        FloatingActionButton searchIcon = findViewById(R.id.search_icon);
-        titleTextView = findViewById(R.id.title);
-        searchView = findViewById(R.id.list_search_view);
 
-        searchIcon.setOnClickListener(v -> {
+        vh.searchIcon.setOnClickListener(v -> {
             // Toggle the visibility of the SearchView and title
-            if (searchView.getVisibility() == View.VISIBLE) {
-                searchView.setVisibility(View.GONE);
-                titleTextView.setVisibility(View.VISIBLE);
+            if (vh.searchView.getVisibility() == View.VISIBLE) {
+                vh.searchView.setVisibility(View.GONE);
+                vh.titleTextView.setVisibility(View.VISIBLE);
             } else {
-                titleTextView.setVisibility(View.GONE);
-                searchView.setVisibility(View.VISIBLE);
-                searchView.setIconified(false);
-                searchView.startAnimation(AnimationUtils.loadAnimation(DetailActivity.this, R.anim.search_animation));
+                vh.titleTextView.setVisibility(View.GONE);
+                vh.searchView.setVisibility(View.VISIBLE);
+                vh.searchView.setIconified(false);
+                vh.searchView.startAnimation(AnimationUtils.loadAnimation(DetailActivity.this, R.anim.search_animation));
             }
         });
 
-        searchView.setOnCloseListener(() -> {
+        vh.searchView.setOnCloseListener(() -> {
             // Collapse the search bar and show the title with animation
-            searchView.setVisibility(View.GONE);
-            titleTextView.setVisibility(View.VISIBLE);
-            searchView.startAnimation(AnimationUtils.loadAnimation(DetailActivity.this, R.anim.search_animation));
+            vh.searchView.setVisibility(View.GONE);
+            vh.titleTextView.setVisibility(View.VISIBLE);
+            vh.searchView.startAnimation(AnimationUtils.loadAnimation(DetailActivity.this, R.anim.search_animation));
             return false;
         });
 
-        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+        vh.searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 // Start ListActivity with the search query
@@ -163,16 +184,15 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
-        titleTextView.setOnClickListener(v -> {
+        vh.titleTextView.setOnClickListener(v -> {
             // Expand the search bar and hide the title with animation
             Intent intent = new Intent(DetailActivity.this, MainActivity.class);
             startActivity(intent);
         });
 
         // nav bar
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
-        bottomNavigationView.setSelectedItemId(0);
-        bottomNavigationView.setOnItemSelectedListener(item -> {
+        vh.bottomNavigationView.setSelectedItemId(0);
+        vh.bottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.bottom_home) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -213,19 +233,18 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void updateUIWithFurnitureModel(FurnitureModel furnitureModel) {
-        furnitureItemTitle.setText(furnitureModel.getFurnitureName());
-        itemPrice.setText(String.format("$%.2f", furnitureModel.getPrice()));
-        itemDescription.setText(furnitureModel.getDescription());
+        vh.furnitureItemTitle.setText(furnitureModel.getFurnitureName());
+        vh.itemPrice.setText(String.format("$%.2f", furnitureModel.getPrice()));
+        vh.itemDescription.setText(furnitureModel.getDescription());
 
         ViewPagerAdapter mViewPagerAdapter = new ViewPagerAdapter(DetailActivity.this, furnitureModel.getImageResources());
-        mViewPager.setAdapter(mViewPagerAdapter);
+        vh.mViewPager.setAdapter(mViewPagerAdapter);
 
         // Setup related items RecyclerView
         setUpRelatedItemsRecyclerView(furnitureModel);
     }
 
     private void setUpRelatedItemsRecyclerView(FurnitureModel currentFurniture) {
-        RecyclerView recyclerViewRelatedItems = findViewById(R.id.related_items_recyclerView);
 
         // Filter furniture models to only include items of the same category as the current item
         ArrayList<FurnitureModel> relatedModels = new ArrayList<>();
@@ -237,7 +256,7 @@ public class DetailActivity extends AppCompatActivity {
 
         // Set up the RecyclerView with the filtered list
         Furniture_HorizontalRecyclerViewAdapter fAdapter = new Furniture_HorizontalRecyclerViewAdapter(this, relatedModels);
-        recyclerViewRelatedItems.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        recyclerViewRelatedItems.setAdapter(fAdapter);
+        vh.recyclerViewRelatedItems.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        vh.recyclerViewRelatedItems.setAdapter(fAdapter);
     }
 }
