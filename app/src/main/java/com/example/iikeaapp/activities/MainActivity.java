@@ -28,10 +28,8 @@ import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
 public class MainActivity extends AppCompatActivity {
-    private TextView titleTextView;
-    private androidx.appcompat.widget.SearchView searchView;
+    private ViewHolder viewHolder;
     private Timer autoScrollTimer;
     private boolean isAutoScrolling = false;
 
@@ -48,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         // Apply the current theme mode
         ThemeManager.setNightMode(this, ThemeManager.getNightMode(this));
 
+        viewHolder = new ViewHolder();
         startAutoScrolling();
 
         // init recycler views
@@ -57,39 +56,16 @@ public class MainActivity extends AppCompatActivity {
         setupSearchView();
 
         // Set up the bottom navigation bar
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
-        bottomNavigationView.setSelectedItemId(R.id.bottom_home);
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.bottom_home) {
-                return true;
-            } else if (item.getItemId() == R.id.bottom_cart) {
-                Intent intent = new Intent(getApplicationContext(), CartActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
-                return true;
-            } else if (item.getItemId() == R.id.bottom_save) {
-                Intent intent = new Intent(getApplicationContext(), SaveActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
-                return true;
-            }else if (item.getItemId() == R.id.bottom_setting) {
-                Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
-                return true;
-            }
-            return false;
-        });
+        setupBottomNavigation();
     }
 
     private void initRecyclerView() {
         // top picks recycler view init
-        RecyclerView recyclerViewTopPicks = findViewById(R.id.main_top_picks_recyclerView);
         ArrayList<FurnitureModel> furnitureModels = DataProvider.getInstance(this).getFurnitureModels();
         Collections.sort(furnitureModels, (a, b) -> Integer.compare(b.getViewCount(), a.getViewCount()));
         Furniture_HorizontalRecyclerViewAdapter adapter = new Furniture_HorizontalRecyclerViewAdapter(this, furnitureModels);
-        recyclerViewTopPicks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        recyclerViewTopPicks.setAdapter(adapter);
+        viewHolder.recyclerViewTopPicks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        viewHolder.recyclerViewTopPicks.setAdapter(adapter);
     }
 
     public void categoryClicked(View v) {
@@ -124,33 +100,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupSearchView() {
-        // Setup SearchView
-        FloatingActionButton searchIcon = findViewById(R.id.search_icon);
-        titleTextView = findViewById(R.id.textView);
-        searchView = findViewById(R.id.list_search_view);
-
-        searchIcon.setOnClickListener(v -> {
+        viewHolder.searchIcon.setOnClickListener(v -> {
             // Toggle the visibility of the SearchView and title
-            if (searchView.getVisibility() == View.VISIBLE) {
-                searchView.setVisibility(View.GONE);
-                titleTextView.setVisibility(View.VISIBLE);
+            if (viewHolder.searchView.getVisibility() == View.VISIBLE) {
+                viewHolder.searchView.setVisibility(View.GONE);
+                viewHolder.titleTextView.setVisibility(View.VISIBLE);
             } else {
-                titleTextView.setVisibility(View.GONE);
-                searchView.setVisibility(View.VISIBLE);
-                searchView.setIconified(false);
-                searchView.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.search_animation));
+                viewHolder.titleTextView.setVisibility(View.GONE);
+                viewHolder.searchView.setVisibility(View.VISIBLE);
+                viewHolder.searchView.setIconified(false);
+                viewHolder.searchView.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.search_animation));
             }
         });
 
-        searchView.setOnCloseListener(() -> {
+        viewHolder.searchView.setOnCloseListener(() -> {
             // Collapse the search bar and show the title with animation
-            searchView.setVisibility(View.GONE);
-            titleTextView.setVisibility(View.VISIBLE);
-            searchView.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.search_animation));
+            viewHolder.searchView.setVisibility(View.GONE);
+            viewHolder.titleTextView.setVisibility(View.VISIBLE);
+            viewHolder.searchView.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.search_animation));
             return false;
         });
 
-        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+        viewHolder.searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 Intent intent = new Intent(MainActivity.this, ListActivity.class);
@@ -166,6 +137,31 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void setupBottomNavigation() {
+        viewHolder.bottomNavigationView.setSelectedItemId(R.id.bottom_home);
+        viewHolder.bottomNavigationView.setOnItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.bottom_home) {
+                return true;
+            } else if (item.getItemId() == R.id.bottom_cart) {
+                Intent intent = new Intent(getApplicationContext(), CartActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                return true;
+            } else if (item.getItemId() == R.id.bottom_save) {
+                Intent intent = new Intent(getApplicationContext(), SaveActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                return true;
+            } else if (item.getItemId() == R.id.bottom_setting) {
+                Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                return true;
+            }
+            return false;
+        });
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -173,18 +169,20 @@ public class MainActivity extends AppCompatActivity {
         initRecyclerView();
 
         // Hide the SearchView and show the title
-        searchView.setVisibility(View.GONE);
-        titleTextView.setVisibility(View.VISIBLE);
+        viewHolder.searchView.setVisibility(View.GONE);
+        viewHolder.titleTextView.setVisibility(View.VISIBLE);
 
         // Start auto-scrolling
-        startAutoScrolling();
+        if (!isAutoScrolling) {
+            startAutoScrolling();
+        }
     }
 
     private void startAutoScrolling() {
         if (!isAutoScrolling) {
             isAutoScrolling = true;
             autoScrollTimer = new Timer();
-            autoScrollTimer.scheduleAtFixedRate(new AutoScrollTask(), 0, 4000); // Scroll every 3 seconds
+            autoScrollTimer.scheduleAtFixedRate(new AutoScrollTask(), 0, 4000); // Scroll every 4 seconds
         }
     }
 
@@ -192,14 +190,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             runOnUiThread(() -> {
-                RecyclerView recyclerViewTopPicks = findViewById(R.id.main_top_picks_recyclerView);
-                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerViewTopPicks.getLayoutManager();
-                int lastVisibleItemPosition = 0;
-                if (layoutManager != null) {
-                    lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
-                }
-                if (layoutManager != null && lastVisibleItemPosition == layoutManager.getItemCount() - 1) {
-                    recyclerViewTopPicks.smoothScrollToPosition(0);
+                LinearLayoutManager layoutManager = (LinearLayoutManager) viewHolder.recyclerViewTopPicks.getLayoutManager();
+                int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
+                if (lastVisibleItemPosition == layoutManager.getItemCount() - 1) {
+                    viewHolder.recyclerViewTopPicks.smoothScrollToPosition(0);
+                } else {
+                    viewHolder.recyclerViewTopPicks.smoothScrollToPosition(lastVisibleItemPosition + 1);
                 }
             });
         }
@@ -227,4 +223,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private class ViewHolder {
+        RecyclerView recyclerViewTopPicks;
+        TextView titleTextView;
+        androidx.appcompat.widget.SearchView searchView;
+        FloatingActionButton searchIcon;
+        BottomNavigationView bottomNavigationView;
+
+        ViewHolder() {
+            recyclerViewTopPicks = findViewById(R.id.main_top_picks_recyclerView);
+            titleTextView = findViewById(R.id.textView);
+            searchView = findViewById(R.id.list_search_view);
+            searchIcon = findViewById(R.id.search_icon);
+            bottomNavigationView = findViewById(R.id.bottomNavigation);
+        }
+    }
 }
