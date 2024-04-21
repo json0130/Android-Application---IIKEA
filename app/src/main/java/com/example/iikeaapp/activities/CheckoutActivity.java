@@ -134,7 +134,6 @@ public class CheckoutActivity extends AppCompatActivity {
     public void updateTotalPrice() {
         double totalPrice = shoppingCart.getTotalCost();
         viewHolder.totalPriceTextView.setText(String.format("$%.2f", totalPrice));
-        // You can also update any other UI elements related to the total price here
     }
 
     @Override

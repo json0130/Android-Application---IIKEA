@@ -48,7 +48,9 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
         viewHolder.recyclerViewCart.setLayoutManager(new LinearLayoutManager(this));
 
         // Create and set the CartAdapter
-        cartAdapter = new CartAdapter(this, new ArrayList<>(shoppingCart.getItems().entrySet()), this);
+        cartAdapter = new CartAdapter(this, new ArrayList<>(
+                shoppingCart.getItems().entrySet()), this
+        );
         viewHolder.recyclerViewCart.setAdapter(cartAdapter);
 
         setupCheckoutButton();
@@ -75,7 +77,9 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
         viewHolder.searchView.setOnCloseListener(() -> {
             viewHolder.searchView.setVisibility(View.GONE);
             viewHolder.titleTextView.setVisibility(View.VISIBLE);
-            viewHolder.searchView.startAnimation(AnimationUtils.loadAnimation(CartActivity.this, R.anim.search_animation));
+            viewHolder.searchView.startAnimation(
+                    AnimationUtils.loadAnimation(CartActivity.this, R.anim.search_animation)
+            );
             return false;
         });
 
@@ -101,7 +105,9 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
             viewHolder.titleTextView.setVisibility(View.GONE);
             viewHolder.searchView.setVisibility(View.VISIBLE);
             viewHolder.searchView.setIconified(false);
-            viewHolder.searchView.startAnimation(AnimationUtils.loadAnimation(CartActivity.this, R.anim.search_animation));
+            viewHolder.searchView.startAnimation(
+                    AnimationUtils.loadAnimation(CartActivity.this, R.anim.search_animation)
+            );
         }
     }
 
@@ -137,9 +143,14 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
     }
 
     private void setupItemTouchHelper() {
-        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(
+                0, ItemTouchHelper.RIGHT
+        ) {
             @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            public boolean onMove(@NonNull RecyclerView recyclerView,
+                                  @NonNull RecyclerView.ViewHolder viewHolder,
+                                  @NonNull RecyclerView.ViewHolder target)
+            {
                 return false;
             }
 
@@ -154,10 +165,14 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
                 cartAdapter.notifyItemRemoved(position);
                 updateTotalPrice();
 
-                Snackbar.make(viewHolder.itemView, "Item removed from cart", Snackbar.LENGTH_LONG)
+                Snackbar.make(viewHolder.itemView, "Item removed from cart",
+                                Snackbar.LENGTH_LONG)
                         .setAction("Undo", v -> {
                             shoppingCart.addItem(deletedItem, deletedQuantity);
-                            cartAdapter.getCartItems().add(position, new AbstractMap.SimpleEntry<>(deletedItem, deletedQuantity));
+                            cartAdapter.getCartItems().add(position, new AbstractMap.SimpleEntry<>(
+                                    deletedItem, deletedQuantity
+                                )
+                            );
                             cartAdapter.notifyItemInserted(position);
                             updateTotalPrice();
                         })

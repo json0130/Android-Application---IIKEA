@@ -89,7 +89,8 @@ public class DetailActivity extends AppCompatActivity {
 
         // Retrieve the FurnitureModel object from the Intent
         String furnitureName = getIntent().getStringExtra("furnitureName");
-        FurnitureModel furnitureModel = DataProvider.getInstance(this).getFurnitureByName(furnitureName);
+        FurnitureModel furnitureModel = DataProvider.getInstance(this)
+                .getFurnitureByName(furnitureName);
 
         // If the FurnitureModel object is available, use it directly
         if (furnitureModel != null) {

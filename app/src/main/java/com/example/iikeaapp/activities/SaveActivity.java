@@ -157,7 +157,6 @@ public class SaveActivity extends AppCompatActivity implements SavedAdapter.OnIt
         new ItemTouchHelper(simpleCallback).attachToRecyclerView(viewHolder.recyclerViewSaved);
     }
 
-    // Update the savedAdapter when the activity is resumed
     @Override
     protected void onResume() {
         super.onResume();

@@ -90,11 +90,6 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
     }
 
     private void setupSearchView() {
-        // Setup SearchView
-
-        // Setup SearchView
-
-
         vh.searchIcon.setOnClickListener(v -> {
             // Toggle the visibility of the SearchView and title
             if (vh.searchView.getVisibility() == View.VISIBLE) {
@@ -104,7 +99,10 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
                 vh.titleTextView.setVisibility(View.GONE);
                 vh.searchView.setVisibility(View.VISIBLE);
                 vh.searchView.setIconified(false);
-                vh.searchView.startAnimation(AnimationUtils.loadAnimation(ListActivity.this, R.anim.search_animation));
+                vh.searchView.startAnimation(AnimationUtils.loadAnimation(
+                        ListActivity.this, R.anim.search_animation
+                    )
+                );
             }
         });
 
@@ -118,7 +116,10 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
             // Collapse the search bar and show the title with animation
             vh.searchView.setVisibility(View.GONE);
             vh.titleTextView.setVisibility(View.VISIBLE);
-            vh.searchView.startAnimation(AnimationUtils.loadAnimation(ListActivity.this, R.anim.search_animation));
+            vh.searchView.startAnimation(AnimationUtils.loadAnimation(
+                    ListActivity.this, R.anim.search_animation
+                )
+            );
             return false;
         });
 
@@ -151,7 +152,6 @@ public class ListActivity extends AppCompatActivity implements FurnitureAdapter.
 
     private void setupNavigation() {
         // nav bar
-        // Set up the bottom navigation bar
         vh.bottomNavigationView.setSelectedItemId(0);
         vh.bottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.bottom_home) {
