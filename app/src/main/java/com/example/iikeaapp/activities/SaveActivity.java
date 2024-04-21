@@ -85,6 +85,7 @@ public class SaveActivity extends AppCompatActivity implements SavedAdapter.OnIt
     }
 
     private void toggleSearchViewVisibility() {
+        // watermark image visibility
         if (viewHolder.searchView.getVisibility() == View.VISIBLE) {
             viewHolder.searchView.setVisibility(View.GONE);
             viewHolder.titleTextView.setVisibility(View.VISIBLE);
