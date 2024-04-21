@@ -117,8 +117,6 @@ public class DetailActivity extends AppCompatActivity {
             Toast.makeText(this, Saved.isSaved(finalFurnitureModel) ? "Added to Favorites" : "Removed from Favorites", Toast.LENGTH_SHORT).show();
         });
 
-        // Find the views for quantity selection
-
 
         // Set the initial quantity text
         vh.quantityTextView.setText(String.valueOf(this.quantity));
@@ -145,8 +143,6 @@ public class DetailActivity extends AppCompatActivity {
                 setResult(RESULT_OK);
             }
         });
-
-        // Setup SearchView
 
         vh.searchIcon.setOnClickListener(v -> {
             // Toggle the visibility of the SearchView and title
