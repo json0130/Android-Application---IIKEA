@@ -15,7 +15,6 @@ import androidx.viewpager.widget.PagerAdapter;
 import com.bumptech.glide.Glide;
 import com.example.iikeaapp.R;
 
-
 public class ViewPagerAdapter extends PagerAdapter {
     Context context;
     String[] imageUrls;
@@ -41,14 +40,14 @@ public class ViewPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, final int position) {
         View itemView = mLayoutInflater.inflate(R.layout.furniture_item, container, false);
-        ImageView imageView = itemView.findViewById(R.id.pagerImageView);
+        ViewHolder viewHolder = new ViewHolder(itemView);
 
         Glide.with(context)
                 .load(imageUrls[position])
                 .placeholder(R.drawable.image_placeholder)
-                .into(imageView);
+                .into(viewHolder.imageView);
 
-        imageView.setOnClickListener(v -> {
+        viewHolder.imageView.setOnClickListener(v -> {
             // expand image
             showImageDialog(imageUrls[position]);
         });
@@ -74,5 +73,12 @@ public class ViewPagerAdapter extends PagerAdapter {
     public void destroyItem(ViewGroup container, int position, @NonNull Object object) {
         container.removeView((LinearLayout) object);
     }
-}
 
+    private static class ViewHolder {
+        ImageView imageView;
+
+        ViewHolder(View view) {
+            imageView = view.findViewById(R.id.pagerImageView);
+        }
+    }
+}
