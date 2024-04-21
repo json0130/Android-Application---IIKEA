@@ -60,7 +60,7 @@ public class CheckoutActivity extends AppCompatActivity {
         viewHolder.searchIcon.setOnClickListener(v -> toggleSearchViewVisibility());
 
         viewHolder.titleTextView.setOnClickListener(v -> {
-            Intent intent = new Intent(CheckoutActivity.this, CartActivity.class);
+            Intent intent = new Intent(CheckoutActivity.this, MainActivity.class);
             startActivity(intent);
         });
 
