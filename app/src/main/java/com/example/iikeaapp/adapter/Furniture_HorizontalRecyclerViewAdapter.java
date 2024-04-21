@@ -19,7 +19,6 @@ import com.example.iikeaapp.data.FurnitureModel;
 import java.util.ArrayList;
 
 public class Furniture_HorizontalRecyclerViewAdapter extends RecyclerView.Adapter<Furniture_HorizontalRecyclerViewAdapter.MyViewHolder> {
-
     Context context;
     ArrayList<FurnitureModel> furnitureModels;
 
@@ -66,7 +65,6 @@ public class Furniture_HorizontalRecyclerViewAdapter extends RecyclerView.Adapte
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-
             imageView = itemView.findViewById(R.id.item_thumbnail);
             textView = itemView.findViewById(R.id.item_title);
         }

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,76 +31,58 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class CartActivity extends AppCompatActivity implements CartAdapter.OnItemClickListener {
-    private RecyclerView recyclerViewCart;
+    private ViewHolder viewHolder;
     private CartAdapter cartAdapter;
     private ShoppingCart shoppingCart;
-    private TextView totalPriceTextView;
-    private TextView titleTextView;
-    private androidx.appcompat.widget.SearchView searchView;
     private static final int DETAIL_ACTIVITY_REQUEST_CODE = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-        totalPriceTextView = findViewById(R.id.total_cost_price);
-
+        viewHolder = new ViewHolder();
         shoppingCart = CartManager.getInstance().getShoppingCart();
 
         // Initialize the RecyclerView
-        recyclerViewCart = findViewById(R.id.furniture_recycler_view);
-        recyclerViewCart.setLayoutManager(new LinearLayoutManager(this));
+        viewHolder.recyclerViewCart.setLayoutManager(new LinearLayoutManager(this));
 
         // Create and set the CartAdapter
         cartAdapter = new CartAdapter(this, new ArrayList<>(shoppingCart.getItems().entrySet()), this);
-        recyclerViewCart.setAdapter(cartAdapter);
+        viewHolder.recyclerViewCart.setAdapter(cartAdapter);
 
-        // Set up the checkout button click listener
-        MaterialButton checkoutButton = findViewById(R.id.checkout_button);
-        checkoutButton.setOnClickListener(v -> {
+        setupCheckoutButton();
+        setupSearchView();
+        setupBottomNavigation();
+        setupItemTouchHelper();
+    }
+
+    private void setupCheckoutButton() {
+        viewHolder.checkoutButton.setOnClickListener(v -> {
             Intent intent = new Intent(CartActivity.this, CheckoutActivity.class);
             startActivity(intent);
         });
+    }
 
-        // Setup SearchView
-        FloatingActionButton searchIcon = findViewById(R.id.search_icon);
-        titleTextView = findViewById(R.id.title);
-        searchView = findViewById(R.id.list_search_view);
+    private void setupSearchView() {
+        viewHolder.searchIcon.setOnClickListener(v -> toggleSearchViewVisibility());
 
-        searchIcon.setOnClickListener(v -> {
-            // Toggle the visibility of the SearchView and title
-            if (searchView.getVisibility() == View.VISIBLE) {
-                searchView.setVisibility(View.GONE);
-                titleTextView.setVisibility(View.VISIBLE);
-            } else {
-                titleTextView.setVisibility(View.GONE);
-                searchView.setVisibility(View.VISIBLE);
-                searchView.setIconified(false);
-                searchView.startAnimation(AnimationUtils.loadAnimation(CartActivity.this, R.anim.search_animation));
-            }
-        });
-
-        titleTextView.setOnClickListener(v -> {
-            // Expand the search bar and hide the title with animation
+        viewHolder.titleTextView.setOnClickListener(v -> {
             Intent intent = new Intent(CartActivity.this, MainActivity.class);
             startActivity(intent);
         });
 
-        searchView.setOnCloseListener(() -> {
-            // Collapse the search bar and show the title with animation
-            searchView.setVisibility(View.GONE);
-            titleTextView.setVisibility(View.VISIBLE);
-            searchView.startAnimation(AnimationUtils.loadAnimation(CartActivity.this, R.anim.search_animation));
+        viewHolder.searchView.setOnCloseListener(() -> {
+            viewHolder.searchView.setVisibility(View.GONE);
+            viewHolder.titleTextView.setVisibility(View.VISIBLE);
+            viewHolder.searchView.startAnimation(AnimationUtils.loadAnimation(CartActivity.this, R.anim.search_animation));
             return false;
         });
 
-        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+        viewHolder.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // Start ListActivity with the search query
-                Intent intent = new Intent(CartActivity.this, ListActivity.class);
-                intent.putExtra("searchQuery", query);
-                startActivity(intent);
+                startListActivity(query);
                 return false;
             }
 
@@ -108,11 +91,29 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
                 return false;
             }
         });
+    }
 
-        // Set up the bottom navigation bar
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
-        bottomNavigationView.setSelectedItemId(R.id.bottom_cart);
-        bottomNavigationView.setOnItemSelectedListener(item -> {
+    private void toggleSearchViewVisibility() {
+        if (viewHolder.searchView.getVisibility() == View.VISIBLE) {
+            viewHolder.searchView.setVisibility(View.GONE);
+            viewHolder.titleTextView.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.titleTextView.setVisibility(View.GONE);
+            viewHolder.searchView.setVisibility(View.VISIBLE);
+            viewHolder.searchView.setIconified(false);
+            viewHolder.searchView.startAnimation(AnimationUtils.loadAnimation(CartActivity.this, R.anim.search_animation));
+        }
+    }
+
+    private void startListActivity(String query) {
+        Intent intent = new Intent(CartActivity.this, ListActivity.class);
+        intent.putExtra("searchQuery", query);
+        startActivity(intent);
+    }
+
+    private void setupBottomNavigation() {
+        viewHolder.bottomNavigationView.setSelectedItemId(R.id.bottom_cart);
+        viewHolder.bottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.bottom_cart) {
                 return true;
             } else if (item.getItemId() == R.id.bottom_home) {
@@ -133,8 +134,9 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
             }
             return false;
         });
+    }
 
-        // Set up ItemTouchHelper for swipe-to-delete
+    private void setupItemTouchHelper() {
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -152,7 +154,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
                 cartAdapter.notifyItemRemoved(position);
                 updateTotalPrice();
 
-                Snackbar.make(recyclerViewCart, "Item removed from cart", Snackbar.LENGTH_LONG)
+                Snackbar.make(viewHolder.itemView, "Item removed from cart", Snackbar.LENGTH_LONG)
                         .setAction("Undo", v -> {
                             shoppingCart.addItem(deletedItem, deletedQuantity);
                             cartAdapter.getCartItems().add(position, new AbstractMap.SimpleEntry<>(deletedItem, deletedQuantity));
@@ -163,32 +165,28 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
             }
         };
 
-        new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerViewCart);
+        new ItemTouchHelper(simpleCallback).attachToRecyclerView(viewHolder.recyclerViewCart);
     }
 
     public void updateTotalPrice() {
         double totalPrice = shoppingCart.getTotalCost();
-        totalPriceTextView.setText(String.format("$%.2f", totalPrice));
+        viewHolder.totalPriceTextView.setText(String.format("$%.2f", totalPrice));
         updateCartUI();
     }
 
     private void updateCartUI() {
-        RelativeLayout cartSummaryLayout = findViewById(R.id.cart_summary_layout);
-        TextView noProductMsg = findViewById(R.id.emptyListText);
-        Button placeOrderButton = findViewById(R.id.checkout_button);
-        ImageView productWatermark = findViewById(R.id.furnitureWatermark);
         if (cartAdapter.getItemCount() == 0) {
-            noProductMsg.setVisibility(View.VISIBLE);
-            productWatermark.setVisibility(View.VISIBLE);
-            recyclerViewCart.setVisibility(View.GONE);
-            cartSummaryLayout.setVisibility(View.GONE);
-            placeOrderButton.setVisibility(View.GONE);
+            viewHolder.noProductMsg.setVisibility(View.VISIBLE);
+            viewHolder.productWatermark.setVisibility(View.VISIBLE);
+            viewHolder.recyclerViewCart.setVisibility(View.GONE);
+            viewHolder.cartSummaryLayout.setVisibility(View.GONE);
+            viewHolder.checkoutButton.setVisibility(View.GONE);
         } else {
-            noProductMsg.setVisibility(View.GONE);
-            productWatermark.setVisibility(View.GONE);
-            recyclerViewCart.setVisibility(View.VISIBLE);
-            cartSummaryLayout.setVisibility(View.VISIBLE);
-            placeOrderButton.setVisibility(View.VISIBLE);
+            viewHolder.noProductMsg.setVisibility(View.GONE);
+            viewHolder.productWatermark.setVisibility(View.GONE);
+            viewHolder.recyclerViewCart.setVisibility(View.VISIBLE);
+            viewHolder.cartSummaryLayout.setVisibility(View.VISIBLE);
+            viewHolder.checkoutButton.setVisibility(View.VISIBLE);
         }
     }
 
@@ -198,8 +196,8 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
         refreshCartData();
 
         // Hide the SearchView and show the title
-        searchView.setVisibility(View.GONE);
-        titleTextView.setVisibility(View.VISIBLE);
+        viewHolder.searchView.setVisibility(View.GONE);
+        viewHolder.titleTextView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -221,5 +219,31 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
         cartAdapter.cartItems = new ArrayList<>(shoppingCart.getItems().entrySet());
         cartAdapter.notifyDataSetChanged();
         updateTotalPrice();
+    }
+
+    private class ViewHolder {
+        RecyclerView recyclerViewCart;
+        TextView totalPriceTextView;
+        TextView titleTextView;
+        SearchView searchView;
+        FloatingActionButton searchIcon;
+        BottomNavigationView bottomNavigationView;
+        MaterialButton checkoutButton;
+        RelativeLayout cartSummaryLayout;
+        TextView noProductMsg;
+        ImageView productWatermark;
+
+        ViewHolder() {
+            recyclerViewCart = findViewById(R.id.furniture_recycler_view);
+            totalPriceTextView = findViewById(R.id.total_cost_price);
+            titleTextView = findViewById(R.id.title);
+            searchView = findViewById(R.id.list_search_view);
+            searchIcon = findViewById(R.id.search_icon);
+            bottomNavigationView = findViewById(R.id.bottomNavigation);
+            checkoutButton = findViewById(R.id.checkout_button);
+            cartSummaryLayout = findViewById(R.id.cart_summary_layout);
+            noProductMsg = findViewById(R.id.emptyListText);
+            productWatermark = findViewById(R.id.furnitureWatermark);
+        }
     }
 }

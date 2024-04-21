@@ -68,7 +68,7 @@
                 android:layout_marginEnd="10dp"
                 android:background="@null"
                 android:onClick="onFavoriteClick"
-                android:src="@drawable/baseline_favorite_24"
+                android:src="@drawable/heart_red_fill"
                 app:itemIconTint="@drawable/item_selector"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

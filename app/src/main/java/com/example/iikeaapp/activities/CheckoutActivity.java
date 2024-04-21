@@ -9,6 +9,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 
 import com.example.iikeaapp.R;
 import com.example.iikeaapp.data.ShoppingCart;
@@ -20,33 +21,28 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class CheckoutActivity extends AppCompatActivity {
     private ShoppingCart shoppingCart;
-    private TextView titleTextView;
-    private androidx.appcompat.widget.SearchView searchView;
-
-    private TextView totalPriceTextView;
+    private ViewHolder viewHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
 
-        MaterialButton checkOutButton = findViewById(R.id.checkout_button);
-        checkOutButton.setEnabled(false); // Initially disable the checkout button
+        viewHolder = new ViewHolder();
+        viewHolder.checkOutButton.setEnabled(false); // Initially disable the checkout button
 
         // Add TextWatcher to the EditText views to enable/disable the checkout button
-        addTextWatcherToEditText(R.id.editText1, checkOutButton);
-        addTextWatcherToEditText(R.id.editText2, checkOutButton);
-        addTextWatcherToEditText(R.id.editText3, checkOutButton);
-        addTextWatcherToEditText(R.id.ccv_edit, checkOutButton);
-        addTextWatcherToEditText(R.id.editText4, checkOutButton);
+        addTextWatcherToEditText(R.id.editText1, viewHolder.checkOutButton);
+        addTextWatcherToEditText(R.id.editText2, viewHolder.checkOutButton);
+        addTextWatcherToEditText(R.id.editText3, viewHolder.checkOutButton);
+        addTextWatcherToEditText(R.id.ccv_edit, viewHolder.checkOutButton);
+        addTextWatcherToEditText(R.id.editText4, viewHolder.checkOutButton);
 
         // Apply the current theme mode
         ThemeManager.setNightMode(this, ThemeManager.getNightMode(this));
 
-        totalPriceTextView = findViewById(R.id.total_cost_price);
-
         shoppingCart = CartManager.getInstance().getShoppingCart();
-        checkOutButton.setOnClickListener(v -> {
+        viewHolder.checkOutButton.setOnClickListener(v -> {
             if (areRequiredFieldsFilled()) {
                 Intent intent = new Intent(CheckoutActivity.this, ThankYouActivity.class);
                 startActivity(intent);
@@ -56,45 +52,29 @@ public class CheckoutActivity extends AppCompatActivity {
             }
         });
 
-        // Setup SearchView
-        FloatingActionButton searchIcon = findViewById(R.id.search_icon);
-        titleTextView = findViewById(R.id.title);
-        searchView = findViewById(R.id.list_search_view);
+        setupSearchView();
+        setupBottomNavigation();
+    }
 
-        searchIcon.setOnClickListener(v -> {
-            // Toggle the visibility of the SearchView and title
-            if (searchView.getVisibility() == View.VISIBLE) {
-                searchView.setVisibility(View.GONE);
-                titleTextView.setVisibility(View.VISIBLE);
-            } else {
-                titleTextView.setVisibility(View.GONE);
-                searchView.setVisibility(View.VISIBLE);
-                searchView.setIconified(false);
-                searchView.startAnimation(AnimationUtils.loadAnimation(CheckoutActivity.this, R.anim.search_animation));
-            }
-        });
+    private void setupSearchView() {
+        viewHolder.searchIcon.setOnClickListener(v -> toggleSearchViewVisibility());
 
-        titleTextView.setOnClickListener(v -> {
-            // Expand the search bar and hide the title with animation
+        viewHolder.titleTextView.setOnClickListener(v -> {
             Intent intent = new Intent(CheckoutActivity.this, CartActivity.class);
             startActivity(intent);
         });
 
-        searchView.setOnCloseListener(() -> {
-            // Collapse the search bar and show the title with animation
-            searchView.setVisibility(View.GONE);
-            titleTextView.setVisibility(View.VISIBLE);
-            searchView.startAnimation(AnimationUtils.loadAnimation(CheckoutActivity.this, R.anim.search_animation));
+        viewHolder.searchView.setOnCloseListener(() -> {
+            viewHolder.searchView.setVisibility(View.GONE);
+            viewHolder.titleTextView.setVisibility(View.VISIBLE);
+            viewHolder.searchView.startAnimation(AnimationUtils.loadAnimation(CheckoutActivity.this, R.anim.search_animation));
             return false;
         });
 
-        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+        viewHolder.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // Start ListActivity with the search query
-                Intent intent = new Intent(CheckoutActivity.this, ListActivity.class);
-                intent.putExtra("searchQuery", query);
-                startActivity(intent);
+                startListActivity(query);
                 return false;
             }
 
@@ -103,11 +83,29 @@ public class CheckoutActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
 
-        // nav bar
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
-        bottomNavigationView.setSelectedItemId(0);
-        bottomNavigationView.setOnItemSelectedListener(item -> {
+    private void toggleSearchViewVisibility() {
+        if (viewHolder.searchView.getVisibility() == View.VISIBLE) {
+            viewHolder.searchView.setVisibility(View.GONE);
+            viewHolder.titleTextView.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.titleTextView.setVisibility(View.GONE);
+            viewHolder.searchView.setVisibility(View.VISIBLE);
+            viewHolder.searchView.setIconified(false);
+            viewHolder.searchView.startAnimation(AnimationUtils.loadAnimation(CheckoutActivity.this, R.anim.search_animation));
+        }
+    }
+
+    private void startListActivity(String query) {
+        Intent intent = new Intent(CheckoutActivity.this, ListActivity.class);
+        intent.putExtra("searchQuery", query);
+        startActivity(intent);
+    }
+
+    private void setupBottomNavigation() {
+        viewHolder.bottomNavigationView.setSelectedItemId(0);
+        viewHolder.bottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.bottom_home) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -135,7 +133,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
     public void updateTotalPrice() {
         double totalPrice = shoppingCart.getTotalCost();
-        totalPriceTextView.setText(String.format("$%.2f", totalPrice));
+        viewHolder.totalPriceTextView.setText(String.format("$%.2f", totalPrice));
         // You can also update any other UI elements related to the total price here
     }
 
@@ -145,8 +143,8 @@ public class CheckoutActivity extends AppCompatActivity {
         updateTotalPrice();
 
         // Hide the SearchView and show the title
-        searchView.setVisibility(View.GONE);
-        titleTextView.setVisibility(View.VISIBLE);
+        viewHolder.searchView.setVisibility(View.GONE);
+        viewHolder.titleTextView.setVisibility(View.VISIBLE);
     }
 
     private boolean areRequiredFieldsFilled() {
@@ -177,5 +175,23 @@ public class CheckoutActivity extends AppCompatActivity {
                 checkOutButton.setEnabled(areRequiredFieldsFilled());
             }
         });
+    }
+
+    private class ViewHolder {
+        TextView titleTextView;
+        SearchView searchView;
+        FloatingActionButton searchIcon;
+        BottomNavigationView bottomNavigationView;
+        MaterialButton checkOutButton;
+        TextView totalPriceTextView;
+
+        ViewHolder() {
+            searchIcon = findViewById(R.id.search_icon);
+            titleTextView = findViewById(R.id.title);
+            searchView = findViewById(R.id.list_search_view);
+            bottomNavigationView = findViewById(R.id.bottomNavigation);
+            checkOutButton = findViewById(R.id.checkout_button);
+            totalPriceTextView = findViewById(R.id.total_cost_price);
+        }
     }
 }

@@ -67,7 +67,6 @@ public class Furniture_VerticalRecyclerViewAdapter extends RecyclerView.Adapter<
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-
             imageView = itemView.findViewById(R.id.item_thumbnail);
             textViewTitle = itemView.findViewById(R.id.item_title);
             textViewPrice = itemView.findViewById(R.id.price_text);
