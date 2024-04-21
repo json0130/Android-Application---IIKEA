@@ -9,8 +9,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="PRICE"
-        android:textSize="20dp"
+        android:text="@string/furniture_price"
+        android:textSize="20sp"
         android:layout_marginTop="16dp"
         android:layout_marginHorizontal="24dp"
         />
@@ -19,18 +19,19 @@
         android:id="@+id/sort_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="24dp">
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp">
 
         <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/sort_high_low"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="HIGHEST TO LOWEST" />
+            android:text="@string/sort_high" />
 
         <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/sort_low_high"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="LOWEST TO HIGHEST" />
+            android:text="@string/sort_low" />
     </RadioGroup>
 </LinearLayout>

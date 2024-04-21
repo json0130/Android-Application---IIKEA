@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">I I K E A</string>
-    <string name="furniture_name">N A M E</string>
     <string name="top_picks">TOP TRENDS</string>
     <string name="category">CATEGORIES</string>
 
@@ -8,6 +7,20 @@
     <string name="office_cat">OFFICE</string>
     <string name="outdoor_cat">OUTDOOR</string>
     <string name="light_cat">LIGHTING</string>
+
+    <string name="furniture_price">PRICE</string>
+    <string name="furniture_name">FURNITURE NAME</string>
+    <string name="furniture_img">furniture_img</string>
+
+    // SORT
+    <string name="sort_high">HIGHEST TO LOWEST</string>
+    <string name="sort_low">LOWEST TO HIGHEST</string>
+
+    // Detail activity
+    <string name="plus">+</string>
+    <string name="minus">-</string>
+    <string name="quantity">1</string>
+    <string name="remove">remove_img</string>
 
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
