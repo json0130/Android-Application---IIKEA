@@ -30,7 +30,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
-    private ViewHolder viewHolder;
     private Timer autoScrollTimer;
     private boolean isAutoScrolling = false;
     private ViewHolder vh;
