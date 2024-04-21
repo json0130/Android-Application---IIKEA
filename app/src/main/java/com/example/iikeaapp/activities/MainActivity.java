@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
         // Apply the current theme mode
         ThemeManager.setNightMode(this, ThemeManager.getNightMode(this));
 
-        viewHolder = new ViewHolder();
         startAutoScrolling();
 
         // init recycler views
@@ -205,10 +204,14 @@ public class MainActivity extends AppCompatActivity {
         if (!isAutoScrolling) {
             isAutoScrolling = true;
             autoScrollTimer = new Timer();
-            autoScrollTimer.schedule(() -> {
+            autoScrollTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
                     runOnUiThread(() -> {
-                        autoScrollTimer.scheduleAtFixedRate(new AutoScrollTask(), 0, 4000); // Scroll every 4 seconds
+                        // Scroll every 4 seconds
+                        autoScrollTimer.scheduleAtFixedRate(new AutoScrollTask(), 0, 4000);
                     });
+                }
             }, 4000);
         }
     }
@@ -249,22 +252,6 @@ public class MainActivity extends AppCompatActivity {
                 autoScrollTimer.cancel();
                 autoScrollTimer.purge();
             }
-        }
-    }
-
-    private class ViewHolder {
-        RecyclerView recyclerViewTopPicks;
-        TextView titleTextView;
-        androidx.appcompat.widget.SearchView searchView;
-        FloatingActionButton searchIcon;
-        BottomNavigationView bottomNavigationView;
-
-        ViewHolder() {
-            recyclerViewTopPicks = findViewById(R.id.main_top_picks_recyclerView);
-            titleTextView = findViewById(R.id.textView);
-            searchView = findViewById(R.id.list_search_view);
-            searchIcon = findViewById(R.id.search_icon);
-            bottomNavigationView = findViewById(R.id.bottomNavigation);
         }
     }
 }
